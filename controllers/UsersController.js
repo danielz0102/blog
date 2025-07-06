@@ -10,7 +10,7 @@ async function signUp(req, res) {
     return res.status(400).json({ error: 'User already exists' })
   }
 
-  const token = signJWT({ username: user.username })
+  const token = signJWT({ username: user.username, admin: user.admin })
 
   res.status(201).json({ token })
 }
@@ -23,7 +23,7 @@ async function login(req, res) {
     return res.status(401).json({ error: 'Invalid username or password' })
   }
 
-  const token = signJWT({ username: user.username })
+  const token = signJWT({ username: user.username, admin: user.admin })
 
   res.json({ token })
 }
