@@ -4,9 +4,9 @@
 
 Not logged in users should be able to:
 
-- [] Sign up
-- [] Log in
-- [] View any post
+- [x] Sign up
+- [x] Log in
+- [x] View any post
 
 Logged in users should be able to:
 
