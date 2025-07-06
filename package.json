@@ -15,7 +15,8 @@
     "#controllers/*": "./controllers/*",
     "#models/*": "./models/*",
     "#config/*": "./config/*",
-    "#lib/*": "./lib/*"
+    "#lib/*": "./lib/*",
+    "#middlewares/*": "./middlewares/*"
   },
   "keywords": [],
   "author": "",
