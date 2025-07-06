@@ -14,7 +14,8 @@
     "#routes/*": "./routes/*",
     "#controllers/*": "./controllers/*",
     "#models/*": "./models/*",
-    "#config/*": "./config/*"
+    "#config/*": "./config/*",
+    "#lib/*": "./lib/*"
   },
   "keywords": [],
   "author": "",
@@ -29,6 +30,7 @@
   },
   "dependencies": {
     "@prisma/client": "6.11.1",
+    "bcryptjs": "^3.0.2",
     "dotenv": "^17.0.1",
     "express": "^5.1.0"
   }
