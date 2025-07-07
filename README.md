@@ -10,8 +10,9 @@ Not logged in users should be able to:
 
 Logged in users should be able to:
 
-- [] Log out
-- [] Comment on a post
+- [x] Comment on a post
+- [x] Edit their comments
+- [x] Delete their comments
 
 Admin should be able to:
 
