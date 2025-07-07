@@ -8,7 +8,7 @@ export function verifyToken(req, res, next) {
     return res.status(401).json({ error: 'Authorization header missing' })
   }
 
-  const token = bearerHeader.split(' ')[0]
+  const token = bearerHeader.split(' ')[1]
 
   jwt.verify(token, JWT_SECRET, (err, data) => {
     if (err) {
