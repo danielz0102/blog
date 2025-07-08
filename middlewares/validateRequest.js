@@ -1,26 +1,22 @@
-import z from 'zod'
-import { formatZodError } from '#lib/formatZodError.js'
+import { Validator } from '#lib/Validator.js'
 
 export const validateRequest =
-  (schema, validateParamId = false) =>
+  ({ schema = null, hasIdParam = false }) =>
   (req, res, next) => {
-    const result = schema.safeParse(req.body)
+    const validator = new Validator(schema)
 
-    if (validateParamId) {
-      const { id } = req.params
-      const idValidationResult = z.string().uuid().safeParse(id)
-
-      if (!idValidationResult.success) {
-        return res
-          .status(400)
-          .json({ error: 'The param ID must be a valid UUID' })
-      }
+    if (schema) {
+      validator.validateData(req.body)
     }
 
-    if (!result.success) {
-      return res.status(400).json({ errors: formatZodError(result.error) })
+    if (hasIdParam) {
+      validator.validateUUID(req.params.id)
     }
 
-    req.body = result.data
+    if (!validator.isValid()) {
+      return res.status(400).json({ errors: validator.errors })
+    }
+
+    req.body = validator.data
     next()
   }

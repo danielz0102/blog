@@ -9,13 +9,21 @@ export const commentsRouter = Router()
 commentsRouter.post(
   '/',
   verifyToken,
-  validateRequest(commentSchema),
+  validateRequest({ schema: commentSchema }),
   CommentsController.create,
 )
 commentsRouter.put(
   '/:id',
   verifyToken,
-  validateRequest(commentSchema.omit({ postId: true }), true),
+  validateRequest({
+    schema: commentSchema.omit({ postId: true }),
+    hasIdParam: true,
+  }),
   CommentsController.update,
 )
-commentsRouter.delete('/:id', verifyToken, CommentsController.remove)
+commentsRouter.delete(
+  '/:id',
+  verifyToken,
+  validateRequest({ hasIdParam: true }),
+  CommentsController.remove,
+)

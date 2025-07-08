@@ -1,8 +1,17 @@
 import { Router } from 'express'
 import { UsersController } from '#controllers/UsersController.js'
-import { validateUser } from '#middlewares/validateUser.js'
+import { userSchema } from '#lib/schemas/userSchema.js'
+import { validateRequest } from '#middlewares/validateRequest.js'
 
 export const usersRouter = Router()
 
-usersRouter.post('/login', validateUser, UsersController.login)
-usersRouter.post('/sign-up', validateUser, UsersController.signUp)
+usersRouter.post(
+  '/login',
+  validateRequest({ schema: userSchema }),
+  UsersController.login,
+)
+usersRouter.post(
+  '/sign-up',
+  validateRequest({ schema: userSchema }),
+  UsersController.signUp,
+)
