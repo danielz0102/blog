@@ -13,9 +13,10 @@ Logged in users should be able to:
 - [x] Comment on a post
 - [x] Edit their comments
 - [x] Delete their comments
+- [ ] Users should not be able to edit or delete comments from other users
 
 Admin should be able to:
 
-- [] Create posts
-- [] Edit posts
-- [] Delete posts
+- [x] Create posts
+- [x] Edit posts
+- [x] Delete posts

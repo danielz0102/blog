@@ -21,6 +21,10 @@ async function create({ title, content, isDraft = false }) {
 }
 
 async function update(id, { title, content, isDraft }) {
+  const post = await get(id)
+
+  if (!post) return false
+
   return await db.post.update({
     where: { id },
     data: {
@@ -32,6 +36,10 @@ async function update(id, { title, content, isDraft }) {
 }
 
 async function deletePost(id) {
+  const post = await get(id)
+
+  if (!post) return false
+
   return await db.post.delete({
     where: { id },
   })
