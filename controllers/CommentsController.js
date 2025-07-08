@@ -15,21 +15,24 @@ async function create(req, res) {
 async function update(req, res) {
   const { id } = req.params
   const { content } = req.body
-  const comment = await CommentsModel.update({ id, content })
+  const result = await CommentsModel.update(req.user.id, { id, content })
 
-  if (!comment) {
-    return res.status(404).json({ error: 'Comment not found' })
+  if (!result.success) {
+    return res.status(404).json({ error: result.error })
   }
 
-  res.status(200).json(comment)
+  res.status(200).json(result.data)
 }
 
 async function remove(req, res) {
   const { id } = req.params
-  const deleted = await CommentsModel.delete(id)
+  const result = await CommentsModel.delete({
+    userId: req.user.id,
+    commentId: id,
+  })
 
-  if (!deleted) {
-    return res.status(404).json({ error: 'Comment not found' })
+  if (!result.success) {
+    return res.status(404).json({ error: result.error })
   }
 
   res.status(204).end()

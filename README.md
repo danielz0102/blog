@@ -13,10 +13,15 @@ Logged in users should be able to:
 - [x] Comment on a post
 - [x] Edit their comments
 - [x] Delete their comments
-- [ ] Users should not be able to edit or delete comments from other users
+- [x] Users should not be able to edit or delete comments from other users
 
 Admin should be able to:
 
 - [x] Create posts
 - [x] Edit posts
 - [x] Delete posts
+
+Fix:
+
+- [ ] API fails on malformed requests
+- [ ] Empty errors when JSON body is empty

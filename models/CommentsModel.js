@@ -29,29 +29,41 @@ async function create({ content, userId, postId }) {
   return Result.success(comment)
 }
 
-async function update({ id, content }) {
+async function update(userId, { id, content }) {
   const comment = await db.comment.findUnique({
     where: { id },
   })
 
-  if (!comment) return false
+  if (!comment) return Result.failure('Comment not found')
 
-  return await db.comment.update({
+  if (comment.userId !== userId) {
+    return Result.failure('This comment does not belong to the user')
+  }
+
+  const result = await db.comment.update({
     where: { id },
     data: { content },
   })
+
+  return Result.success(result)
 }
 
-async function deleteComment(id) {
+async function deleteComment({ userId, commentId }) {
   const comment = await db.comment.findUnique({
-    where: { id },
+    where: { id: commentId },
   })
 
-  if (!comment) return false
+  if (!comment) return Result.failure('Comment not found')
 
-  return await db.comment.delete({
-    where: { id },
+  if (comment.userId !== userId) {
+    return Result.failure('This comment does not belong to the user')
+  }
+
+  await db.comment.delete({
+    where: { id: commentId },
   })
+
+  return Result.success(null)
 }
 
 export const CommentsModel = {
