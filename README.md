@@ -23,5 +23,5 @@ Admin should be able to:
 
 Fix:
 
-- [ ] API fails on malformed requests
-- [ ] Empty errors when JSON body is empty
+- [x] API fails on malformed requests
+- [x] Empty errors when JSON body is empty
