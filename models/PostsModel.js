@@ -7,7 +7,11 @@ async function get(id) {
 }
 
 async function getAll() {
-  return await db.post.findMany()
+  return await db.post.findMany({
+    take: 30,
+    orderBy: { createdAt: 'desc' },
+    where: { isDraft: false },
+  })
 }
 
 async function create({ title, content, isDraft = false }) {
