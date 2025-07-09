@@ -6,9 +6,9 @@ async function get(id) {
   })
 }
 
-async function getAll() {
+async function getAll(limit = 30) {
   return await db.post.findMany({
-    take: 30,
+    take: limit,
     orderBy: { createdAt: 'desc' },
     where: { isDraft: false },
   })
