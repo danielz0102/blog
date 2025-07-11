@@ -6,6 +6,12 @@ async function getAll(req, res) {
   res.json(posts)
 }
 
+async function getDrafts(req, res) {
+  const { limit = 10 } = req.query
+  const drafts = await PostsModel.getDrafts(Number(limit))
+  res.json(drafts)
+}
+
 async function get(req, res) {
   const { id } = req.params
 
@@ -51,6 +57,7 @@ async function deletePost(req, res) {
 export const PostsController = {
   get,
   getAll,
+  getDrafts,
   create,
   update,
   delete: deletePost,
