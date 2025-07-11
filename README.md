@@ -20,7 +20,7 @@ Admin should be able to:
 - [x] Create posts
 - [x] Edit posts
 - [x] Delete posts
-- [ ] Get draft posts
+- [x] Get draft posts
 
 Fix:
 
