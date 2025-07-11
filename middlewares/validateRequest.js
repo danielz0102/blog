@@ -1,22 +1,47 @@
-import { Validator } from '#lib/Validator.js'
+import { flattenError } from 'zod/v4'
 
 export const validateRequest =
-  ({ schema = null, hasIdParam = false }) =>
+  ({ bodySchema = null, paramsSchema = null, querySchema = null }) =>
   (req, res, next) => {
-    const validator = new Validator(schema)
+    const schemas = []
 
-    if (schema) {
-      validator.validateData(req.body)
+    if (bodySchema) {
+      schemas.push({ type: 'body', schema: bodySchema })
     }
 
-    if (hasIdParam) {
-      validator.validateUUID(req.params.id)
+    if (paramsSchema) {
+      schemas.push({ type: 'params', schema: paramsSchema })
     }
 
-    if (!validator.isValid()) {
-      return res.status(400).json({ errors: validator.errors })
+    if (querySchema) {
+      schemas.push({ type: 'query', schema: querySchema })
     }
 
-    req.body = validator.data
+    const { errors, data } = schemas.reduce(
+      (result, { type, schema }) => {
+        const validation = schema.safeParse(req[type])
+
+        if (!validation.success) {
+          result.errors[type] = flattenError(validation.error).fieldErrors
+          return result
+        }
+
+        result.data[type] = validation.data
+        return result
+      },
+      { errors: {}, data: {} },
+    )
+
+    if (Object.keys(errors).length > 0) {
+      return res.status(400).json({ errors })
+    }
+
+    Object.keys(data).forEach((key) => {
+      // req.query is read-only
+      if (key !== 'query') {
+        req[key] = data[key]
+      }
+    })
+
     next()
   }
