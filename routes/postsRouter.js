@@ -2,7 +2,7 @@ import { Router } from 'express'
 
 import { PostsController } from '#controllers/PostsController.js'
 
-import { validateRequest } from '#middlewares/validateRequest.js'
+import { validate } from '#middlewares/validate.js'
 import { onlyAdmin } from '#middlewares/onlyAdmin.js'
 
 import { postSchema } from '#lib/schemas/postSchema.js'
@@ -11,24 +11,29 @@ import { paramsSchema } from '#lib/schemas/commonSchemas.js'
 
 export const postsRouter = Router()
 
-postsRouter.get('/', validateRequest({ querySchema }), PostsController.getAll)
-postsRouter.get('/drafts', onlyAdmin, validateRequest({ querySchema }), PostsController.getDrafts)
-postsRouter.get('/:id', validateRequest({ paramsSchema }), PostsController.get)
+postsRouter.get('/', validate({ querySchema }), PostsController.getAll)
+postsRouter.get(
+  '/drafts',
+  onlyAdmin,
+  validate({ querySchema }),
+  PostsController.getDrafts,
+)
+postsRouter.get('/:id', validate({ paramsSchema }), PostsController.get)
 postsRouter.post(
   '/',
   onlyAdmin,
-  validateRequest({ bodySchema: postSchema }),
+  validate({ bodySchema: postSchema }),
   PostsController.create,
 )
 postsRouter.put(
   '/:id',
   onlyAdmin,
-  validateRequest({ bodySchema: postSchema, paramsSchema }),
+  validate({ bodySchema: postSchema, paramsSchema }),
   PostsController.update,
 )
 postsRouter.delete(
   '/:id',
   onlyAdmin,
-  validateRequest({ paramsSchema }),
+  validate({ paramsSchema }),
   PostsController.delete,
 )

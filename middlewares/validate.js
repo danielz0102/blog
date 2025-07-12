@@ -1,6 +1,6 @@
 import { flattenError } from 'zod/v4'
 
-export const validateRequest =
+export const validate =
   ({ bodySchema = null, paramsSchema = null, querySchema = null }) =>
   (req, res, next) => {
     const schemas = []
