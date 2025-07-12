@@ -6,8 +6,14 @@ export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: {
-      '@': '/src'
-    }
+      '@': '/src',
+      '@atoms': '/src/components/atoms',
+      '@molecules': '/src/components/molecules',
+      '@organisms': '/src/components/organisms',
+      '@templates': '/src/components/templates',
+      '@hooks': '/src/hooks',
+      '@services': '/src/services',
+    },
   },
   test: {
     environment: 'happy-dom',
