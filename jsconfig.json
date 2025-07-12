@@ -2,13 +2,13 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"],
       "@atoms/*": ["src/components/atoms/*"],
       "@molecules/*": ["src/components/molecules/*"],
       "@organisms/*": ["src/components/organisms/*"],
       "@templates/*": ["src/components/templates/*"],
-      "@hooks/*": ["src/hooks/*"],
-      "@services/*": ["src/services/*"]
+      "@hooks/*": ["src/lib/hooks/*"],
+      "@services/*": ["src/services/*"],
+      "@/*": ["src/*"]
     }
   }
 }
