@@ -1,7 +1,7 @@
 import { it, expect, vi } from 'vitest'
 import { renderHook, waitFor } from '@testing-library/react'
 
-import { usePosts } from '@/hooks/usePosts'
+import { usePosts } from '@/lib/hooks/usePosts'
 import { getPosts } from '@/services/blogApi'
 
 vi.mock('@/services/blogApi')

@@ -1,4 +1,4 @@
-import { usePosts } from '@/hooks/usePosts'
+import { usePosts } from '@/lib/hooks/usePosts'
 
 export function App() {
   const { posts, loading, error } = usePosts()

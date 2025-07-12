@@ -1,4 +1,4 @@
-import { App } from '@/App'
+import { App } from '@/components/templates/App'
 import { it, expect } from 'vitest'
 import { render, screen } from '@testing-library/react'
 
