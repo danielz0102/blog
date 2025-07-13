@@ -1,7 +1,8 @@
-import { usePosts } from '@hooks/usePosts'
+import { getPosts } from '@services/posts'
+import { useAsync } from 'react-async-hook'
 
 export function Home() {
-  const { posts, loading, error } = usePosts()
+  const { result: posts, loading, error } = useAsync(getPosts)
 
   return (
     <main>
@@ -9,11 +10,12 @@ export function Home() {
       {loading && <p>Loading...</p>}
       {error && <p>Something went wrong</p>}
       <ul>
-        {posts.map((post) => (
-          <li key={post.id}>
-            <code>{JSON.stringify(post)}</code>
-          </li>
-        ))}
+        {posts &&
+          posts.map((post) => (
+            <li key={post.id}>
+              <code>{JSON.stringify(post)}</code>
+            </li>
+          ))}
       </ul>
     </main>
   )
