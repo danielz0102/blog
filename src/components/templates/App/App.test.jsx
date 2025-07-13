@@ -1,9 +1,23 @@
 import { App } from '@/components/templates/App'
-import { it, expect } from 'vitest'
+import { test, expect, vi } from 'vitest'
 import { render, screen } from '@testing-library/react'
 
-it('renders the app component', () => {
+vi.mock('react-router', () => ({
+  Outlet: vi.fn(() => <div data-testid="outlet"></div>),
+}))
+
+vi.mock('@organisms/Header', () => ({
+  Header: vi.fn(() => <div data-testid="header"></div>),
+}))
+
+test('renders the header component', () => {
   render(<App />)
-  const heading = screen.getByRole('heading')
-  expect(heading).toBeInTheDocument()
+  const header = screen.getByTestId('header')
+  expect(header).toBeInTheDocument()
+})
+
+test('renders the outlet component', () => {
+  render(<App />)
+  const outlet = screen.getByTestId('outlet')
+  expect(outlet).toBeInTheDocument()
 })
