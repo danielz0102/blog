@@ -1,4 +1,4 @@
-import { VITE_API_URL } from '@/config'
+import { API_URL } from '@/config'
 
 async function api(endpoint, { method = 'GET', body = null } = {}) {
   const token = localStorage.getItem('token')
@@ -17,7 +17,7 @@ async function api(endpoint, { method = 'GET', body = null } = {}) {
     config.body = JSON.stringify(body)
   }
 
-  const response = await fetch(`${VITE_API_URL}${endpoint}`, config)
+  const response = await fetch(`${API_URL}${endpoint}`, config)
 
   if (!response.ok) {
     const errorData = await response.json().catch(() => ({}))
