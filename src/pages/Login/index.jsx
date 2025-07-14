@@ -10,8 +10,7 @@ export function Login() {
     )
 
     login({ username, password })
-      .then((result) => {
-        localStorage.setItem('token', result.token)
+      .then(() => {
         redirect('/')
       })
       .catch((error) => {

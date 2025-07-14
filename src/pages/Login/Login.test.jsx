@@ -7,14 +7,8 @@ import { MemoryRouter } from 'react-router'
 import { Login } from '.'
 import { login } from '@services/auth'
 
-const mockUser = {
-  username: 'testuser',
-  password: 'password123',
-  token: 'mockToken',
-}
-
 vi.mock('@services/auth', () => ({
-  login: vi.fn(() => Promise.resolve(mockUser)),
+  login: vi.fn(() => Promise.resolve()),
 }))
 
 test('renders a form to login', () => {
@@ -27,14 +21,14 @@ test('renders a form to login', () => {
 })
 
 test('redirects to home on successful login', async () => {
-  login.mockResolvedValueOnce(mockUser)
   render(
     <MemoryRouter>
       <Login />
     </MemoryRouter>,
   )
   const user = userEvent.setup()
-  const { username, password } = mockUser
+  const username = 'testuser'
+  const password = 'password123'
   const usernameInput = screen.getByLabelText('Username')
   const passwordInput = screen.getByLabelText('Password')
   const loginButton = screen.getByRole('button', { name: 'Login' })
@@ -44,6 +38,5 @@ test('redirects to home on successful login', async () => {
   await user.click(loginButton)
 
   expect(login).toHaveBeenCalledWith({ username, password })
-  expect(localStorage.getItem('token')).toBe(mockUser.token)
   expect(window.location.pathname).toBe('/')
 })
