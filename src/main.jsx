@@ -5,6 +5,7 @@ import { RouterProvider, createBrowserRouter } from 'react-router'
 import '@/styles/index.css'
 import App from '@templates/App'
 import { Home } from './pages/Home'
+import { Login } from './pages/Login'
 
 const router = createBrowserRouter([
   {
@@ -14,6 +15,10 @@ const router = createBrowserRouter([
       {
         path: '/',
         element: <Home />,
+      },
+      {
+        path: '/login',
+        element: <Login />,
       },
     ],
   },
