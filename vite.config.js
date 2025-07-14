@@ -12,6 +12,7 @@ export default defineConfig({
       '@templates': '/src/components/templates',
       '@hooks': '/src/lib/hooks',
       '@services': '/src/services',
+      '@providers': '/src/lib/providers',
       '@': '/src',
     },
   },

@@ -1,4 +1,11 @@
+import { useContext } from 'react'
+import { UserContext } from '@providers/contexts'
+
 export function Header() {
+  const { user } = useContext(UserContext)
+
+  console.log({ user })
+
   return (
     <header>
       <h1>My Blog</h1>
