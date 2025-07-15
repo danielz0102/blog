@@ -9,14 +9,17 @@ export function Home() {
       <h1>Welcome to My Blog</h1>
       {loading && <p>Loading...</p>}
       {error && <p>Something went wrong</p>}
-      <ul>
-        {posts &&
-          posts.map((post) => (
-            <li key={post.id}>
-              <code>{JSON.stringify(post)}</code>
-            </li>
-          ))}
-      </ul>
+      {posts &&
+        posts.map((post) => (
+          <article key={post.id}>
+            <h2>
+              <a href={`/posts/${post.id}`}>{post.title}</a>
+            </h2>
+            <p>
+              <small>{post.date}</small>
+            </p>
+          </article>
+        ))}
     </main>
   )
 }
