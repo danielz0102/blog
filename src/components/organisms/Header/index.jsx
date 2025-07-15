@@ -2,7 +2,7 @@ import { useContext } from 'react'
 import { UserContext } from '@providers/contexts'
 
 export function Header() {
-  const { user } = useContext(UserContext)
+  const { user, logout } = useContext(UserContext)
   const isLoggedIn = Boolean(user)
 
   return (
@@ -13,13 +13,11 @@ export function Header() {
       <nav>
         <ul>
           {isLoggedIn ? (
-            <li>
-              <a href="/logout">Logout</a>
-            </li>
+            <button onClick={logout}>Log out</button>
           ) : (
             <>
               <li>
-                <a href="/login">Login</a>
+                <a href="/login">Log in</a>
               </li>
               <li>
                 <a href="/sign-up">Sign Up</a>

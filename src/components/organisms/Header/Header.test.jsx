@@ -1,5 +1,6 @@
-import { expect, test } from 'vitest'
+import { expect, test, vi } from 'vitest'
 import { render } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 import { Header } from '.'
 import { UserProvider } from '@providers/UserProvider'
@@ -35,7 +36,7 @@ test('has the correct links when the user is not logged in', () => {
     </UserContext>,
   )
 
-  expect(getByRole('link', { name: /login/i })).toHaveAttribute(
+  expect(getByRole('link', { name: /log in/i })).toHaveAttribute(
     'href',
     '/login',
   )
@@ -43,7 +44,7 @@ test('has the correct links when the user is not logged in', () => {
     'href',
     '/sign-up',
   )
-  expect(queryByRole('link', { name: /logout/i })).not.toBeInTheDocument()
+  expect(queryByRole('link', { name: /log out/i })).not.toBeInTheDocument()
 })
 
 test('has the correct links when the user is logged in', () => {
@@ -53,10 +54,21 @@ test('has the correct links when the user is logged in', () => {
     </UserContext>,
   )
 
-  expect(getByRole('link', { name: /logout/i })).toHaveAttribute(
-    'href',
-    '/logout',
-  )
-  expect(queryByRole('link', { name: /login/i })).not.toBeInTheDocument()
+  expect(getByRole('button', { name: /log out/i })).toBeInTheDocument()
+  expect(queryByRole('link', { name: /log in/i })).not.toBeInTheDocument()
   expect(queryByRole('link', { name: /sign up/i })).not.toBeInTheDocument()
+})
+
+test('closes session on logout button click', async () => {
+  const user = userEvent.setup()
+  const mockLogout = vi.fn()
+  const { getByRole } = render(
+    <UserContext value={{ user: { name: 'John Doe' }, logout: mockLogout }}>
+      <Header />
+    </UserContext>,
+  )
+
+  await user.click(getByRole('button', { name: /log out/i }))
+
+  expect(mockLogout).toHaveBeenCalled()
 })
