@@ -60,7 +60,7 @@ test('displays errors that come from the API', async () => {
 
 async function submit({
   mockUsername = 'testuser',
-  mockPassword = 'password123',
+  mockPassword = 'Password1!',
   mockLogin = vi.fn(() => Promise.resolve())
 } = {}) {
   const user = userEvent.setup()

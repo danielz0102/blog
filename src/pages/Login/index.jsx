@@ -43,6 +43,8 @@ export function Login() {
         id="password"
         placeholder="******"
         required
+        pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).{8,}"
+        title="Must contain at least one uppercase letter, one lowercase letter, one number, one special character, and be at least 8 characters long."
       />
       <button type="submit">Login</button>
     </form>
