@@ -6,8 +6,8 @@ async function api(endpoint, { method = 'GET', body = null } = {}) {
   const config = {
     method,
     headers: {
-      'Content-Type': 'application/json',
-    },
+      'Content-Type': 'application/json'
+    }
   }
 
   if (token) {

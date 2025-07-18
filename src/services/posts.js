@@ -15,7 +15,7 @@ export const getPosts = async (limit = null) => {
     new Date(dateString).toLocaleString('en-US', {
       year: 'numeric',
       month: 'long',
-      day: 'numeric',
+      day: 'numeric'
     })
 
   return posts
@@ -25,6 +25,6 @@ export const getPosts = async (limit = null) => {
       id: post.id,
       title: post.title,
       content: post.content,
-      date: formatDate(post.createdAt),
+      date: formatDate(post.createdAt)
     }))
 }

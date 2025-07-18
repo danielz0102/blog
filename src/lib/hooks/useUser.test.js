@@ -9,7 +9,7 @@ const mockToken = jwt.sign({ username: 'test', id: 1 }, 'secret')
 
 vi.mock('@services/auth', () => ({
   login: vi.fn(() => Promise.resolve(mockToken)),
-  signUp: vi.fn(() => Promise.resolve(mockToken)),
+  signUp: vi.fn(() => Promise.resolve(mockToken))
 }))
 
 beforeEach(() => {

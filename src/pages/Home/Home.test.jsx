@@ -5,14 +5,14 @@ import { Home } from '.'
 import { useAsync } from 'react-async-hook'
 
 vi.mock('react-async-hook', () => ({
-  useAsync: vi.fn(),
+  useAsync: vi.fn()
 }))
 
 test('shows loading state while fetching posts', () => {
   useAsync.mockReturnValue({
     loading: true,
     error: null,
-    result: null,
+    result: null
   })
 
   const { getByText } = render(<Home />)
@@ -24,7 +24,7 @@ test('shows error message when fetching posts fails', () => {
   useAsync.mockReturnValue({
     loading: false,
     error: new Error(),
-    result: null,
+    result: null
   })
 
   const { getByText } = render(<Home />)
@@ -38,18 +38,18 @@ test('renders posts when fetched successfully', () => {
     error: null,
     result: [
       { id: 1, title: 'Post 1', content: 'Content of post 1' },
-      { id: 2, title: 'Post 2', content: 'Content of post 2' },
-    ],
+      { id: 2, title: 'Post 2', content: 'Content of post 2' }
+    ]
   })
 
   const { getByRole } = render(<Home />)
 
   expect(getByRole('link', { name: /post 1/i })).toHaveAttribute(
     'href',
-    '/posts/1',
+    '/posts/1'
   )
   expect(getByRole('link', { name: /post 2/i })).toHaveAttribute(
     'href',
-    '/posts/2',
+    '/posts/2'
   )
 })

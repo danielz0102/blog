@@ -3,11 +3,11 @@ import { test, expect, vi } from 'vitest'
 import { render, screen } from '@testing-library/react'
 
 vi.mock('react-router', () => ({
-  Outlet: () => <div data-testid="outlet"></div>,
+  Outlet: () => <div data-testid="outlet"></div>
 }))
 
 vi.mock('@organisms/Header', () => ({
-  Header: () => <div data-testid="header"></div>,
+  Header: () => <div data-testid="header"></div>
 }))
 
 test('renders the header component', () => {

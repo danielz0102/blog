@@ -12,7 +12,7 @@ export function Login() {
     event.preventDefault()
 
     const { username, password } = Object.fromEntries(
-      new FormData(event.target),
+      new FormData(event.target)
     )
 
     return login({ username, password }).then(() => {

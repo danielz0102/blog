@@ -7,7 +7,7 @@ export const login = async (credentials) => {
 
   const { token } = await api('/users/login', {
     method: 'POST',
-    body: credentials,
+    body: credentials
   })
 
   return token
@@ -20,7 +20,7 @@ export const signUp = async (data) => {
 
   const { token } = await api('/users/sign-up', {
     method: 'POST',
-    body: data,
+    body: data
   })
 
   return token

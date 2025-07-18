@@ -8,9 +8,9 @@ vi.stubGlobal(
   vi.fn(() =>
     Promise.resolve({
       ok: true,
-      json: () => Promise.resolve({}),
-    }),
-  ),
+      json: () => Promise.resolve({})
+    })
+  )
 )
 
 beforeEach(() => {
@@ -22,7 +22,7 @@ test('makes a GET request by default', async () => {
 
   expect(fetch).toHaveBeenCalledWith(
     expect.stringContaining('/test-endpoint'),
-    expect.objectContaining({ method: 'GET' }),
+    expect.objectContaining({ method: 'GET' })
   )
 })
 
@@ -30,7 +30,7 @@ test('always makes a request with the header Content-Type: application/json', as
   await api('/test-endpoint')
 
   expect(fetch.mock.calls[0][1].headers).toEqual({
-    'Content-Type': 'application/json',
+    'Content-Type': 'application/json'
   })
 })
 
@@ -40,7 +40,7 @@ test('adds Authorization header if the token is present', async () => {
   await api('/test-endpoint')
 
   expect(fetch.mock.calls[0][1].headers).toMatchObject({
-    Authorization: 'Bearer test-token',
+    Authorization: 'Bearer test-token'
   })
 })
 
@@ -64,13 +64,13 @@ test('throws an error if the response is not ok', async () => {
       ok: false,
       json: () =>
         Promise.resolve({
-          message: 'Error occurred',
+          message: 'Error occurred'
         }),
-      status: 400,
-    }),
+      status: 400
+    })
   )
 
   await expect(api('/test-endpoint')).rejects.toThrow(
-    new ApiError('API error', 400, { message: 'Error occurred' }),
+    new ApiError('API error', 400, { message: 'Error occurred' })
   )
 })

@@ -11,7 +11,7 @@ test('renders a form to login', () => {
   const { getByLabelText, getByRole } = render(
     <UserProvider>
       <Login />
-    </UserProvider>,
+    </UserProvider>
   )
 
   expect(getByRole('form')).toBeInTheDocument()
@@ -25,7 +25,7 @@ test('calls login function on form submission', async () => {
 
   expect(mockLogin).toHaveBeenCalledWith({
     username: mockUsername,
-    password: mockPassword,
+    password: mockPassword
   })
 })
 
@@ -36,38 +36,38 @@ test('redirects to home on successful login', async () => {
 
 test('displays error message on unexpected error', async () => {
   await submit({
-    mockLogin: vi.fn(() => Promise.reject(new Error('Login failed'))),
+    mockLogin: vi.fn(() => Promise.reject(new Error('Login failed')))
   })
 
   expect(
-    screen.getByText('An unexpected error occurred. Please, try again later.'),
+    screen.getByText('An unexpected error occurred. Please, try again later.')
   ).toBeInTheDocument()
 })
 
 test('displays errors that come from the API', async () => {
   const apiError = new ApiError('Invalid credentials', 401, {
-    error: 'Username or password is incorrect',
+    error: 'Username or password is incorrect'
   })
 
   await submit({
-    mockLogin: vi.fn(() => Promise.reject(apiError)),
+    mockLogin: vi.fn(() => Promise.reject(apiError))
   })
 
   expect(
-    screen.getByText('Username or password is incorrect'),
+    screen.getByText('Username or password is incorrect')
   ).toBeInTheDocument()
 })
 
 async function submit({
   mockUsername = 'testuser',
   mockPassword = 'password123',
-  mockLogin = vi.fn(() => Promise.resolve()),
+  mockLogin = vi.fn(() => Promise.resolve())
 } = {}) {
   const user = userEvent.setup()
   const { getByLabelText, getByRole } = render(
     <UserContext value={{ login: mockLogin }}>
       <Login />
-    </UserContext>,
+    </UserContext>
   )
 
   const usernameInput = getByLabelText('Username')

@@ -27,14 +27,14 @@ describe('getPosts', () => {
         id: 1,
         title: 'Post 1',
         content: 'Content 1',
-        createdAt: '2023-01-01T00:00:00Z', // December 31, 2022
+        createdAt: '2023-01-01T00:00:00Z' // December 31, 2022
       },
       {
         id: 2,
         title: 'Post 2',
         content: 'Content 2',
-        createdAt: '2023-01-02T00:00:00Z', // January 1, 2023
-      },
+        createdAt: '2023-01-02T00:00:00Z' // January 1, 2023
+      }
     ])
 
     const posts = await getPosts()
@@ -44,14 +44,14 @@ describe('getPosts', () => {
         id: 2,
         title: 'Post 2',
         content: 'Content 2',
-        date: 'January 1, 2023',
+        date: 'January 1, 2023'
       },
       {
         id: 1,
         title: 'Post 1',
         content: 'Content 1',
-        date: 'December 31, 2022',
-      },
+        date: 'December 31, 2022'
+      }
     ])
   })
 })

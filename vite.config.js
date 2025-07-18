@@ -13,11 +13,11 @@ export default defineConfig({
       '@hooks': '/src/lib/hooks',
       '@services': '/src/services',
       '@providers': '/src/lib/providers',
-      '@': '/src',
-    },
+      '@': '/src'
+    }
   },
   test: {
     environment: 'jsdom',
-    setupFiles: './tests/setup.js',
-  },
+    setupFiles: './tests/setup.js'
+  }
 })

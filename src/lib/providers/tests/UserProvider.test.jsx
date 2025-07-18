@@ -6,18 +6,18 @@ import { useContext } from 'react'
 import { UserContext } from '@providers/contexts'
 
 const mockResult = {
-  user: { username: 'test', id: 1 },
+  user: { username: 'test', id: 1 }
 }
 
 vi.mock('@hooks/useUser', () => ({
-  useUser: () => mockResult,
+  useUser: () => mockResult
 }))
 
 test('renders children', () => {
   const { getByTestId } = render(
     <UserProvider>
       <div data-testid="test-child">Test Child</div>
-    </UserProvider>,
+    </UserProvider>
   )
 
   expect(getByTestId('test-child')).toBeInTheDocument()
@@ -32,10 +32,10 @@ test('provides useUser result as value', () => {
   const { getByTestId } = render(
     <UserProvider>
       <Child />
-    </UserProvider>,
+    </UserProvider>
   )
 
   expect(getByTestId('test-child')).toHaveTextContent(
-    JSON.stringify(mockResult),
+    JSON.stringify(mockResult)
   )
 })

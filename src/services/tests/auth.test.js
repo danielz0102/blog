@@ -4,7 +4,7 @@ import { login, signUp } from '@services/auth'
 import api from '@services/api'
 
 vi.mock('@services/api', () => ({
-  default: vi.fn(() => Promise.resolve({ token: 'mocked-token' })),
+  default: vi.fn(() => Promise.resolve({ token: 'mocked-token' }))
 }))
 
 beforeEach(() => {
@@ -19,7 +19,7 @@ describe('login', () => {
 
     expect(api).toHaveBeenCalledWith('/users/login', {
       method: 'POST',
-      body: credentials,
+      body: credentials
     })
   })
 
@@ -39,7 +39,7 @@ describe('signUp', () => {
 
     expect(api).toHaveBeenCalledWith('/users/sign-up', {
       method: 'POST',
-      body: credentials,
+      body: credentials
     })
   })
 
