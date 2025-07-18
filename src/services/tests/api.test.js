@@ -1,5 +1,7 @@
 import { test, expect, vi, beforeEach } from 'vitest'
+
 import api from '@services/api'
+import { ApiError } from '@/lib/customErrors/ApiError'
 
 vi.stubGlobal(
   'fetch',
@@ -60,9 +62,15 @@ test('throws an error if the response is not ok', async () => {
   fetch.mockImplementationOnce(() =>
     Promise.resolve({
       ok: false,
-      json: () => Promise.resolve('Error occurred'),
+      json: () =>
+        Promise.resolve({
+          message: 'Error occurred',
+        }),
+      status: 400,
     }),
   )
 
-  await expect(api('/test-endpoint')).rejects.toThrow('Error occurred')
+  await expect(api('/test-endpoint')).rejects.toThrow(
+    new ApiError('API error', 400, { message: 'Error occurred' }),
+  )
 })

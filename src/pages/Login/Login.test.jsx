@@ -2,41 +2,81 @@ import { test, expect, vi } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import { MemoryRouter } from 'react-router'
-
 import { Login } from '.'
-import { login } from '@services/auth'
-
-vi.mock('@services/auth', () => ({
-  login: vi.fn(() => Promise.resolve()),
-}))
+import { UserContext } from '@providers/contexts'
+import { UserProvider } from '@providers/UserProvider'
+import { ApiError } from '@/lib/customErrors/ApiError'
 
 test('renders a form to login', () => {
-  render(<Login />)
+  const { getByLabelText, getByRole } = render(
+    <UserProvider>
+      <Login />
+    </UserProvider>,
+  )
 
-  expect(screen.getByRole('form')).toBeInTheDocument()
-  expect(screen.getByLabelText('Username')).toBeInTheDocument()
-  expect(screen.getByLabelText('Password')).toBeInTheDocument()
-  expect(screen.getByRole('button', { name: 'Login' })).toBeInTheDocument()
+  expect(getByRole('form')).toBeInTheDocument()
+  expect(getByLabelText('Username')).toBeInTheDocument()
+  expect(getByLabelText('Password')).toBeInTheDocument()
+  expect(getByRole('button', { name: 'Login' })).toBeInTheDocument()
+})
+
+test('calls login function on form submission', async () => {
+  const { mockLogin, mockUsername, mockPassword } = await submit()
+
+  expect(mockLogin).toHaveBeenCalledWith({
+    username: mockUsername,
+    password: mockPassword,
+  })
 })
 
 test('redirects to home on successful login', async () => {
-  render(
-    <MemoryRouter>
-      <Login />
-    </MemoryRouter>,
-  )
-  const user = userEvent.setup()
-  const username = 'testuser'
-  const password = 'password123'
-  const usernameInput = screen.getByLabelText('Username')
-  const passwordInput = screen.getByLabelText('Password')
-  const loginButton = screen.getByRole('button', { name: 'Login' })
-
-  await user.type(usernameInput, username)
-  await user.type(passwordInput, password)
-  await user.click(loginButton)
-
-  expect(login).toHaveBeenCalledWith({ username, password })
+  await submit()
   expect(window.location.pathname).toBe('/')
 })
+
+test('displays error message on unexpected error', async () => {
+  await submit({
+    mockLogin: vi.fn(() => Promise.reject(new Error('Login failed'))),
+  })
+
+  expect(
+    screen.getByText('An unexpected error occurred. Please, try again later.'),
+  ).toBeInTheDocument()
+})
+
+test('displays errors that come from the API', async () => {
+  const apiError = new ApiError('Invalid credentials', 401, {
+    error: 'Username or password is incorrect',
+  })
+
+  await submit({
+    mockLogin: vi.fn(() => Promise.reject(apiError)),
+  })
+
+  expect(
+    screen.getByText('Username or password is incorrect'),
+  ).toBeInTheDocument()
+})
+
+async function submit({
+  mockUsername = 'testuser',
+  mockPassword = 'password123',
+  mockLogin = vi.fn(() => Promise.resolve()),
+} = {}) {
+  const user = userEvent.setup()
+  const { getByLabelText, getByRole } = render(
+    <UserContext value={{ login: mockLogin }}>
+      <Login />
+    </UserContext>,
+  )
+
+  const usernameInput = getByLabelText('Username')
+  const passwordInput = getByLabelText('Password')
+  const loginButton = getByRole('button', { name: 'Login' })
+
+  await user.type(usernameInput, mockUsername)
+  await user.type(passwordInput, mockPassword)
+  await user.click(loginButton)
+
+  return { mockLogin, mockUsername, mockPassword }
+}

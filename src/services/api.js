@@ -1,4 +1,5 @@
 import { API_URL } from '@/config'
+import { ApiError } from '@/lib/customErrors/ApiError'
 
 async function api(endpoint, { method = 'GET', body = null } = {}) {
   const token = localStorage.getItem('token')
@@ -20,8 +21,8 @@ async function api(endpoint, { method = 'GET', body = null } = {}) {
   const response = await fetch(`${API_URL}${endpoint}`, config)
 
   if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}))
-    throw new Error(errorData || { message: 'An unexpected error occurred' })
+    const errorData = await response.json()
+    throw new ApiError('API error', response.status, errorData)
   }
 
   return response.json()

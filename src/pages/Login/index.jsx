@@ -1,29 +1,49 @@
-import { login } from '@services/auth'
+import { useContext } from 'react'
+import { useAsyncCallback } from 'react-async-hook'
+
+import { UserContext } from '@providers/contexts'
+
 import { redirect } from 'react-router'
 
 export function Login() {
-  function handleSubmit(event) {
+  const { login } = useContext(UserContext)
+
+  const { execute: handleSubmit, error } = useAsyncCallback((event) => {
     event.preventDefault()
 
     const { username, password } = Object.fromEntries(
       new FormData(event.target),
     )
 
-    login({ username, password })
-      .then(() => {
-        redirect('/')
-      })
-      .catch((error) => {
-        console.error('Login failed:', error)
-      })
-  }
+    return login({ username, password }).then(() => {
+      redirect('/')
+    })
+  })
 
   return (
     <form aria-label="Login Form" onSubmit={handleSubmit}>
+      {error && (
+        <p>
+          {error.data?.error ??
+            'An unexpected error occurred. Please, try again later.'}
+        </p>
+      )}
       <label htmlFor="username">Username</label>
-      <input type="text" name="username" id="username" />
+      <input
+        type="text"
+        name="username"
+        id="username"
+        placeholder="myusername123"
+        required
+      />
       <label htmlFor="password">Password</label>
-      <input type="password" name="password" id="password" />
+      <input
+        type="password"
+        name="password"
+        id="password"
+        placeholder="******"
+        required
+      />
       <button type="submit">Login</button>
     </form>
   )

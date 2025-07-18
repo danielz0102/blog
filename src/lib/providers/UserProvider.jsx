@@ -2,7 +2,11 @@ import { useUser } from '@hooks/useUser'
 import { UserContext } from './contexts'
 
 export function UserProvider({ children }) {
-  const { user, logout } = useUser()
+  const { user, login, signUp, logout } = useUser()
 
-  return <UserContext value={{ user, logout }}>{children}</UserContext>
+  return (
+    <UserContext value={{ user, login, signUp, logout }}>
+      {children}
+    </UserContext>
+  )
 }
