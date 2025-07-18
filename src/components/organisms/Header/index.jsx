@@ -1,5 +1,6 @@
 import { useContext } from 'react'
 import { UserContext } from '@providers/contexts'
+import { Link } from 'react-router'
 
 export function Header() {
   const { user, logout } = useContext(UserContext)
@@ -8,23 +9,21 @@ export function Header() {
   return (
     <header>
       <h1>
-        <a href="/">My Blog</a>
+        <Link to="/">My Blog</Link>
       </h1>
       <nav>
-        <ul>
-          {isLoggedIn ? (
-            <button onClick={logout}>Log out</button>
-          ) : (
-            <>
-              <li>
-                <a href="/login">Log in</a>
-              </li>
-              <li>
-                <a href="/sign-up">Sign Up</a>
-              </li>
-            </>
-          )}
-        </ul>
+        {isLoggedIn ? (
+          <button onClick={logout}>Log out</button>
+        ) : (
+          <ul>
+            <li>
+              <Link to="/login">Log in</Link>
+            </li>
+            <li>
+              <Link to="/sign-up">Sign Up</Link>
+            </li>
+          </ul>
+        )}
       </nav>
     </header>
   )

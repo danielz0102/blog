@@ -2,15 +2,19 @@ import { expect, test, vi } from 'vitest'
 import { render } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
+import { MemoryRouter } from 'react-router'
+
 import { Header } from '.'
 import { UserProvider } from '@providers/UserProvider'
 import { UserContext } from '@providers/contexts'
 
 test('renders a header', () => {
   const { getByRole } = render(
-    <UserProvider>
-      <Header />
-    </UserProvider>
+    <MemoryRouter>
+      <UserProvider>
+        <Header />
+      </UserProvider>
+    </MemoryRouter>
   )
 
   expect(getByRole('banner')).toBeInTheDocument()
@@ -18,9 +22,11 @@ test('renders a header', () => {
 
 test('has a link to the home page', () => {
   const { getAllByRole } = render(
-    <UserProvider>
-      <Header />
-    </UserProvider>
+    <MemoryRouter>
+      <UserProvider>
+        <Header />
+      </UserProvider>
+    </MemoryRouter>
   )
   const homeLink = getAllByRole('link').find(
     (link) => link.getAttribute('href') === '/'
@@ -31,9 +37,11 @@ test('has a link to the home page', () => {
 
 test('has the correct links when the user is not logged in', () => {
   const { getByRole, queryByRole } = render(
-    <UserContext value={{ user: null }}>
-      <Header />
-    </UserContext>
+    <MemoryRouter>
+      <UserContext value={{ user: null }}>
+        <Header />
+      </UserContext>
+    </MemoryRouter>
   )
 
   expect(getByRole('link', { name: /log in/i })).toHaveAttribute(
@@ -49,9 +57,11 @@ test('has the correct links when the user is not logged in', () => {
 
 test('has the correct links when the user is logged in', () => {
   const { getByRole, queryByRole } = render(
-    <UserContext value={{ user: { name: 'John Doe' } }}>
-      <Header />
-    </UserContext>
+    <MemoryRouter>
+      <UserContext value={{ user: { name: 'John Doe' } }}>
+        <Header />
+      </UserContext>
+    </MemoryRouter>
   )
 
   expect(getByRole('button', { name: /log out/i })).toBeInTheDocument()
@@ -63,9 +73,11 @@ test('closes session on logout button click', async () => {
   const user = userEvent.setup()
   const mockLogout = vi.fn()
   const { getByRole } = render(
-    <UserContext value={{ user: { name: 'John Doe' }, logout: mockLogout }}>
-      <Header />
-    </UserContext>
+    <MemoryRouter>
+      <UserContext value={{ user: { name: 'John Doe' }, logout: mockLogout }}>
+        <Header />
+      </UserContext>
+    </MemoryRouter>
   )
 
   await user.click(getByRole('button', { name: /log out/i }))
