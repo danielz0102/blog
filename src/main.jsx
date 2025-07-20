@@ -9,6 +9,7 @@ import { Login } from './pages/Login'
 import { NotFound } from './pages/NotFound'
 
 import { loginAction } from './pages/Login/action'
+import { logoutAction } from './lib/actions/logout'
 import { userLoader } from './lib/loaders/userLoader'
 
 const router = createBrowserRouter([
@@ -25,6 +26,10 @@ const router = createBrowserRouter([
         path: '/login',
         element: <Login />,
         action: loginAction
+      },
+      {
+        path: '/logout',
+        action: logoutAction
       },
       {
         path: '*',

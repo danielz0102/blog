@@ -1,10 +1,9 @@
-import { useContext } from 'react'
-import { UserContext } from '@providers/contexts'
-import { useLoaderData } from 'react-router'
+import { useLoaderData, useFetcher } from 'react-router'
 import { Link } from 'react-router'
 
 export function Header() {
-  const { logout } = useContext(UserContext)
+  const fetcher = useFetcher()
+  const loading = fetcher.state === 'submitting'
   const user = useLoaderData()
   const isLoggedIn = Boolean(user)
 
@@ -15,7 +14,11 @@ export function Header() {
       </h1>
       <nav>
         {isLoggedIn ? (
-          <button onClick={logout}>Log out</button>
+          <fetcher.Form method="post" action="/logout" aria-label="Log out">
+            <button type="submit" disabled={loading}>
+              {loading ? 'Logging out...' : 'Log out'}
+            </button>
+          </fetcher.Form>
         ) : (
           <ul>
             <li>
