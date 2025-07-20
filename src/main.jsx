@@ -8,18 +8,21 @@ import { Home } from './pages/Home'
 import { Login } from './pages/Login'
 import { NotFound } from './pages/NotFound'
 
+import { loginAction } from './pages/Login/action'
+
 const router = createBrowserRouter([
   {
     path: '/',
     element: <App />,
     children: [
       {
-        path: '/',
+        index: true,
         element: <Home />
       },
       {
         path: '/login',
-        element: <Login />
+        element: <Login />,
+        action: loginAction
       },
       {
         path: '*',

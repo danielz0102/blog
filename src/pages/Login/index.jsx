@@ -1,35 +1,17 @@
-import { useContext } from 'react'
-import { useAsyncCallback } from 'react-async-hook'
+import { useNavigation } from 'react-router'
+import { useActionData } from 'react-router'
 
-import { UserContext } from '@providers/contexts'
-
-import { redirect } from 'react-router'
-
+import { Form } from 'react-router'
 import { FormField } from '@molecules/FormField'
 
 export function Login() {
-  const { login } = useContext(UserContext)
-
-  const { execute: handleSubmit, error } = useAsyncCallback((event) => {
-    event.preventDefault()
-
-    const { username, password } = Object.fromEntries(
-      new FormData(event.target)
-    )
-
-    return login({ username, password }).then(() => {
-      redirect('/')
-    })
-  })
+  const navigation = useNavigation()
+  const data = useActionData()
+  const loading = navigation.state === 'submitting'
 
   return (
-    <form aria-label="Login Form" onSubmit={handleSubmit}>
-      {error && (
-        <p>
-          {error.data?.error ??
-            'An unexpected error occurred. Please, try again later.'}
-        </p>
-      )}
+    <Form method="post" aria-label="Login Form">
+      {data?.error && <p>{data.error}</p>}
       <FormField
         label="Username"
         inputAttributes={{
@@ -39,7 +21,6 @@ export function Login() {
           required: true
         }}
       />
-
       <FormField
         label="Password"
         inputAttributes={{
@@ -61,8 +42,9 @@ export function Login() {
           return event.target.validationMessage
         }}
       />
-
-      <button type="submit">Login</button>
-    </form>
+      <button type="submit" disabled={loading}>
+        {loading ? 'Logging in...' : 'Login'}
+      </button>
+    </Form>
   )
 }

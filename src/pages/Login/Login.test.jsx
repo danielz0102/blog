@@ -1,82 +1,60 @@
 import { test, expect, vi } from 'vitest'
-import { render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
+import { render } from '@testing-library/react'
+
+import { createRoutesStub, useNavigation, useActionData } from 'react-router'
 
 import { Login } from '.'
-import { UserContext } from '@providers/contexts'
-import { UserProvider } from '@providers/UserProvider'
-import { ApiError } from '@/lib/customErrors/ApiError'
 
-test('renders a form to login', () => {
-  const { getByLabelText, getByRole } = render(
-    <UserProvider>
-      <Login />
-    </UserProvider>
-  )
+vi.mock('react-router', async () => {
+  const actual = await vi.importActual('react-router')
 
-  expect(getByRole('form')).toBeInTheDocument()
-  expect(getByLabelText('Username')).toBeInTheDocument()
-  expect(getByLabelText('Password')).toBeInTheDocument()
+  return {
+    ...actual,
+    useNavigation: vi.fn(() => ({ state: 'idle' })),
+    useActionData: vi.fn(() => ({ error: 'Login failed' }))
+  }
+})
+
+/** @type {import('vitest').Mock} **/
+const useNavigationMock = useNavigation
+/** @type {import('vitest').Mock} **/
+const useActionDataMock = useActionData
+
+const StubRouter = () => {
+  const Component = createRoutesStub([
+    { path: '/', Component: () => <div data-testid="home">Home</div> },
+    { path: '/login', Component: Login, action: vi.fn() }
+  ])
+
+  return <Component initialEntries={['/login']} />
+}
+
+test('renders login form properly', () => {
+  const { getByLabelText, getByRole } = render(<StubRouter />)
+
+  const form = getByRole('form')
+  const usernameInput = getByLabelText('Username')
+  const passwordInput = getByLabelText('Password')
+
+  expect(form).toHaveAttribute('method', 'post')
+  expect(form).toHaveAttribute('action', '/login')
+  expect(usernameInput).toHaveAttribute('name', 'username')
+  expect(passwordInput).toHaveAttribute('name', 'password')
   expect(getByRole('button', { name: 'Login' })).toBeInTheDocument()
 })
 
-test('calls login function on form submission', async () => {
-  const { mockLogin, mockUsername, mockPassword } = await submit()
+test('shows loading state', () => {
+  useNavigationMock.mockReturnValueOnce({ state: 'submitting' })
+  const { getByRole } = render(<StubRouter />)
 
-  expect(mockLogin).toHaveBeenCalledWith({
-    username: mockUsername,
-    password: mockPassword
-  })
+  const loginButton = getByRole('button', { name: 'Logging in...' })
+
+  expect(loginButton).toBeDisabled()
 })
 
-test('redirects to home on successful login', async () => {
-  await submit()
-  expect(window.location.pathname).toBe('/')
+test('shows error messages', () => {
+  useActionDataMock.mockReturnValueOnce({ error: 'Login failed' })
+  const { getByText } = render(<StubRouter />)
+
+  expect(getByText('Login failed')).toBeInTheDocument()
 })
-
-test('displays error message on unexpected error', async () => {
-  await submit({
-    mockLogin: vi.fn(() => Promise.reject(new Error('Login failed')))
-  })
-
-  expect(
-    screen.getByText('An unexpected error occurred. Please, try again later.')
-  ).toBeInTheDocument()
-})
-
-test('displays errors that come from the API', async () => {
-  const apiError = new ApiError('Invalid credentials', 401, {
-    error: 'Username or password is incorrect'
-  })
-
-  await submit({
-    mockLogin: vi.fn(() => Promise.reject(apiError))
-  })
-
-  expect(
-    screen.getByText('Username or password is incorrect')
-  ).toBeInTheDocument()
-})
-
-async function submit({
-  mockUsername = 'testuser',
-  mockPassword = 'Password1!',
-  mockLogin = vi.fn(() => Promise.resolve())
-} = {}) {
-  const user = userEvent.setup()
-  const { getByLabelText, getByRole } = render(
-    <UserContext value={{ login: mockLogin }}>
-      <Login />
-    </UserContext>
-  )
-
-  const usernameInput = getByLabelText('Username')
-  const passwordInput = getByLabelText('Password')
-  const loginButton = getByRole('button', { name: 'Login' })
-
-  await user.type(usernameInput, mockUsername)
-  await user.type(passwordInput, mockPassword)
-  await user.click(loginButton)
-
-  return { mockLogin, mockUsername, mockPassword }
-}
