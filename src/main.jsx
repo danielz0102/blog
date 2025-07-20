@@ -9,11 +9,13 @@ import { Login } from './pages/Login'
 import { NotFound } from './pages/NotFound'
 
 import { loginAction } from './pages/Login/action'
+import { userLoader } from './lib/loaders/userLoader'
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <App />,
+    loader: userLoader,
     children: [
       {
         index: true,

@@ -1,9 +1,11 @@
 import { useContext } from 'react'
 import { UserContext } from '@providers/contexts'
+import { useLoaderData } from 'react-router'
 import { Link } from 'react-router'
 
 export function Header() {
-  const { user, logout } = useContext(UserContext)
+  const { logout } = useContext(UserContext)
+  const user = useLoaderData()
   const isLoggedIn = Boolean(user)
 
   return (

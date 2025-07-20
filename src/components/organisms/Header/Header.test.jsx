@@ -2,13 +2,25 @@ import { expect, test, vi } from 'vitest'
 import { render } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import { MemoryRouter } from 'react-router'
+import { MemoryRouter, useLoaderData } from 'react-router'
 
 import { Header } from '.'
 import { UserProvider } from '@providers/UserProvider'
 import { UserContext } from '@providers/contexts'
 
-test('renders a header', () => {
+vi.mock('react-router', async (importOriginal) => {
+  const actual = await importOriginal()
+
+  return {
+    ...actual,
+    useLoaderData: vi.fn(() => ({ name: 'John Doe' }))
+  }
+})
+
+/** @type {import('vitest').Mock} **/
+const useLoaderDataMock = useLoaderData
+
+test('renders a header', async () => {
   const { getByRole } = render(
     <MemoryRouter>
       <UserProvider>
@@ -36,11 +48,12 @@ test('has a link to the home page', () => {
 })
 
 test('has the correct links when the user is not logged in', () => {
+  useLoaderDataMock.mockReturnValueOnce(null)
   const { getByRole, queryByRole } = render(
     <MemoryRouter>
-      <UserContext value={{ user: null }}>
+      <UserProvider>
         <Header />
-      </UserContext>
+      </UserProvider>
     </MemoryRouter>
   )
 
@@ -58,9 +71,9 @@ test('has the correct links when the user is not logged in', () => {
 test('has the correct links when the user is logged in', () => {
   const { getByRole, queryByRole } = render(
     <MemoryRouter>
-      <UserContext value={{ user: { name: 'John Doe' } }}>
+      <UserProvider>
         <Header />
-      </UserContext>
+      </UserProvider>
     </MemoryRouter>
   )
 
@@ -74,7 +87,7 @@ test('closes session on logout button click', async () => {
   const mockLogout = vi.fn()
   const { getByRole } = render(
     <MemoryRouter>
-      <UserContext value={{ user: { name: 'John Doe' }, logout: mockLogout }}>
+      <UserContext value={{ logout: mockLogout }}>
         <Header />
       </UserContext>
     </MemoryRouter>

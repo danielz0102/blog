@@ -5,8 +5,8 @@ import { createRoutesStub, useNavigation, useActionData } from 'react-router'
 
 import { Login } from '.'
 
-vi.mock('react-router', async () => {
-  const actual = await vi.importActual('react-router')
+vi.mock('react-router', async (importOriginal) => {
+  const actual = await importOriginal()
 
   return {
     ...actual,
@@ -23,7 +23,7 @@ const useActionDataMock = useActionData
 const StubRouter = () => {
   const Component = createRoutesStub([
     { path: '/', Component: () => <div data-testid="home">Home</div> },
-    { path: '/login', Component: Login, action: vi.fn() }
+    { path: '/login', Component: Login }
   ])
 
   return <Component initialEntries={['/login']} />
