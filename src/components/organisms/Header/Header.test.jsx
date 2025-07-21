@@ -1,33 +1,36 @@
 import { expect, test, vi } from 'vitest'
 import { render } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 
-import { MemoryRouter } from 'react-router'
+import { useLoaderData, createRoutesStub } from 'react-router'
 
 import { Header } from '.'
-import { UserProvider } from '@providers/UserProvider'
-import { UserContext } from '@providers/contexts'
 
-test('renders a header', () => {
-  const { getByRole } = render(
-    <MemoryRouter>
-      <UserProvider>
-        <Header />
-      </UserProvider>
-    </MemoryRouter>
-  )
+vi.mock('react-router', async (importOriginal) => {
+  const actual = await importOriginal()
+
+  return {
+    ...actual,
+    useLoaderData: vi.fn(() => ({ name: 'John Doe' }))
+  }
+})
+
+/** @type {import('vitest').Mock} **/
+const useLoaderDataMock = useLoaderData
+
+const StubRouter = () => {
+  const Component = createRoutesStub([{ path: '/', Component: Header }])
+
+  return <Component initialEntries={['/']} />
+}
+
+test('renders a header', async () => {
+  const { getByRole } = render(<StubRouter />)
 
   expect(getByRole('banner')).toBeInTheDocument()
 })
 
 test('has a link to the home page', () => {
-  const { getAllByRole } = render(
-    <MemoryRouter>
-      <UserProvider>
-        <Header />
-      </UserProvider>
-    </MemoryRouter>
-  )
+  const { getAllByRole } = render(<StubRouter />)
   const homeLink = getAllByRole('link').find(
     (link) => link.getAttribute('href') === '/'
   )
@@ -36,13 +39,8 @@ test('has a link to the home page', () => {
 })
 
 test('has the correct links when the user is not logged in', () => {
-  const { getByRole, queryByRole } = render(
-    <MemoryRouter>
-      <UserContext value={{ user: null }}>
-        <Header />
-      </UserContext>
-    </MemoryRouter>
-  )
+  useLoaderDataMock.mockReturnValueOnce(null)
+  const { getByRole, queryByRole } = render(<StubRouter />)
 
   expect(getByRole('link', { name: /log in/i })).toHaveAttribute(
     'href',
@@ -56,31 +54,20 @@ test('has the correct links when the user is not logged in', () => {
 })
 
 test('has the correct links when the user is logged in', () => {
-  const { getByRole, queryByRole } = render(
-    <MemoryRouter>
-      <UserContext value={{ user: { name: 'John Doe' } }}>
-        <Header />
-      </UserContext>
-    </MemoryRouter>
-  )
+  const { getByRole, queryByRole } = render(<StubRouter />)
 
   expect(getByRole('button', { name: /log out/i })).toBeInTheDocument()
   expect(queryByRole('link', { name: /log in/i })).not.toBeInTheDocument()
   expect(queryByRole('link', { name: /sign up/i })).not.toBeInTheDocument()
 })
 
-test('closes session on logout button click', async () => {
-  const user = userEvent.setup()
-  const mockLogout = vi.fn()
-  const { getByRole } = render(
-    <MemoryRouter>
-      <UserContext value={{ user: { name: 'John Doe' }, logout: mockLogout }}>
-        <Header />
-      </UserContext>
-    </MemoryRouter>
-  )
+test('has a form to log out', async () => {
+  const { getByRole } = render(<StubRouter />)
 
-  await user.click(getByRole('button', { name: /log out/i }))
+  const form = getByRole('form')
 
-  expect(mockLogout).toHaveBeenCalled()
+  expect(form).toBeInTheDocument()
+  expect(form).toHaveAttribute('method', 'post')
+  expect(form).toHaveAttribute('action', '/logout')
+  expect(getByRole('button', { name: /log out/i })).toBeInTheDocument()
 })

@@ -8,18 +8,30 @@ import { Home } from './pages/Home'
 import { Login } from './pages/Login'
 import { NotFound } from './pages/NotFound'
 
+import { loginAction } from './pages/Login/action'
+import { postsLoader } from './pages/Home/loader'
+import { logoutAction } from './lib/actions/logout'
+import { userLoader } from './lib/loaders/userLoader'
+
 const router = createBrowserRouter([
   {
     path: '/',
     element: <App />,
+    loader: userLoader,
     children: [
       {
-        path: '/',
-        element: <Home />
+        index: true,
+        element: <Home />,
+        loader: postsLoader
       },
       {
         path: '/login',
-        element: <Login />
+        element: <Login />,
+        action: loginAction
+      },
+      {
+        path: '/logout',
+        action: logoutAction
       },
       {
         path: '*',

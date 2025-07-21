@@ -1,48 +1,32 @@
 import { expect, test, vi } from 'vitest'
 import { render } from '@testing-library/react'
 
+import { createRoutesStub, useLoaderData } from 'react-router'
 import { Home } from '.'
-import { useAsync } from 'react-async-hook'
 
-vi.mock('react-async-hook', () => ({
-  useAsync: vi.fn()
-}))
+vi.mock('react-router', async (importOriginal) => {
+  const actual = await importOriginal()
 
-test('shows loading state while fetching posts', () => {
-  useAsync.mockReturnValue({
-    loading: true,
-    error: null,
-    result: null
-  })
-
-  const { getByText } = render(<Home />)
-
-  expect(getByText(/loading/i)).toBeInTheDocument()
+  return {
+    ...actual,
+    useLoaderData: vi.fn(() => postsMock)
+  }
 })
 
-test('shows error message when fetching posts fails', () => {
-  useAsync.mockReturnValue({
-    loading: false,
-    error: new Error(),
-    result: null
-  })
+const useLoaderDataMock = vi.mocked(useLoaderData)
 
-  const { getByText } = render(<Home />)
+const postsMock = [
+  { id: 1, title: 'Post 1', content: 'Content of post 1' },
+  { id: 2, title: 'Post 2', content: 'Content of post 2' }
+]
 
-  expect(getByText(/something went wrong/i)).toBeInTheDocument()
-})
+const StubRouter = () => {
+  const Component = createRoutesStub([{ path: '/', Component: Home }])
+  return <Component />
+}
 
 test('renders posts when fetched successfully', () => {
-  useAsync.mockReturnValue({
-    loading: false,
-    error: null,
-    result: [
-      { id: 1, title: 'Post 1', content: 'Content of post 1' },
-      { id: 2, title: 'Post 2', content: 'Content of post 2' }
-    ]
-  })
-
-  const { getByRole } = render(<Home />)
+  const { getByRole } = render(<StubRouter />)
 
   expect(getByRole('link', { name: /post 1/i })).toHaveAttribute(
     'href',
@@ -52,4 +36,20 @@ test('renders posts when fetched successfully', () => {
     'href',
     '/posts/2'
   )
+})
+
+test('shows loading state while fetching posts', () => {
+  useLoaderDataMock.mockReturnValueOnce(null)
+
+  const { getByText } = render(<StubRouter />)
+
+  expect(getByText(/loading/i)).toBeInTheDocument()
+})
+
+test('shows error message when fetching posts fails', () => {
+  useLoaderDataMock.mockReturnValueOnce({ error: 'Failed to fetch posts' })
+
+  const { getByText } = render(<StubRouter />)
+
+  expect(getByText(/something went wrong/i)).toBeInTheDocument()
 })
