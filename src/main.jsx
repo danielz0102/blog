@@ -1,48 +1,12 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import { RouterProvider, createBrowserRouter } from 'react-router'
+import { RouterProvider } from 'react-router'
 
 import '@/styles/index.css'
-import App from '@templates/App'
-import { Home } from './pages/Home'
-import { Login } from './pages/Login'
-import { NotFound } from './pages/NotFound'
-
-import { loginAction } from './pages/Login/action'
-import { postsLoader } from './pages/Home/loader'
-import { logoutAction } from './lib/actions/logout'
-import { userLoader } from './lib/loaders/userLoader'
-
-const router = createBrowserRouter([
-  {
-    path: '/',
-    element: <App />,
-    loader: userLoader,
-    children: [
-      {
-        index: true,
-        element: <Home />,
-        loader: postsLoader
-      },
-      {
-        path: '/login',
-        element: <Login />,
-        action: loginAction
-      },
-      {
-        path: '/logout',
-        action: logoutAction
-      },
-      {
-        path: '*',
-        element: <NotFound />
-      }
-    ]
-  }
-])
+import { appRouter } from './pages/router'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <RouterProvider router={appRouter} />
   </StrictMode>
 )
