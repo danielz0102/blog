@@ -1,15 +1,14 @@
-import { getPosts } from '@services/posts'
-import { useAsync } from 'react-async-hook'
+import { useLoaderData } from 'react-router'
 
 export function Home() {
-  const { result: posts, loading, error } = useAsync(getPosts)
+  const posts = useLoaderData()
 
   return (
     <main>
       <h1>Welcome to My Blog</h1>
-      {loading && <p>Loading...</p>}
-      {error && <p>Something went wrong</p>}
-      {posts &&
+      {!posts && <p>Loading...</p>}
+      {posts?.error && <p>Something went wrong</p>}
+      {Array.isArray(posts) &&
         posts.map((post) => (
           <article key={post.id}>
             <h2>

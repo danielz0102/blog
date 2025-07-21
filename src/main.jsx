@@ -9,6 +9,7 @@ import { Login } from './pages/Login'
 import { NotFound } from './pages/NotFound'
 
 import { loginAction } from './pages/Login/action'
+import { postsLoader } from './pages/Home/loader'
 import { logoutAction } from './lib/actions/logout'
 import { userLoader } from './lib/loaders/userLoader'
 
@@ -20,7 +21,8 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <Home />
+        element: <Home />,
+        loader: postsLoader
       },
       {
         path: '/login',
