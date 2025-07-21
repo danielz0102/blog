@@ -1,4 +1,4 @@
-import { useLoaderData } from 'react-router'
+import { useLoaderData, Link } from 'react-router'
 
 export function Home() {
   const posts = useLoaderData()
@@ -12,7 +12,7 @@ export function Home() {
         posts.map((post) => (
           <article key={post.id}>
             <h2>
-              <a href={`/posts/${post.id}`}>{post.title}</a>
+              <Link to={`/posts/${post.id}`}>{post.title}</Link>
             </h2>
             <p>
               <small>{post.date}</small>
