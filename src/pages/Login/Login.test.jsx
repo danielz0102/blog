@@ -15,10 +15,8 @@ vi.mock('react-router', async (importOriginal) => {
   }
 })
 
-/** @type {import('vitest').Mock} **/
-const useNavigationMock = useNavigation
-/** @type {import('vitest').Mock} **/
-const useActionDataMock = useActionData
+const useNavigationMock = vi.mocked(useNavigation)
+const useActionDataMock = vi.mocked(useActionData)
 
 const StubRouter = () => {
   const Component = createRoutesStub([
