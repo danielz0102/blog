@@ -26,12 +26,14 @@ vi.stubGlobal(
   )
 )
 
+const fetchMock = vi.spyOn(globalThis, 'fetch')
+
 test('calls fetch correctly', async () => {
   const { username, password } = mockUser
 
   await loginAction({ request: getMockRequest() })
 
-  expect(fetch).toHaveBeenCalledWith(
+  expect(fetchMock).toHaveBeenCalledWith(
     expect.stringMatching(`${API_URL}/users/login`),
     expect.objectContaining({
       method: 'POST',
@@ -59,7 +61,7 @@ test('responds with a redirection to home', async () => {
 })
 
 test('returns an error if login fails', async () => {
-  fetch.mockImplementationOnce(() =>
+  fetchMock.mockImplementationOnce(() =>
     Promise.resolve({
       ok: false,
       json: () => Promise.resolve({ error: 'Invalid credentials' })
