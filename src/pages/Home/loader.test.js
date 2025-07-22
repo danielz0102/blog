@@ -1,4 +1,4 @@
-import { test, expect, vi } from 'vitest'
+import { test, expect, vi, beforeEach } from 'vitest'
 import { postsLoader } from './loader'
 
 import { API_URL } from '@/config'
@@ -40,6 +40,11 @@ vi.stubGlobal(
 
 const fetchMock = vi.spyOn(globalThis, 'fetch')
 
+beforeEach(() => {
+  vi.resetModules()
+  vi.clearAllMocks()
+})
+
 test('calls fetch with the correct URL', () => {
   postsLoader()
   expect(fetchMock).toHaveBeenCalledWith(`${API_URL}/posts`)
@@ -51,14 +56,27 @@ test('returns formatted posts', async () => {
 })
 
 test('throws an error message if fetch fails', async () => {
+  const { postsLoader } = await import('./loader')
+  const errorMessage = 'Failed to fetch posts'
   fetchMock.mockImplementationOnce(() =>
     Promise.resolve({
       ok: false,
-      json: () => Promise.resolve({ error: 'Failed to fetch posts' })
+      json: () => Promise.resolve({ error: errorMessage })
     })
   )
 
   const { posts } = postsLoader()
 
-  await expect(posts).rejects.toThrow('Failed to fetch posts')
+  await expect(posts).rejects.toThrow(errorMessage)
+})
+
+test('uses cache on subsequent calls', async () => {
+  const { postsLoader } = await import('./loader')
+
+  const { posts: first } = postsLoader()
+  await first
+  const { posts: second } = postsLoader()
+  await second
+
+  expect(fetchMock).toHaveBeenCalledOnce()
 })
