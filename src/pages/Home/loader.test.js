@@ -38,25 +38,27 @@ vi.stubGlobal(
   )
 )
 
-test('calls fetch with the correct URL', async () => {
-  await postsLoader()
-  expect(fetch).toHaveBeenCalledWith(`${API_URL}/posts`)
+const fetchMock = vi.spyOn(globalThis, 'fetch')
+
+test('calls fetch with the correct URL', () => {
+  postsLoader()
+  expect(fetchMock).toHaveBeenCalledWith(`${API_URL}/posts`)
 })
 
 test('returns formatted posts', async () => {
-  const response = await postsLoader()
-  expect(response).toEqual(formattedPostsMock)
+  const { posts } = postsLoader()
+  expect(await posts).toEqual(formattedPostsMock)
 })
 
-test('returns an error message if fetch fails', async () => {
-  fetch.mockImplementationOnce(() =>
+test('throws an error message if fetch fails', async () => {
+  fetchMock.mockImplementationOnce(() =>
     Promise.resolve({
       ok: false,
       json: () => Promise.resolve({ error: 'Failed to fetch posts' })
     })
   )
 
-  const response = await postsLoader()
+  const { posts } = postsLoader()
 
-  expect(response).toEqual({ error: 'Failed to fetch posts' })
+  await expect(posts).rejects.toThrow('Failed to fetch posts')
 })

@@ -12,18 +12,17 @@ import { userLoader } from '../lib/loaders/userLoader'
 
 export const appRouter = createBrowserRouter([
   {
-    path: '/',
-    element: <App />,
+    Component: App,
     loader: userLoader,
     children: [
       {
         index: true,
-        element: <Home />,
+        Component: Home,
         loader: postsLoader
       },
       {
         path: '/login',
-        element: <Login />,
+        Component: Login,
         action: loginAction
       },
       {
@@ -32,7 +31,7 @@ export const appRouter = createBrowserRouter([
       },
       {
         path: '*',
-        element: <NotFound />
+        Component: NotFound
       }
     ]
   }
