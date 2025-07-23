@@ -3,13 +3,26 @@ import { useNavigation, useActionData } from 'react-router'
 import { Form } from 'react-router'
 import { FormField } from '@molecules/FormField'
 
-export function Login() {
+export function AuthForm({ signUp = false }) {
   const navigation = useNavigation()
   const loading = navigation.state === 'submitting'
   const data = useActionData()
 
+  function handleConfirmPasswordInput(event) {
+    const $confirmPassword = event.target
+    const $password = event.target.form.password
+
+    $confirmPassword.setCustomValidity(
+      $password.value !== $confirmPassword.value ? 'Passwords do not match' : ''
+    )
+  }
+
   return (
-    <Form method="post" aria-label="Login Form">
+    <Form
+      method="post"
+      action={`/${signUp ? 'sign-up' : 'login'}`}
+      aria-label={`${signUp ? 'Sign Up' : 'Login'} Form`}
+    >
       {data?.error && <p>{data.error}</p>}
       <FormField
         label="Username"
@@ -41,8 +54,20 @@ export function Login() {
           return event.target.validationMessage
         }}
       />
+      {signUp && (
+        <FormField
+          label="Confirm password"
+          inputAttributes={{
+            type: 'password',
+            name: 'confirmPassword',
+            placeholder: '******',
+            required: true,
+            onInput: handleConfirmPasswordInput
+          }}
+        />
+      )}
       <button type="submit" disabled={loading}>
-        {loading ? 'Logging in...' : 'Login'}
+        {loading ? 'Submitting...' : 'Submit'}
       </button>
     </Form>
   )
