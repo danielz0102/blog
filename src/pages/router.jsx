@@ -5,9 +5,10 @@ import { Home } from './Home'
 import { Login } from './Login'
 import { NotFound } from './NotFound'
 
-import { loginAction } from './Login/action'
-import { postsLoader } from './Home/loader'
+import { authAction } from '@/lib/actions/authAction'
 import { logoutAction } from '../lib/actions/logout'
+
+import { postsLoader } from './Home/loader'
 import { userLoader } from '../lib/loaders/userLoader'
 
 export const appRouter = createBrowserRouter([
@@ -23,7 +24,7 @@ export const appRouter = createBrowserRouter([
       {
         path: '/login',
         Component: Login,
-        action: loginAction
+        action: authAction
       },
       {
         path: '/logout',

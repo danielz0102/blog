@@ -1,13 +1,12 @@
-import { useNavigation } from 'react-router'
-import { useActionData } from 'react-router'
+import { useNavigation, useActionData } from 'react-router'
 
 import { Form } from 'react-router'
 import { FormField } from '@molecules/FormField'
 
 export function Login() {
   const navigation = useNavigation()
-  const data = useActionData()
   const loading = navigation.state === 'submitting'
+  const data = useActionData()
 
   return (
     <Form method="post" aria-label="Login Form">
