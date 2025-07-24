@@ -11,6 +11,16 @@ async function getAll(limit = 30) {
     take: limit,
     orderBy: { createdAt: 'desc' },
     where: { isDraft: false },
+    include: {
+      comments: {
+        include: {
+          user: {
+            select: { id: true, username: true },
+          },
+        },
+        orderBy: { createdAt: 'desc' },
+      },
+    },
   })
 }
 
@@ -19,6 +29,16 @@ async function getDrafts(limit = 30) {
     take: limit,
     orderBy: { createdAt: 'desc' },
     where: { isDraft: true },
+    include: {
+      comments: {
+        include: {
+          user: {
+            select: { id: true, username: true },
+          },
+        },
+        orderBy: { createdAt: 'desc' },
+      },
+    },
   })
 }
 
