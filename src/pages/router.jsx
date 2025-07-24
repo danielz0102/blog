@@ -1,18 +1,21 @@
 import { createBrowserRouter } from 'react-router'
 
 import App from '@templates/App'
-import { Home } from './Home'
-import { Post } from './Post'
-import { NotFound } from './NotFound'
-import { UnexpectedError } from './UnexpectedError'
-import { AuthForm } from '@organisms/AuthForm'
-
-import { authAction } from '@/lib/actions/authAction'
-import { logoutAction } from '@/lib/actions/logout'
-
-import { postsLoader } from './Home/loader'
-import { postLoader } from './Post/loader'
 import { userLoader } from '@/lib/loaders/userLoader'
+import { UnexpectedError } from './UnexpectedError'
+
+import { Home } from './Home'
+import { postsLoader } from './Home/loader'
+
+import { AuthForm } from '@organisms/AuthForm'
+import { authAction } from '@/lib/actions/authAction'
+
+import { Post } from './Post'
+import { postLoader } from './Post/loader'
+import { commentAction } from './Post/action'
+
+import { NotFound } from './NotFound'
+import { logoutAction } from '@/lib/actions/logout'
 
 export const appRouter = createBrowserRouter([
   {
@@ -38,7 +41,8 @@ export const appRouter = createBrowserRouter([
       {
         path: '/posts/:id',
         Component: Post,
-        loader: postLoader
+        loader: postLoader,
+        action: commentAction
       },
       {
         path: '/logout',

@@ -20,7 +20,11 @@ export function Post() {
         <h2>Comments</h2>
         <ul>
           {post.comments.length === 0 && <p>No comments yet.</p>}
-          {user ? <CommentForm /> : <Link to="/login">Log in to comment.</Link>}
+          {user ? (
+            <CommentForm postId={post.id} userId={user.id} />
+          ) : (
+            <Link to="/login">Log in to comment.</Link>
+          )}
           {post.comments.map((comment) => (
             <li key={comment.id}>
               <h3>{comment.username}</h3>
