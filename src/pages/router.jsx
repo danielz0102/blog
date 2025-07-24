@@ -2,8 +2,9 @@ import { createBrowserRouter } from 'react-router'
 
 import App from '@templates/App'
 import { Home } from './Home'
-import { NotFound } from './NotFound'
 import { AuthForm } from '@organisms/AuthForm'
+import { NotFound } from './NotFound'
+import { UnexpectedError } from './UnexpectedError'
 
 import { authAction } from '@/lib/actions/authAction'
 import { logoutAction } from '@/lib/actions/logout'
@@ -15,6 +16,7 @@ export const appRouter = createBrowserRouter([
   {
     Component: App,
     loader: userLoader,
+    ErrorBoundary: UnexpectedError,
     children: [
       {
         index: true,
