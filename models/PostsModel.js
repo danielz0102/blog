@@ -3,6 +3,16 @@ import { db } from '#config/database.js'
 async function get(id) {
   return await db.post.findUnique({
     where: { id },
+    include: {
+      comments: {
+        include: {
+          user: {
+            select: { id: true, username: true },
+          },
+        },
+        orderBy: { createdAt: 'desc' },
+      },
+    },
   })
 }
 
