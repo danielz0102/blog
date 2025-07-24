@@ -18,57 +18,60 @@ export function AuthForm({ signUp = false }) {
   }
 
   return (
-    <Form
-      method="post"
-      action={`/${signUp ? 'sign-up' : 'login'}`}
-      aria-label={`${signUp ? 'Sign Up' : 'Login'} Form`}
-    >
-      {data?.error && <p>{data.error}</p>}
-      <FormField
-        label="Username"
-        inputAttributes={{
-          type: 'text',
-          name: 'username',
-          placeholder: 'myusername123',
-          required: true
-        }}
-      />
-      <FormField
-        label="Password"
-        inputAttributes={{
-          type: 'password',
-          name: 'password',
-          placeholder: '******',
-          required: true,
-          pattern: '(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^A-Za-z\\d]).{8,}',
-          title:
-            'Must contain at least one uppercase letter, one lowercase letter, one number, one special character, and be at least 8 characters long.'
-        }}
-        getErrorMessage={(event) => {
-          const { validity } = event.target
-
-          if (validity.patternMismatch) {
-            return event.target.title
-          }
-
-          return event.target.validationMessage
-        }}
-      />
-      {signUp && (
+    <main>
+      <h1>{signUp ? 'Sign Up' : 'Login'}</h1>
+      <Form
+        method="post"
+        action={`/${signUp ? 'sign-up' : 'login'}`}
+        aria-label={`${signUp ? 'Sign Up' : 'Login'} Form`}
+      >
+        {data?.error && <p>{data.error}</p>}
         <FormField
-          label="Confirm password"
+          label="Username"
           inputAttributes={{
-            type: 'password',
-            name: 'confirmPassword',
-            placeholder: '******',
-            required: true,
-            onInput: handleConfirmPasswordInput
+            type: 'text',
+            name: 'username',
+            placeholder: 'myusername123',
+            required: true
           }}
         />
-      )}
-      <button type="submit" disabled={loading}>
-        {loading ? 'Submitting...' : 'Submit'}
-      </button>
-    </Form>
+        <FormField
+          label="Password"
+          inputAttributes={{
+            type: 'password',
+            name: 'password',
+            placeholder: '******',
+            required: true,
+            pattern: '(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^A-Za-z\\d]).{8,}',
+            title:
+              'Must contain at least one uppercase letter, one lowercase letter, one number, one special character, and be at least 8 characters long.'
+          }}
+          getErrorMessage={(event) => {
+            const { validity } = event.target
+
+            if (validity.patternMismatch) {
+              return event.target.title
+            }
+
+            return event.target.validationMessage
+          }}
+        />
+        {signUp && (
+          <FormField
+            label="Confirm password"
+            inputAttributes={{
+              type: 'password',
+              name: 'confirmPassword',
+              placeholder: '******',
+              required: true,
+              onInput: handleConfirmPasswordInput
+            }}
+          />
+        )}
+        <button type="submit" disabled={loading}>
+          {loading ? 'Submitting...' : 'Submit'}
+        </button>
+      </Form>
+    </main>
   )
 }
