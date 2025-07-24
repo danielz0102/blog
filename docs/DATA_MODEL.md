@@ -60,8 +60,8 @@ The User model represents registered users of the blog platform with authenticat
 #### Relationships
 
 - **One-to-Many with Comment**: A user can create multiple comments
-  - Relation field: `Comment[]`
-  - Access pattern: `user.Comment` returns all comments by the user
+  - Relation field: `comments[]`
+  - Access pattern: `user.comments` returns all comments by the user
 
 #### Business Rules
 
@@ -89,8 +89,8 @@ The Post model represents blog articles with support for draft and published sta
 #### Relationships
 
 - **One-to-Many with Comment**: A post can have multiple comments
-  - Relation field: `Comment[]`
-  - Access pattern: `post.Comment` returns all comments on the post
+  - Relation field: `comments[]`
+  - Access pattern: `post.comments` returns all comments on the post
 
 #### Business Rules
 
@@ -159,7 +159,7 @@ graph TD
 - **Foreign Key**: `Comment.userId` → `User.id`
 - **Cascade Behavior**: When a user is deleted, all their comments are deleted
 - **Access Patterns**:
-  - Get all comments by a user: `user.Comment`
+  - Get all comments by a user: `user.comments`
   - Get comment author: `comment.user`
 
 #### Post ↔ Comment (One-to-Many)
@@ -168,7 +168,7 @@ graph TD
 - **Foreign Key**: `Comment.postId` → `Post.id`
 - **Cascade Behavior**: When a post is deleted, all its comments are deleted
 - **Access Patterns**:
-  - Get all comments on a post: `post.Comment`
+  - Get all comments on a post: `post.comments`
   - Get the post a comment belongs to: `comment.post`
 
 ## Data Access Patterns
@@ -182,7 +182,7 @@ const posts = await db.post.findMany({
   where: { isDraft: false },
   include: {
     _count: {
-      select: { Comment: true },
+      select: { comments: true },
     },
   },
   orderBy: { createdAt: 'desc' },
@@ -195,7 +195,7 @@ const posts = await db.post.findMany({
 const postWithComments = await db.post.findUnique({
   where: { id: postId },
   include: {
-    Comment: {
+    comments: {
       include: {
         user: {
           select: { id: true, username: true },
@@ -213,7 +213,7 @@ const postWithComments = await db.post.findUnique({
 const userWithActivity = await db.user.findUnique({
   where: { id: userId },
   include: {
-    Comment: {
+    comments: {
       include: {
         post: {
           select: { id: true, title: true },
