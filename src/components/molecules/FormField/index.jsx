@@ -5,6 +5,7 @@ export function FormField({ label, inputAttributes, getErrorMessage }) {
   const id = useId()
 
   function handleInvalid(event) {
+    event.preventDefault()
     setError(
       getErrorMessage ? getErrorMessage(event) : event.target.validationMessage
     )

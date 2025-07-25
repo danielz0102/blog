@@ -1,35 +1,41 @@
-import { test, expect, vi, afterEach } from 'vitest'
+import { test, expect, vi } from 'vitest'
 
 import { data } from 'react-router'
 import { API_URL } from '@/config'
 import { commentAction } from './action'
 
-const mockComment = { postId: '123', content: 'This is a test comment' }
+const mockComment = {
+  content: 'This is a test comment',
+  postId: crypto.randomUUID()
+}
 const mockToken = 'mock-token'
+const getItemMock = vi.fn(() => mockToken)
 const fetchMock = vi.fn(() =>
   Promise.resolve({
     ok: true,
     json: () => Promise.resolve(mockComment)
   })
 )
-const getItemMock = vi.fn(() => mockToken)
-
-const getRequest = (endpoint) =>
-  new Request(`http://localhost/${endpoint}`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body: new URLSearchParams(mockComment).toString()
-  })
 
 vi.stubGlobal('fetch', fetchMock)
 vi.stubGlobal('localStorage', { getItem: getItemMock })
 
-afterEach(() => {
-  fetchMock.mockClear()
-})
+function action() {
+  const request = new Request(
+    `http://localhost/posts/${mockComment.postId}/comment`,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({ content: mockComment.content }).toString()
+    }
+  )
+  const params = { id: mockComment.postId }
+
+  return commentAction({ request, params })
+}
 
 test('calls fetch correctly', async () => {
-  await commentAction({ request: getRequest('post') })
+  await action()
 
   expect(fetchMock).toHaveBeenCalledWith(`${API_URL}/comments`, {
     method: 'POST',
@@ -50,7 +56,7 @@ test('returns an error if response is not ok', async () => {
     })
   )
 
-  const result = await commentAction({ request: getRequest('post') })
+  const result = await action()
 
   expect(result).toEqual(
     data({ error: 'Failed to post comment' }, { status: 500 })
@@ -60,13 +66,13 @@ test('returns an error if response is not ok', async () => {
 test('returns an error if there is no token', async () => {
   getItemMock.mockReturnValueOnce(null)
 
-  const result = await commentAction({ request: getRequest('post') })
+  const result = await action()
 
   expect(result).toEqual(data({ error: 'Unauthorized' }, { status: 401 }))
 })
 
 test('returns fetch result', async () => {
-  const result = await commentAction({ request: getRequest('post') })
+  const result = await action()
 
   expect(result).toEqual(mockComment)
 })

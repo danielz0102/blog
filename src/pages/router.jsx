@@ -12,7 +12,7 @@ import { authAction } from '@/lib/actions/authAction'
 
 import { Post } from './Post'
 import { postLoader } from './Post/loader'
-import { commentAction } from './Post/action'
+import { commentAction } from './Post/comment/action'
 
 import { NotFound } from './NotFound'
 import { logoutAction } from '@/lib/actions/logout'
@@ -42,7 +42,12 @@ export const appRouter = createBrowserRouter([
         path: '/posts/:id',
         Component: Post,
         loader: postLoader,
-        action: commentAction
+        children: [
+          {
+            path: 'comment',
+            action: commentAction
+          }
+        ]
       },
       {
         path: '/logout',

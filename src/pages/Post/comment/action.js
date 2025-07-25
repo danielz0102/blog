@@ -1,7 +1,7 @@
 import { data } from 'react-router'
 import { API_URL } from '@/config'
 
-export async function commentAction({ request }) {
+export async function commentAction({ request, params }) {
   const token = localStorage.getItem('token')
 
   if (!token) {
@@ -9,7 +9,7 @@ export async function commentAction({ request }) {
   }
 
   const formData = await request.formData()
-  const { postId, content } = Object.fromEntries(formData)
+  const { content } = Object.fromEntries(formData)
 
   const response = await fetch(`${API_URL}/comments`, {
     method: 'POST',
@@ -17,7 +17,7 @@ export async function commentAction({ request }) {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`
     },
-    body: JSON.stringify({ postId, content })
+    body: JSON.stringify({ content, postId: params.id })
   })
   const result = await response.json()
 
