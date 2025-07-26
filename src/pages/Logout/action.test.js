@@ -1,6 +1,6 @@
 import { test, expect } from 'vitest'
 
-import { logoutAction } from './logout'
+import { logoutAction } from './action'
 
 test('removes the token from localStorage', () => {
   localStorage.setItem('token', 'test-token')

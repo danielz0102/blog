@@ -15,7 +15,7 @@ import { postLoader } from './Post/loader'
 import { commentAction } from './Post/comment/action'
 
 import { NotFound } from './NotFound'
-import { logoutAction } from '@/lib/actions/logout'
+import { logoutAction } from './Logout/action'
 
 export const appRouter = createBrowserRouter([
   {
