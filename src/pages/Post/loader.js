@@ -17,7 +17,7 @@ export async function postLoader({ params }) {
     date: formatDate(post.createdAt),
     comments: post.comments.map((comment) => ({
       id: comment.id,
-      username: comment.username,
+      username: comment.user.username,
       content: comment.content,
       date: formatDate(comment.createdAt)
     }))

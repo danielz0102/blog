@@ -12,13 +12,13 @@ const mockPost = {
   comments: [
     {
       id: 1,
-      username: 'User1',
+      user: { username: 'User1' },
       content: 'Great post!',
       createdAt: '2023-10-02T12:00:00Z'
     },
     {
       id: 2,
-      username: 'User2',
+      user: { username: 'User2' },
       content: 'Thanks for sharing!',
       createdAt: '2023-10-03T12:00:00Z'
     }
@@ -49,7 +49,7 @@ test('returns post properly formatted', async () => {
     date: formatDate(mockPost.createdAt),
     comments: mockPost.comments.map((comment) => ({
       id: comment.id,
-      username: comment.username,
+      username: comment.user.username,
       content: comment.content,
       date: formatDate(comment.createdAt)
     }))

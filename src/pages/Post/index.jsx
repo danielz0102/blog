@@ -28,10 +28,10 @@ export function Post() {
           {post.comments.map((comment) => (
             <li key={comment.id}>
               <h3>{comment.username}</h3>
+              <p>{comment.content}</p>
               <p>
                 <small>{comment.date}</small>
               </p>
-              <p>{comment.content}</p>
             </li>
           ))}
         </ul>
