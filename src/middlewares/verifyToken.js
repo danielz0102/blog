@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken'
-import { JWT_SECRET } from '#config/index.js'
+import { JWT_SECRET } from '../config/index.js'
 
 export function verifyToken(req, res, next) {
   const bearerHeader = req.headers['authorization']
