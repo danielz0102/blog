@@ -60,5 +60,5 @@ export const PostsController = {
   getDrafts,
   create,
   update,
-  delete: deletePost,
+  delete: deletePost
 }

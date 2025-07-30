@@ -11,10 +11,10 @@ export const usersRouter = Router()
 usersRouter.post(
   '/login',
   validate({ bodySchema: userSchema }),
-  UsersController.login,
+  UsersController.login
 )
 usersRouter.post(
   '/sign-up',
   validate({ bodySchema: userSchema }),
-  UsersController.signUp,
+  UsersController.signUp
 )

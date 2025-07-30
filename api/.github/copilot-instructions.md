@@ -15,7 +15,7 @@ router.post(
   '/',
   onlyAdmin, // Authorization first (if needed)
   validate({ bodySchema: postSchema }), // Validation second
-  Controller.action, // Controller last
+  Controller.action // Controller last
 )
 ```
 

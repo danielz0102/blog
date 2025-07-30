@@ -3,7 +3,7 @@ import { compare, hash } from '#lib/passwordUtils.js'
 
 async function create({ username, password }) {
   const usersExists = await db.user.findFirst({
-    where: { username },
+    where: { username }
   })
 
   if (usersExists) return false
@@ -13,20 +13,20 @@ async function create({ username, password }) {
   const user = await db.user.create({
     data: {
       username,
-      password: hashedPassword,
-    },
+      password: hashedPassword
+    }
   })
 
   return {
     id: user.id,
     username: user.username,
-    admin: false,
+    admin: false
   }
 }
 
 async function login({ username, password }) {
   const user = await db.user.findFirst({
-    where: { username },
+    where: { username }
   })
 
   if (!user) return false
@@ -38,5 +38,5 @@ async function login({ username, password }) {
 
 export const UsersModel = {
   create,
-  login,
+  login
 }

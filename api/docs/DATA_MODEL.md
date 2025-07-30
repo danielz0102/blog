@@ -182,10 +182,10 @@ const posts = await db.post.findMany({
   where: { isDraft: false },
   include: {
     _count: {
-      select: { comments: true },
-    },
+      select: { comments: true }
+    }
   },
-  orderBy: { createdAt: 'desc' },
+  orderBy: { createdAt: 'desc' }
 })
 ```
 
@@ -198,12 +198,12 @@ const postWithComments = await db.post.findUnique({
     comments: {
       include: {
         user: {
-          select: { id: true, username: true },
-        },
+          select: { id: true, username: true }
+        }
       },
-      orderBy: { createdAt: 'asc' },
-    },
-  },
+      orderBy: { createdAt: 'asc' }
+    }
+  }
 })
 ```
 
@@ -216,11 +216,11 @@ const userWithActivity = await db.user.findUnique({
     comments: {
       include: {
         post: {
-          select: { id: true, title: true },
-        },
-      },
-    },
-  },
+          select: { id: true, title: true }
+        }
+      }
+    }
+  }
 })
 ```
 

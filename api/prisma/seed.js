@@ -5,12 +5,12 @@ const prisma = new PrismaClient()
 
 const data = Array.from({ length: 30 }).map(() => ({
   title: faker.lorem.sentence(),
-  content: faker.lorem.paragraphs(3),
+  content: faker.lorem.paragraphs(3)
 }))
 
 async function main() {
   await prisma.post.createMany({
-    data,
+    data
   })
 }
 

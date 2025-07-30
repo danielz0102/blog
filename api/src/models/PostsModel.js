@@ -7,12 +7,12 @@ async function get(id) {
       comments: {
         include: {
           user: {
-            select: { id: true, username: true },
-          },
+            select: { id: true, username: true }
+          }
         },
-        orderBy: { createdAt: 'desc' },
-      },
-    },
+        orderBy: { createdAt: 'desc' }
+      }
+    }
   })
 }
 
@@ -25,12 +25,12 @@ async function getAll(limit = 30) {
       comments: {
         include: {
           user: {
-            select: { id: true, username: true },
-          },
+            select: { id: true, username: true }
+          }
         },
-        orderBy: { createdAt: 'desc' },
-      },
-    },
+        orderBy: { createdAt: 'desc' }
+      }
+    }
   })
 }
 
@@ -43,12 +43,12 @@ async function getDrafts(limit = 30) {
       comments: {
         include: {
           user: {
-            select: { id: true, username: true },
-          },
+            select: { id: true, username: true }
+          }
         },
-        orderBy: { createdAt: 'desc' },
-      },
-    },
+        orderBy: { createdAt: 'desc' }
+      }
+    }
   })
 }
 
@@ -57,8 +57,8 @@ async function create({ title, content, isDraft = false }) {
     data: {
       title,
       content,
-      isDraft,
-    },
+      isDraft
+    }
   })
 }
 
@@ -72,8 +72,8 @@ async function update(id, { title, content, isDraft }) {
     data: {
       title,
       content,
-      isDraft,
-    },
+      isDraft
+    }
   })
 }
 
@@ -83,7 +83,7 @@ async function deletePost(id) {
   if (!post) return false
 
   return await db.post.delete({
-    where: { id },
+    where: { id }
   })
 }
 
@@ -93,5 +93,5 @@ export const PostsModel = {
   getDrafts,
   create,
   update,
-  delete: deletePost,
+  delete: deletePost
 }

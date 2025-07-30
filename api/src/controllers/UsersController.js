@@ -13,7 +13,7 @@ async function signUp(req, res) {
   const token = signJWT({
     id: user.id,
     username: user.username,
-    admin: user.admin,
+    admin: user.admin
   })
 
   res.status(201).json({ token })
@@ -30,7 +30,7 @@ async function login(req, res) {
   const token = signJWT({
     id: user.id,
     username: user.username,
-    admin: user.admin,
+    admin: user.admin
   })
 
   res.json({ token })
@@ -38,5 +38,5 @@ async function login(req, res) {
 
 export const UsersController = {
   signUp,
-  login,
+  login
 }

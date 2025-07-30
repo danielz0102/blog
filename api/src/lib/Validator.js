@@ -18,7 +18,7 @@ export class Validator {
     if (!result.success) {
       this.errors = {
         ...this.errors,
-        ...z.flattenError(result.error).fieldErrors,
+        ...z.flattenError(result.error).fieldErrors
       }
       return
     }
