@@ -16,24 +16,24 @@ postsRouter.get(
   '/drafts',
   onlyAdmin,
   validate({ querySchema }),
-  PostsController.getDrafts,
+  PostsController.getDrafts
 )
 postsRouter.get('/:id', validate({ paramsSchema }), PostsController.get)
 postsRouter.post(
   '/',
   onlyAdmin,
   validate({ bodySchema: postSchema }),
-  PostsController.create,
+  PostsController.create
 )
 postsRouter.put(
   '/:id',
   onlyAdmin,
   validate({ bodySchema: postSchema, paramsSchema }),
-  PostsController.update,
+  PostsController.update
 )
 postsRouter.delete(
   '/:id',
   onlyAdmin,
   validate({ paramsSchema }),
-  PostsController.delete,
+  PostsController.delete
 )

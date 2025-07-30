@@ -28,7 +28,7 @@ async function remove(req, res) {
   const { id } = req.params
   const result = await CommentsModel.delete({
     userId: req.user.id,
-    commentId: id,
+    commentId: id
   })
 
   if (!result.success) {
@@ -41,5 +41,5 @@ async function remove(req, res) {
 export const CommentsController = {
   create,
   update,
-  remove,
+  remove
 }

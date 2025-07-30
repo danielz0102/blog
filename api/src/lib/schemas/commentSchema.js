@@ -3,5 +3,5 @@ import { idSchema } from './commonSchemas.js'
 
 export const commentSchema = z.object({
   content: z.string(),
-  postId: idSchema,
+  postId: idSchema
 })

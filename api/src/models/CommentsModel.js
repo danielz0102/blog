@@ -3,7 +3,7 @@ import { Result } from '#lib/Result.js'
 
 async function create({ content, userId, postId }) {
   const user = await db.user.findUnique({
-    where: { id: userId },
+    where: { id: userId }
   })
 
   if (!user) {
@@ -11,7 +11,7 @@ async function create({ content, userId, postId }) {
   }
 
   const post = await db.post.findUnique({
-    where: { id: postId },
+    where: { id: postId }
   })
 
   if (!post) {
@@ -22,8 +22,8 @@ async function create({ content, userId, postId }) {
     data: {
       content,
       post: { connect: { id: postId } },
-      user: { connect: { id: userId } },
-    },
+      user: { connect: { id: userId } }
+    }
   })
 
   return Result.success(comment)
@@ -31,7 +31,7 @@ async function create({ content, userId, postId }) {
 
 async function update(userId, { id, content }) {
   const comment = await db.comment.findUnique({
-    where: { id },
+    where: { id }
   })
 
   if (!comment) return Result.failure('Comment not found')
@@ -42,7 +42,7 @@ async function update(userId, { id, content }) {
 
   const result = await db.comment.update({
     where: { id },
-    data: { content },
+    data: { content }
   })
 
   return Result.success(result)
@@ -50,7 +50,7 @@ async function update(userId, { id, content }) {
 
 async function deleteComment({ userId, commentId }) {
   const comment = await db.comment.findUnique({
-    where: { id: commentId },
+    where: { id: commentId }
   })
 
   if (!comment) return Result.failure('Comment not found')
@@ -60,7 +60,7 @@ async function deleteComment({ userId, commentId }) {
   }
 
   await db.comment.delete({
-    where: { id: commentId },
+    where: { id: commentId }
   })
 
   return Result.success(null)
@@ -69,5 +69,5 @@ async function deleteComment({ userId, commentId }) {
 export const CommentsModel = {
   create,
   update,
-  delete: deleteComment,
+  delete: deleteComment
 }

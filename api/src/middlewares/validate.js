@@ -29,7 +29,7 @@ export const validate =
         result.data[type] = validation.data
         return result
       },
-      { errors: {}, data: {} },
+      { errors: {}, data: {} }
     )
 
     if (Object.keys(errors).length > 0) {

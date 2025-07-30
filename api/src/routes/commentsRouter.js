@@ -14,20 +14,20 @@ commentsRouter.post(
   '/',
   verifyToken,
   validate({ bodySchema: commentSchema }),
-  CommentsController.create,
+  CommentsController.create
 )
 commentsRouter.put(
   '/:id',
   verifyToken,
   validate({
     bodySchema: commentSchema.omit({ postId: true }),
-    paramsSchema,
+    paramsSchema
   }),
-  CommentsController.update,
+  CommentsController.update
 )
 commentsRouter.delete(
   '/:id',
   verifyToken,
   validate({ paramsSchema }),
-  CommentsController.remove,
+  CommentsController.remove
 )
