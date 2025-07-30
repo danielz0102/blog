@@ -1,45 +1,15 @@
 {
-  "name": "blog-api",
+  "name": "blog",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "type": "module",
   "scripts": {
-    "lint": "eslint .",
-    "format": "prettier --write .",
-    "dev": "node --watch ./src/app.js",
-    "start": "node ./src/app.js"
-  },
-  "prisma": {
-    "seed": "node ./src/prisma/seed.js"
-  },
-  "imports": {
-    "#routes/*": "./src/routes/*",
-    "#controllers/*": "./src/controllers/*",
-    "#models/*": "./src/models/*",
-    "#config/*": "./src/config/*",
-    "#lib/*": "./src/lib/*",
-    "#middlewares/*": "./src/middlewares/*"
+    "dev:app": "pnpm --filter blog-app dev",
+    "dev:api": "pnpm --filter blog-api dev",
+    "start:api": "pnpm --filter blog-api start"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "packageManager": "pnpm@10.12.4",
-  "devDependencies": {
-    "@eslint/js": "^9.30.1",
-    "@faker-js/faker": "^9.9.0",
-    "eslint": "^9.30.1",
-    "globals": "^16.3.0",
-    "prettier": "^3.6.2",
-    "prisma": "6.11.1"
-  },
-  "dependencies": {
-    "@prisma/client": "6.11.1",
-    "bcryptjs": "^3.0.2",
-    "cors": "^2.8.5",
-    "dotenv": "^17.0.1",
-    "express": "^5.1.0",
-    "jsonwebtoken": "^9.0.2",
-    "zod": "^3.25.74"
-  }
+  "packageManager": "pnpm@10.13.1"
 }
