@@ -5,7 +5,10 @@ async function get(id) {
     where: { id },
     include: {
       comments: {
-        include: {
+        select: {
+          id: true,
+          content: true,
+          createdAt: true,
           user: {
             select: { id: true, username: true }
           }
@@ -23,7 +26,10 @@ async function getAll(limit = 30) {
     where: { isDraft: false },
     include: {
       comments: {
-        include: {
+        select: {
+          id: true,
+          content: true,
+          createdAt: true,
           user: {
             select: { id: true, username: true }
           }
@@ -38,17 +44,7 @@ async function getDrafts(limit = 30) {
   return await db.post.findMany({
     take: limit,
     orderBy: { createdAt: 'desc' },
-    where: { isDraft: true },
-    include: {
-      comments: {
-        include: {
-          user: {
-            select: { id: true, username: true }
-          }
-        },
-        orderBy: { createdAt: 'desc' }
-      }
-    }
+    where: { isDraft: true }
   })
 }
 
