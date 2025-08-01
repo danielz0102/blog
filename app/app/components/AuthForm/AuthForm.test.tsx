@@ -3,16 +3,16 @@ import { render, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import { createRoutesStub } from 'react-router'
+import { PASSWORD_PATTERN } from '~/lib/consts'
 
 import { AuthForm } from '.'
 
-const Stub = ({
-  forLogin = true,
-  error
-}: {
+type StubProps = {
   forLogin?: boolean
   error?: string
-}) => {
+}
+
+const Stub = ({ forLogin = true, error }: StubProps) => {
   const Component = createRoutesStub([
     { path: '/', Component: () => <AuthForm forLogin={forLogin} /> },
     {
@@ -58,19 +58,18 @@ test('renders registration form correctly', () => {
 
   expect(form).toHaveAttribute('method', 'post')
   expect(form).toHaveAttribute('action', '/register')
+
   expect(usernameInput).toBeRequired()
   expect(usernameInput).toHaveAttribute('name', 'username')
+
   expect(passwordInput).toBeRequired()
   expect(passwordInput).toHaveAttribute('name', 'password')
-  expect(passwordInput).toHaveAttribute(
-    'pattern',
-    '(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[^A-Za-z\\d]).{8,}'
-  )
+  expect(passwordInput).toHaveAttribute('pattern', PASSWORD_PATTERN)
+
   expect(confirmPasswordInput).toBeRequired()
-  expect(confirmPasswordInput).toHaveAttribute(
-    'pattern',
-    '(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[^A-Za-z\\d]).{8,}'
-  )
+  expect(confirmPasswordInput).toHaveAttribute('name', 'confirmPassword')
+  expect(confirmPasswordInput).toHaveAttribute('pattern', PASSWORD_PATTERN)
+
   expect(queryByRole('button', { name: 'Submit' })).toBeInTheDocument()
 })
 
