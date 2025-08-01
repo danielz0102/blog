@@ -1,10 +1,16 @@
 import { Outlet } from 'react-router'
 import { Header } from '~/components/Header'
+import { getUser } from '~/services/getUser'
+import type { Route } from './+types/MainLayout'
 
-export default function MainLayout() {
+export function clientLoader() {
+  return getUser()
+}
+
+export default function MainLayout({ loaderData }: Route.ComponentProps) {
   return (
     <>
-      <Header />
+      <Header isLoggedIn={!!loaderData} />
       <Outlet />
     </>
   )

@@ -1,10 +1,5 @@
-import type { User } from '~/types'
-import type { JwtPayload } from 'jwt-decode'
+import type { UserPayload } from '~/types'
 import { jwtDecode } from 'jwt-decode'
-
-interface UserPayload extends JwtPayload, User {
-  admin: boolean
-}
 
 export function getUser() {
   const token = localStorage.getItem('token')
