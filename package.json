@@ -4,9 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev:app": "pnpm --filter blog-app dev",
-    "dev:api": "pnpm --filter blog-api dev",
-    "start:api": "pnpm --filter blog-api start"
+    "dev": "pnpm --filter blog-api dev & pnpm --filter blog-app dev"
   },
   "keywords": [],
   "author": "",
