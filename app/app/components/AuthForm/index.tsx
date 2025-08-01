@@ -1,9 +1,13 @@
 import { useFetcher } from 'react-router'
+import { useId } from 'react'
+import { PasswordInput } from '../atoms/PasswordInput'
 
 export function AuthForm({ forLogin = true }: { forLogin?: boolean }) {
   const fetcher = useFetcher<{ error: string }>()
   const loading = fetcher.state === 'submitting'
   const error = fetcher.data?.error
+  const passwordId = useId()
+  const confirmPasswordId = useId()
 
   return (
     <fetcher.Form
@@ -21,35 +25,13 @@ export function AuthForm({ forLogin = true }: { forLogin?: boolean }) {
           placeholder="@john_doe123"
         />
       </label>
-      <label>
-        Password
-        <input
-          type="password"
-          name="password"
-          required
-          placeholder="••••••••"
-          pattern={
-            forLogin
-              ? undefined
-              : '(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[^A-Za-z\\d]).{8,}'
-          }
-        />
-      </label>
+      <label htmlFor={passwordId}>Password</label>
+      <PasswordInput id={passwordId} strong={!forLogin} />
       {!forLogin && (
-        <label>
-          Confirm Password
-          <input
-            type="password"
-            name="confirmPassword"
-            required
-            placeholder="••••••••"
-            pattern={
-              forLogin
-                ? undefined
-                : '(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[^A-Za-z\\d]).{8,}'
-            }
-          />
-        </label>
+        <>
+          <label htmlFor={confirmPasswordId}>Confirm Password</label>
+          <PasswordInput id={confirmPasswordId} name="confirmPassword" strong />
+        </>
       )}
       <button type="submit" disabled={loading}>
         {loading ? 'Submitting...' : 'Submit'}
