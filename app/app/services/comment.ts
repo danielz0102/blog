@@ -28,3 +28,24 @@ export async function comment(postId: UUID, content: string, update = false) {
     throw new Error(data.error || 'Failed to post comment')
   }
 }
+
+export async function deleteComment(id: UUID) {
+  const token = localStorage.getItem('token')
+
+  if (!token) {
+    throw new Error('No authentication token found')
+  }
+
+  const response = await fetch(`${API_URL}/comments/${id}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`
+    }
+  })
+
+  if (!response.ok) {
+    const data = await response.json()
+    throw new Error(data.error || 'Failed to delete comment')
+  }
+}
