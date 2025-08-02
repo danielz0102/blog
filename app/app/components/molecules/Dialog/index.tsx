@@ -1,24 +1,12 @@
-import { useRef, useEffect } from 'react'
-
 type DialogProps = {
   children: React.ReactNode
-  open?: boolean
+  ref: React.RefObject<HTMLDialogElement | null>
 }
 
-export function Dialog({ children, open = false }: DialogProps) {
-  const dialogRef = useRef<HTMLDialogElement>(null)
-
-  useEffect(() => {
-    if (open) {
-      dialogRef.current?.showModal()
-    } else {
-      dialogRef.current?.close()
-    }
-  }, [open])
-
+export function Dialog({ children, ref }: DialogProps) {
   return (
-    <dialog ref={dialogRef}>
-      <button aria-label="Close" onClick={() => dialogRef.current?.close()}>
+    <dialog ref={ref}>
+      <button aria-label="Close" onClick={() => ref?.current?.close()}>
         x
       </button>
       {children}

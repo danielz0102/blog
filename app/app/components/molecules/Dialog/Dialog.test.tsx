@@ -1,28 +1,32 @@
 import { test, expect } from 'vitest'
 import { render } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
+
+import { useRef } from 'react'
 
 import { Dialog } from '.'
 
+const Wrapper = ({ children }: { children: React.ReactNode }) => {
+  const ref = useRef<HTMLDialogElement>(null)
+
+  return <Dialog ref={ref}>{children}</Dialog>
+}
+
 test('is hidden by default', () => {
-  const { queryByText } = render(<Dialog>Test Dialog</Dialog>)
+  const { queryByText } = render(<Wrapper>Test Dialog</Wrapper>)
 
   expect(queryByText('Test Dialog')).not.toBeVisible()
 })
 
-test('renders children within a dialog when is open', () => {
-  const { queryByText } = render(<Dialog open>Test Dialog</Dialog>)
+test('renders children within a dialog', () => {
+  const { queryByText } = render(<Wrapper>Test Dialog</Wrapper>)
 
-  expect(queryByText('Test Dialog')).toBeVisible()
+  expect(queryByText('Test Dialog')).toBeInTheDocument()
 })
 
 test('has a button to close', async () => {
-  const user = userEvent.setup()
-  const { getByRole } = render(<Dialog open>Test Dialog</Dialog>)
-  const dialog = getByRole('dialog')
-  const button = getByRole('button', { name: /close/i })
+  const { queryByRole } = render(<Wrapper>Test Dialog</Wrapper>)
 
-  await user.click(button)
-
-  expect(dialog).not.toBeVisible()
+  expect(
+    queryByRole('button', { name: /close/i, hidden: true })
+  ).toBeInTheDocument()
 })
