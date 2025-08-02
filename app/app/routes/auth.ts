@@ -3,7 +3,7 @@ import type { Route } from './+types/auth'
 
 import { auth } from '~/services/auth'
 
-export async function action({ request }: Route.ActionArgs) {
+export async function clientAction({ request }: Route.ActionArgs) {
   const formData = await request.formData()
   const username = formData.get('username')
   const password = formData.get('password')
