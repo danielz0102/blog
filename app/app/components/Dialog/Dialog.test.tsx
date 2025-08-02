@@ -4,15 +4,6 @@ import userEvent from '@testing-library/user-event'
 
 import { Dialog } from '.'
 
-// JSDOM does not support the dialog element
-HTMLDialogElement.prototype.showModal = function () {
-  this.open = true
-}
-
-HTMLDialogElement.prototype.close = function () {
-  this.open = false
-}
-
 test('is hidden by default', () => {
   const { queryByText } = render(<Dialog>Test Dialog</Dialog>)
 

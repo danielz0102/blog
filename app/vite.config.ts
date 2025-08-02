@@ -10,7 +10,7 @@ export default defineConfig({
   // https://github.com/remix-run/react-router/discussions/12655
   plugins: [tailwindcss(), !isTestEnv && reactRouter(), tsconfigPaths()],
   test: {
-    environment: 'jsdom',
+    environment: 'happy-dom',
     setupFiles: ['./tests/setup.ts']
   }
 })
