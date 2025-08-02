@@ -2,7 +2,7 @@ import { test, expect, vi } from 'vitest'
 import { render } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import { MemoryRouter } from 'react-router'
+import { createRoutesStub } from 'react-router'
 
 import { Header } from '.'
 
@@ -12,12 +12,19 @@ vi.mock('../AuthForm', () => ({
   )
 }))
 
+const logoutAction = vi.fn()
+
+const Stub = ({ isLoggedIn = false }: { isLoggedIn?: boolean }) => {
+  const Component = createRoutesStub([
+    { path: '/', Component: () => <Header isLoggedIn={isLoggedIn} /> },
+    { path: '/logout', action: logoutAction }
+  ])
+
+  return <Component />
+}
+
 test('has a link to home', () => {
-  const { getByRole } = render(
-    <MemoryRouter>
-      <Header />
-    </MemoryRouter>
-  )
+  const { getByRole } = render(<Stub />)
 
   const link = getByRole('link', { name: 'My Blog' })
 
@@ -26,11 +33,7 @@ test('has a link to home', () => {
 
 test('has buttons for show log in and register dialogs when not logged in', async () => {
   const user = userEvent.setup()
-  const { getByRole, queryByRole, queryByTestId } = render(
-    <MemoryRouter>
-      <Header />
-    </MemoryRouter>
-  )
+  const { getByRole, queryByRole, queryByTestId } = render(<Stub />)
 
   expect(queryByTestId('login-form')).not.toBeVisible()
   expect(queryByTestId('register-form')).not.toBeVisible()
@@ -46,15 +49,14 @@ test('has buttons for show log in and register dialogs when not logged in', asyn
   expect(queryByTestId('register-form')).toBeVisible()
 })
 
-test('has a button to log out when logged in', () => {
-  const { getByRole, queryByRole } = render(
-    <MemoryRouter>
-      <Header isLoggedIn />
-    </MemoryRouter>
-  )
+test('only has a button to log out when logged in', async () => {
+  const user = userEvent.setup()
+  const { getByRole, queryByRole } = render(<Stub isLoggedIn={true} />)
 
   expect(queryByRole('button', { name: 'Log in' })).not.toBeInTheDocument()
   expect(queryByRole('button', { name: 'Register' })).not.toBeInTheDocument()
 
-  const logoutButton = getByRole('button', { name: 'Log out' })
+  await user.click(getByRole('button', { name: 'Log out' }))
+
+  expect(logoutAction).toHaveBeenCalled()
 })
