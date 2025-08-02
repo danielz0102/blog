@@ -12,7 +12,7 @@ export function AuthForm({ forLogin = false }: { forLogin?: boolean }) {
   return (
     <fetcher.Form
       method="post"
-      action={forLogin ? '/login' : '/register'}
+      action={`/auth/${forLogin ? 'login' : 'register'}`}
       aria-label={forLogin ? 'Login Form' : 'Registration Form'}
     >
       {error && <p>{error}</p>}

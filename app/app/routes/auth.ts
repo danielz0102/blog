@@ -3,11 +3,11 @@ import type { Route } from './+types/auth'
 
 import { auth } from '~/services/auth'
 
-export async function clientAction({ request }: Route.ActionArgs) {
+export async function clientAction({ request, params }: Route.ActionArgs) {
   const formData = await request.formData()
   const username = formData.get('username')
   const password = formData.get('password')
-  const isRegister = request.url.endsWith('/register')
+  const isRegister = params.action === 'register'
 
   if (typeof username !== 'string' || typeof password !== 'string') {
     return data({ error: 'Invalid form data' }, { status: 400 })
