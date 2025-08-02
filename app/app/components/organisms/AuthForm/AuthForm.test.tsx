@@ -2,7 +2,7 @@ import { test, expect } from 'vitest'
 import { render, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import { createRoutesStub } from 'react-router'
+import { createRoutesStub, data } from 'react-router'
 import { PASSWORD_PATTERN } from '~/lib/consts'
 
 import { AuthForm } from '.'
@@ -19,7 +19,7 @@ const Stub = ({ forLogin = false, error }: StubProps) => {
       path: '/auth/:action',
       action: () =>
         new Promise((resolve) =>
-          setTimeout(() => resolve(error && { error }), 100)
+          setTimeout(() => resolve(data({ error, success: !error })), 100)
         )
     }
   ])
@@ -103,4 +103,40 @@ test('shows errors', async () => {
   await waitFor(() => {
     expect(queryByText(errorMessage)).toBeInTheDocument()
   })
+})
+
+test('cleans inputs on successful submission', async () => {
+  const user = userEvent.setup()
+  const { getByRole, getByLabelText } = render(<Stub forLogin />)
+  const usernameInput = getByLabelText('Username')
+  const passwordInput = getByLabelText('Password')
+  const button = getByRole('button', { name: /Submit/i })
+
+  await user.type(usernameInput, 'testuser')
+  await user.type(passwordInput, 'password123')
+  await user.click(button)
+
+  await waitFor(() => {
+    expect(usernameInput).toHaveValue('')
+    expect(passwordInput).toHaveValue('')
+  })
+})
+
+test('not cleans inputs when there is an error', async () => {
+  const user = userEvent.setup()
+  const { getByRole, getByLabelText } = render(<Stub forLogin error="Error" />)
+  const usernameInput = getByLabelText('Username')
+  const passwordInput = getByLabelText('Password')
+  const button = getByRole('button', { name: /Submit/i })
+
+  await user.type(usernameInput, 'testuser')
+  await user.type(passwordInput, 'password123')
+  await user.click(button)
+
+  await waitFor(() => {
+    expect(button).toHaveTextContent('Submit')
+  })
+
+  expect(usernameInput).not.toHaveValue('')
+  expect(passwordInput).not.toHaveValue('')
 })

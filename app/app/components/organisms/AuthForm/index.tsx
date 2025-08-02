@@ -1,16 +1,25 @@
 import { useFetcher } from 'react-router'
-import { useId } from 'react'
+import { useEffect, useId, useRef } from 'react'
 import { PasswordInput } from '~/components/atoms/PasswordInput'
 
 export function AuthForm({ forLogin = false }: { forLogin?: boolean }) {
-  const fetcher = useFetcher<{ error: string }>()
+  const formRef = useRef<HTMLFormElement>(null)
+  const fetcher = useFetcher<{ error: string; success: boolean }>()
   const loading = fetcher.state === 'submitting'
   const error = fetcher.data?.error
+  const success = fetcher.data?.success
   const passwordId = useId()
   const confirmPasswordId = useId()
 
+  useEffect(() => {
+    if (success) {
+      formRef.current?.reset()
+    }
+  }, [success])
+
   return (
     <fetcher.Form
+      ref={formRef}
       method="post"
       action={`/auth/${forLogin ? 'login' : 'register'}`}
       aria-label={forLogin ? 'Login Form' : 'Registration Form'}
