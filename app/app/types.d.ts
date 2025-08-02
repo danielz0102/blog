@@ -1,7 +1,8 @@
 import type { UUID } from 'crypto'
 import type { JwtPayload } from 'jwt-decode'
 
-type GetPostsResponse = { error: string } | Post[] | Post
+type GetRecentPostsResponse = { error: string } | Post[]
+type GetPostResponse = { error: string } | Post
 
 type Post = {
   id: UUID
