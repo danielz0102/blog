@@ -12,7 +12,7 @@ type StubProps = {
   error?: string
 }
 
-const Stub = ({ forLogin = true, error }: StubProps) => {
+const Stub = ({ forLogin = false, error }: StubProps) => {
   const Component = createRoutesStub([
     { path: '/', Component: () => <AuthForm forLogin={forLogin} /> },
     {
@@ -29,7 +29,7 @@ const Stub = ({ forLogin = true, error }: StubProps) => {
 
 test('renders login form correctly', () => {
   const { getByRole, getByLabelText, queryByRole, queryByLabelText } = render(
-    <Stub />
+    <Stub forLogin />
   )
 
   const form = getByRole('form')
@@ -47,9 +47,7 @@ test('renders login form correctly', () => {
 })
 
 test('renders registration form correctly', () => {
-  const { getByRole, getByLabelText, queryByRole } = render(
-    <Stub forLogin={false} />
-  )
+  const { getByRole, getByLabelText, queryByRole } = render(<Stub />)
 
   const form = getByRole('form')
   const usernameInput = getByLabelText('Username')
@@ -75,7 +73,7 @@ test('renders registration form correctly', () => {
 
 test('shows loading state', async () => {
   const user = userEvent.setup()
-  const { getByRole, getByLabelText } = render(<Stub />)
+  const { getByRole, getByLabelText } = render(<Stub forLogin />)
   const usernameInput = getByLabelText('Username')
   const passwordInput = getByLabelText('Password')
   const button = getByRole('button', { name: /Submit/i })
@@ -92,7 +90,7 @@ test('shows errors', async () => {
   const user = userEvent.setup()
   const errorMessage = 'Invalid credentials'
   const { getByRole, getByLabelText, queryByText } = render(
-    <Stub error={errorMessage} />
+    <Stub forLogin error={errorMessage} />
   )
   const usernameInput = getByLabelText('Username')
   const passwordInput = getByLabelText('Password')
