@@ -1,6 +1,6 @@
 import { useFetcher } from 'react-router'
 import { useId } from 'react'
-import { PasswordInput } from '../atoms/PasswordInput'
+import { PasswordInput } from '~/components/atoms/PasswordInput'
 
 export function AuthForm({ forLogin = true }: { forLogin?: boolean }) {
   const fetcher = useFetcher<{ error: string }>()
