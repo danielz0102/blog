@@ -16,7 +16,7 @@ const Stub = ({ forLogin = false, error }: StubProps) => {
   const Component = createRoutesStub([
     { path: '/', Component: () => <AuthForm forLogin={forLogin} /> },
     {
-      path: '/login',
+      path: '/auth/:action',
       action: () =>
         new Promise((resolve) =>
           setTimeout(() => resolve(error && { error }), 100)
@@ -37,7 +37,7 @@ test('renders login form correctly', () => {
   const passwordInput = getByLabelText('Password')
 
   expect(form).toHaveAttribute('method', 'post')
-  expect(form).toHaveAttribute('action', '/login')
+  expect(form).toHaveAttribute('action', '/auth/login')
   expect(usernameInput).toBeRequired()
   expect(usernameInput).toHaveAttribute('name', 'username')
   expect(passwordInput).toBeRequired()
@@ -55,7 +55,7 @@ test('renders registration form correctly', () => {
   const confirmPasswordInput = getByLabelText('Confirm Password')
 
   expect(form).toHaveAttribute('method', 'post')
-  expect(form).toHaveAttribute('action', '/register')
+  expect(form).toHaveAttribute('action', '/auth/register')
 
   expect(usernameInput).toBeRequired()
   expect(usernameInput).toHaveAttribute('name', 'username')
