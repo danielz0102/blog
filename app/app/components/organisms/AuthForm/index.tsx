@@ -2,7 +2,15 @@ import { useFetcher } from 'react-router'
 import { useEffect, useId, useRef } from 'react'
 import { PasswordInput } from '~/components/atoms/PasswordInput'
 
-export function AuthForm({ forLogin = false }: { forLogin?: boolean }) {
+type AuthFormProps = {
+  forLogin?: boolean
+  onSuccess?: () => void
+}
+
+export function AuthForm({
+  forLogin = false,
+  onSuccess = () => {}
+}: AuthFormProps) {
   const formRef = useRef<HTMLFormElement>(null)
   const fetcher = useFetcher<{ error: string; success: boolean }>()
   const loading = fetcher.state === 'submitting'
@@ -14,8 +22,9 @@ export function AuthForm({ forLogin = false }: { forLogin?: boolean }) {
   useEffect(() => {
     if (success) {
       formRef.current?.reset()
+      onSuccess()
     }
-  }, [success])
+  }, [success, onSuccess])
 
   return (
     <fetcher.Form

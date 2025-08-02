@@ -1,4 +1,4 @@
-import { test, expect } from 'vitest'
+import { test, expect, vi } from 'vitest'
 import { render, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
@@ -9,12 +9,16 @@ import { AuthForm } from '.'
 
 type StubProps = {
   forLogin?: boolean
+  onSuccess?: () => void
   error?: string
 }
 
-const Stub = ({ forLogin = false, error }: StubProps) => {
+const Stub = ({ forLogin, error, onSuccess }: StubProps) => {
   const Component = createRoutesStub([
-    { path: '/', Component: () => <AuthForm forLogin={forLogin} /> },
+    {
+      path: '/',
+      Component: () => <AuthForm forLogin={forLogin} onSuccess={onSuccess} />
+    },
     {
       path: '/auth/:action',
       action: () =>
@@ -139,4 +143,23 @@ test('not cleans inputs when there is an error', async () => {
 
   expect(usernameInput).not.toHaveValue('')
   expect(passwordInput).not.toHaveValue('')
+})
+
+test('calls onSuccess callback on successful submission', async () => {
+  const onSuccess = vi.fn()
+  const user = userEvent.setup()
+  const { getByRole, getByLabelText } = render(
+    <Stub forLogin onSuccess={onSuccess} />
+  )
+  const usernameInput = getByLabelText('Username')
+  const passwordInput = getByLabelText('Password')
+  const button = getByRole('button', { name: /Submit/i })
+
+  await user.type(usernameInput, 'testuser')
+  await user.type(passwordInput, 'password123')
+  await user.click(button)
+
+  await waitFor(() => {
+    expect(onSuccess).toHaveBeenCalled()
+  })
 })
