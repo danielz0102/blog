@@ -3,7 +3,7 @@ import type { JwtPayload } from 'jwt-decode'
 
 type GetPostsResponse = { error: string } | Post[] | Post
 
-export type Post = {
+type Post = {
   id: UUID
   title: string
   content: string
@@ -11,18 +11,24 @@ export type Post = {
   comments: Comment[]
 }
 
-export type Comment = {
+type Comment = {
   id: UUID
   content: string
   createdAt: string
   user: User
 }
 
-export type User = {
+type User = {
   id: UUID
   username: string
 }
 
-export interface UserPayload extends JwtPayload, User {
+interface UserPayload extends JwtPayload, User {
   admin: boolean
+}
+
+declare global {
+  interface ImportMetaEnv {
+    readonly VITE_API_URL: string
+  }
 }
