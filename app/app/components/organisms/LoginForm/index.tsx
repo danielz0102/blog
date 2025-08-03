@@ -3,11 +3,7 @@ import { useId } from 'react'
 import { CustomForm } from '../CustomForm'
 import { PasswordInput } from '~/components/atoms/PasswordInput'
 
-type LoginFormProps = {
-  onSuccess?: () => void
-}
-
-export function LoginForm({ onSuccess = () => {} }: LoginFormProps) {
+export function LoginForm({ onSuccess = () => {} }) {
   const passwordId = useId()
 
   return (
