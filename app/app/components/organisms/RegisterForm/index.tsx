@@ -1,6 +1,7 @@
 import { useId } from 'react'
 
 import { CustomForm } from '../CustomForm'
+import { UsernameField } from '~/components/molecules/UsernameField'
 import { PasswordInput } from '~/components/atoms/PasswordInput'
 
 export function RegisterForm({ onSuccess = () => {} }) {
@@ -20,15 +21,7 @@ export function RegisterForm({ onSuccess = () => {} }) {
           <li>1 special character</li>
         </ul>
       </details>
-      <label>
-        Username
-        <input
-          type="text"
-          name="username"
-          required
-          placeholder="@john_doe123"
-        />
-      </label>
+      <UsernameField />
       <label htmlFor={passwordId}>Password</label>
       <PasswordInput id={passwordId} strong />
       <label htmlFor={confirmPasswordId}>Confirm Password</label>

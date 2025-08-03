@@ -15,16 +15,17 @@ vi.mock('../CustomForm', () => ({
   )
 }))
 
-test('renders correct inputs', () => {
-  const { getByLabelText } = render(<RegisterForm />)
+vi.mock('~/components/molecules/UsernameField', () => ({
+  UsernameField: () => <div data-testid="username-field"></div>
+}))
 
-  const usernameInput = getByLabelText('Username')
+test('renders correct inputs', () => {
+  const { getByLabelText, queryByTestId } = render(<RegisterForm />)
+
   const passwordInput = getByLabelText('Password')
   const confirmPasswordInput = getByLabelText('Confirm Password')
 
-  expect(usernameInput).toBeRequired()
-  expect(usernameInput).toHaveAttribute('name', 'username')
-
+  expect(queryByTestId('username-field')).toBeInTheDocument()
   expect(passwordInput).toBeRequired()
   expect(passwordInput).toHaveAttribute('name', 'password')
   expect(passwordInput).toHaveAttribute('pattern', PASSWORD_PATTERN)
