@@ -1,5 +1,6 @@
-import { useFetcher } from 'react-router'
-import { useEffect, useId, useRef } from 'react'
+import { useId } from 'react'
+
+import { CustomForm } from '../CustomForm'
 import { PasswordInput } from '~/components/atoms/PasswordInput'
 
 type LoginFormProps = {
@@ -7,28 +8,10 @@ type LoginFormProps = {
 }
 
 export function LoginForm({ onSuccess = () => {} }: LoginFormProps) {
-  const formRef = useRef<HTMLFormElement>(null)
-  const fetcher = useFetcher<{ error: string; success: boolean }>()
   const passwordId = useId()
-  const loading = fetcher.state === 'submitting'
-  const error = fetcher.data?.error
-  const success = fetcher.data?.success
-
-  useEffect(() => {
-    if (success) {
-      formRef.current?.reset()
-      onSuccess()
-    }
-  }, [success, onSuccess])
 
   return (
-    <fetcher.Form
-      ref={formRef}
-      method="post"
-      action="/auth/login"
-      aria-label="Login Form"
-    >
-      {error && <p>{error}</p>}
+    <CustomForm method="post" action="/auth/login" onSuccess={onSuccess}>
       <label>
         Username
         <input
@@ -40,10 +23,6 @@ export function LoginForm({ onSuccess = () => {} }: LoginFormProps) {
       </label>
       <label htmlFor={passwordId}>Password</label>
       <PasswordInput id={passwordId} />
-
-      <button type="submit" disabled={loading}>
-        {loading ? 'Loading...' : 'Login'}
-      </button>
-    </fetcher.Form>
+    </CustomForm>
   )
 }

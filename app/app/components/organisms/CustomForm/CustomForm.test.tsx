@@ -4,9 +4,9 @@ import userEvent from '@testing-library/user-event'
 
 import { createRoutesStub, data } from 'react-router'
 
-import { CustomForm, type AuthFormProps } from '.'
+import { CustomForm, type CustomFormProps } from '.'
 
-interface StubProps extends AuthFormProps {
+interface StubProps extends CustomFormProps {
   error?: string | null
 }
 
