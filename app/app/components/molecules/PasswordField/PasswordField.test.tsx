@@ -3,36 +3,24 @@ import { render } from '@testing-library/react'
 
 import { PASSWORD_PATTERN } from '~/lib/consts'
 
-import { PasswordInput } from '.'
-
-const id = 'test-password-input'
-
-type FieldProps = {
-  name?: string
-  strong?: boolean
-}
-
-const Field = ({ name, strong }: FieldProps) => (
-  <label htmlFor={id}>
-    Password
-    <PasswordInput id={id} name={name} strong={strong} />
-  </label>
-)
+import { PasswordField } from '.'
 
 test('renders password input correctly', () => {
-  const { getByLabelText } = render(<Field />)
+  const { getByLabelText } = render(
+    <PasswordField label="Custom Password" name="custom-password" />
+  )
 
-  const input = getByLabelText('Password')
+  const input = getByLabelText('Custom Password')
 
   expect(input).toBeRequired()
-  expect(input).toHaveAttribute('id', id)
   expect(input).toHaveAttribute('type', 'password')
+  expect(input).toHaveAttribute('name', 'custom-password')
   expect(input).toHaveAttribute('placeholder', '••••••••')
   expect(input).not.toHaveAttribute('pattern', PASSWORD_PATTERN)
 })
 
 test('renders strong password input with pattern', () => {
-  const { getByLabelText } = render(<Field strong />)
+  const { getByLabelText } = render(<PasswordField strong />)
 
   const input = getByLabelText('Password')
 

@@ -24,3 +24,4 @@
 
 - [ ] Validate confirm password
 - [x] Refactor username input
+- [x] Refactor password input

@@ -1,10 +1,10 @@
+import type { CustomFormProps } from '../CustomForm'
+import type { PasswordFieldProps } from '~/components/molecules/PasswordField'
+
 import { test, expect, vi } from 'vitest'
 import { render } from '@testing-library/react'
 
-import { PASSWORD_PATTERN } from '~/lib/consts'
-
 import { RegisterForm } from '.'
-import type { CustomFormProps } from '../CustomForm'
 
 vi.mock('../CustomForm', () => ({
   CustomForm: ({ children, ...props }: CustomFormProps) => (
@@ -19,19 +19,25 @@ vi.mock('~/components/molecules/UsernameField', () => ({
   UsernameField: () => <div data-testid="username-field"></div>
 }))
 
-test('renders correct inputs', () => {
-  const { getByLabelText, queryByTestId } = render(<RegisterForm />)
+vi.mock('~/components/molecules/PasswordField', () => ({
+  PasswordField: (props: PasswordFieldProps) => (
+    <div data-testid={`password-field${props.strong ? '--strong' : ''}`}>
+      {JSON.stringify(props)}
+    </div>
+  )
+}))
 
-  const passwordInput = getByLabelText('Password')
-  const confirmPasswordInput = getByLabelText('Confirm Password')
+test('renders inputs with correct props', () => {
+  const { getByTestId, queryByTestId } = render(<RegisterForm />)
+
+  const passwordInput = getByTestId('password-field--strong')
+  const confirmPasswordInput = getByTestId('password-field')
 
   expect(queryByTestId('username-field')).toBeInTheDocument()
-  expect(passwordInput).toBeRequired()
-  expect(passwordInput).toHaveAttribute('name', 'password')
-  expect(passwordInput).toHaveAttribute('pattern', PASSWORD_PATTERN)
-
-  expect(confirmPasswordInput).toBeRequired()
-  expect(confirmPasswordInput).toHaveAttribute('name', 'confirmPassword')
+  expect(passwordInput).toHaveTextContent(JSON.stringify({ strong: true }))
+  expect(confirmPasswordInput).toHaveTextContent(
+    JSON.stringify({ label: 'Confirm Password', name: 'confirmPassword' })
+  )
 })
 
 test('renders CustomForm with correct props', () => {
