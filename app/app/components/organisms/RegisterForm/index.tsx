@@ -3,6 +3,31 @@ import { UsernameField } from '~/components/molecules/UsernameField'
 import { PasswordField } from '~/components/molecules/PasswordField'
 
 export function RegisterForm({ onSuccess = () => {} }) {
+  const handleConfirmPasswordChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const form = event.target.form
+
+    if (!form) {
+      throw new Error('Form not found')
+    }
+
+    const confirmPassword = event.target
+    const passwordField = form.querySelector<HTMLInputElement>(
+      'input[name="password"]'
+    )
+
+    if (!passwordField) {
+      throw new Error('Password field not found')
+    }
+
+    confirmPassword.setCustomValidity(
+      confirmPassword.value !== passwordField.value
+        ? 'Passwords do not match'
+        : ''
+    )
+  }
+
   return (
     <CustomForm method="post" action="/auth/register" onSuccess={onSuccess}>
       <h2>Register</h2>
@@ -18,7 +43,11 @@ export function RegisterForm({ onSuccess = () => {} }) {
       </details>
       <UsernameField />
       <PasswordField strong />
-      <PasswordField label="Confirm Password" name="confirmPassword" />
+      <PasswordField
+        label="Confirm Password"
+        name="confirmPassword"
+        onChange={handleConfirmPasswordChange}
+      />
     </CustomForm>
   )
 }

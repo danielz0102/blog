@@ -2,7 +2,8 @@ import { useId } from 'react'
 
 import { PASSWORD_PATTERN } from '~/lib/consts'
 
-export type PasswordFieldProps = {
+export interface PasswordFieldProps
+  extends Omit<React.HTMLAttributes<HTMLInputElement>, 'id'> {
   label?: string
   name?: string
   strong?: boolean
@@ -11,7 +12,8 @@ export type PasswordFieldProps = {
 export function PasswordField({
   label = 'Password',
   name = 'password',
-  strong = false
+  strong = false,
+  ...props
 }: PasswordFieldProps) {
   const id = useId()
 
@@ -25,6 +27,7 @@ export function PasswordField({
         required
         placeholder="••••••••"
         pattern={!strong ? undefined : PASSWORD_PATTERN}
+        {...props}
       />
     </>
   )
