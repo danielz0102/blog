@@ -41,11 +41,9 @@ export function Header({ isLoggedIn = false }: { isLoggedIn?: boolean }) {
         )}
       </nav>
       <Dialog ref={loginDialogRef}>
-        <h2>Log in</h2>
         <LoginForm onSuccess={() => loginDialogRef.current?.close()} />
       </Dialog>
       <Dialog ref={registerDialogRef}>
-        <h2>Register</h2>
         <RegisterForm onSuccess={() => registerDialogRef.current?.close()} />
       </Dialog>
     </>

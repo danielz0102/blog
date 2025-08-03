@@ -8,6 +8,7 @@ export function LoginForm({ onSuccess = () => {} }) {
 
   return (
     <CustomForm method="post" action="/auth/login" onSuccess={onSuccess}>
+      <h2>Login</h2>
       <label>
         Username
         <input
