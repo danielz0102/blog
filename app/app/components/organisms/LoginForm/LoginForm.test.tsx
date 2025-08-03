@@ -3,21 +3,19 @@ import { render, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import { createRoutesStub, data } from 'react-router'
-import { PASSWORD_PATTERN } from '~/lib/consts'
 
-import { AuthForm } from '.'
+import { LoginForm } from '.'
 
 type StubProps = {
-  forLogin?: boolean
   onSuccess?: () => void
   error?: string
 }
 
-const Stub = ({ forLogin, error, onSuccess }: StubProps) => {
+const Stub = ({ onSuccess, error }: StubProps) => {
   const Component = createRoutesStub([
     {
       path: '/',
-      Component: () => <AuthForm forLogin={forLogin} onSuccess={onSuccess} />
+      Component: () => <LoginForm onSuccess={onSuccess} />
     },
     {
       path: '/auth/:action',
@@ -31,10 +29,8 @@ const Stub = ({ forLogin, error, onSuccess }: StubProps) => {
   return <Component />
 }
 
-test('renders login form correctly', () => {
-  const { getByRole, getByLabelText, queryByRole, queryByLabelText } = render(
-    <Stub forLogin />
-  )
+test('renders form correctly', () => {
+  const { getByRole, getByLabelText, queryByRole } = render(<Stub />)
 
   const form = getByRole('form')
   const usernameInput = getByLabelText('Username')
@@ -46,46 +42,21 @@ test('renders login form correctly', () => {
   expect(usernameInput).toHaveAttribute('name', 'username')
   expect(passwordInput).toBeRequired()
   expect(passwordInput).toHaveAttribute('name', 'password')
-  expect(queryByLabelText(/confirm password/i)).not.toBeInTheDocument()
-  expect(queryByRole('button', { name: /Submit/i })).toBeInTheDocument()
-})
-
-test('renders registration form correctly', () => {
-  const { getByRole, getByLabelText, queryByRole } = render(<Stub />)
-
-  const form = getByRole('form')
-  const usernameInput = getByLabelText('Username')
-  const passwordInput = getByLabelText('Password')
-  const confirmPasswordInput = getByLabelText('Confirm Password')
-
-  expect(form).toHaveAttribute('method', 'post')
-  expect(form).toHaveAttribute('action', '/auth/register')
-
-  expect(usernameInput).toBeRequired()
-  expect(usernameInput).toHaveAttribute('name', 'username')
-
-  expect(passwordInput).toBeRequired()
-  expect(passwordInput).toHaveAttribute('name', 'password')
-  expect(passwordInput).toHaveAttribute('pattern', PASSWORD_PATTERN)
-
-  expect(confirmPasswordInput).toBeRequired()
-  expect(confirmPasswordInput).toHaveAttribute('name', 'confirmPassword')
-
-  expect(queryByRole('button', { name: 'Submit' })).toBeInTheDocument()
+  expect(queryByRole('button', { name: /Login/i })).toBeInTheDocument()
 })
 
 test('shows loading state', async () => {
   const user = userEvent.setup()
-  const { getByRole, getByLabelText } = render(<Stub forLogin />)
+  const { getByRole, getByLabelText } = render(<Stub />)
   const usernameInput = getByLabelText('Username')
   const passwordInput = getByLabelText('Password')
-  const button = getByRole('button', { name: /Submit/i })
+  const button = getByRole('button', { name: /Login/i })
 
   await user.type(usernameInput, 'testuser')
   await user.type(passwordInput, 'password123')
   await user.click(button)
 
-  expect(button).toHaveTextContent('Submitting...')
+  expect(button).toHaveTextContent('Loading...')
   expect(button).toBeDisabled()
 })
 
@@ -93,11 +64,11 @@ test('shows errors', async () => {
   const user = userEvent.setup()
   const errorMessage = 'Invalid credentials'
   const { getByRole, getByLabelText, queryByText } = render(
-    <Stub forLogin error={errorMessage} />
+    <Stub error={errorMessage} />
   )
   const usernameInput = getByLabelText('Username')
   const passwordInput = getByLabelText('Password')
-  const button = getByRole('button', { name: /Submit/i })
+  const button = getByRole('button', { name: /Login/i })
 
   await user.type(usernameInput, 'testuser')
   await user.type(passwordInput, 'Password123!')
@@ -110,10 +81,10 @@ test('shows errors', async () => {
 
 test('cleans inputs on successful submission', async () => {
   const user = userEvent.setup()
-  const { getByRole, getByLabelText } = render(<Stub forLogin />)
+  const { getByRole, getByLabelText } = render(<Stub />)
   const usernameInput = getByLabelText('Username')
   const passwordInput = getByLabelText('Password')
-  const button = getByRole('button', { name: /Submit/i })
+  const button = getByRole('button', { name: /Login/i })
 
   await user.type(usernameInput, 'testuser')
   await user.type(passwordInput, 'password123')
@@ -127,17 +98,17 @@ test('cleans inputs on successful submission', async () => {
 
 test('not cleans inputs when there is an error', async () => {
   const user = userEvent.setup()
-  const { getByRole, getByLabelText } = render(<Stub forLogin error="Error" />)
+  const { getByRole, getByLabelText } = render(<Stub error="Error" />)
   const usernameInput = getByLabelText('Username')
   const passwordInput = getByLabelText('Password')
-  const button = getByRole('button', { name: /Submit/i })
+  const button = getByRole('button', { name: /Login/i })
 
   await user.type(usernameInput, 'testuser')
   await user.type(passwordInput, 'password123')
   await user.click(button)
 
   await waitFor(() => {
-    expect(button).toHaveTextContent('Submit')
+    expect(button).toHaveTextContent('Login')
   })
 
   expect(usernameInput).not.toHaveValue('')
@@ -147,12 +118,10 @@ test('not cleans inputs when there is an error', async () => {
 test('calls onSuccess callback on successful submission', async () => {
   const onSuccess = vi.fn()
   const user = userEvent.setup()
-  const { getByRole, getByLabelText } = render(
-    <Stub forLogin onSuccess={onSuccess} />
-  )
+  const { getByRole, getByLabelText } = render(<Stub onSuccess={onSuccess} />)
   const usernameInput = getByLabelText('Username')
   const passwordInput = getByLabelText('Password')
-  const button = getByRole('button', { name: /Submit/i })
+  const button = getByRole('button', { name: /Login/i })
 
   await user.type(usernameInput, 'testuser')
   await user.type(passwordInput, 'password123')
@@ -161,15 +130,4 @@ test('calls onSuccess callback on successful submission', async () => {
   await waitFor(() => {
     expect(onSuccess).toHaveBeenCalled()
   })
-})
-
-test('shows information about password strength when is for register', () => {
-  const { queryByText } = render(<Stub />)
-
-  expect(queryByText(/password must contain at least/i)).toBeInTheDocument()
-  expect(queryByText(/8 characters/i)).toBeInTheDocument()
-  expect(queryByText(/1 lowercase letter/i)).toBeInTheDocument()
-  expect(queryByText(/1 uppercase letter/i)).toBeInTheDocument()
-  expect(queryByText(/1 number/i)).toBeInTheDocument()
-  expect(queryByText(/1 special character/i)).toBeInTheDocument()
 })
