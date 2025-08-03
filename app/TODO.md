@@ -23,4 +23,4 @@
 ## Tasks
 
 - [ ] Validate confirm password
-- [ ] Refactor username input
+- [x] Refactor username input
