@@ -12,6 +12,10 @@ vi.mock('../AuthForm', () => ({
   )
 }))
 
+vi.mock('../LoginForm', () => ({
+  LoginForm: () => <div data-testid="login-form"></div>
+}))
+
 const logoutAction = vi.fn()
 
 const Stub = ({ isLoggedIn = false }: { isLoggedIn?: boolean }) => {
