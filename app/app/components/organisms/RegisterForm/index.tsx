@@ -1,0 +1,61 @@
+import { useFetcher } from 'react-router'
+import { useEffect, useId, useRef } from 'react'
+import { PasswordInput } from '~/components/atoms/PasswordInput'
+
+type RegisterFormProps = {
+  onSuccess?: () => void
+}
+
+export function RegisterForm({ onSuccess = () => {} }: RegisterFormProps) {
+  const formRef = useRef<HTMLFormElement>(null)
+  const fetcher = useFetcher<{ error: string; success: boolean }>()
+  const passwordId = useId()
+  const confirmPasswordId = useId()
+  const loading = fetcher.state === 'submitting'
+  const error = fetcher.data?.error
+  const success = fetcher.data?.success
+
+  useEffect(() => {
+    if (success) {
+      formRef.current?.reset()
+      onSuccess()
+    }
+  }, [success, onSuccess])
+
+  return (
+    <fetcher.Form
+      ref={formRef}
+      method="post"
+      action="/auth/register"
+      aria-label="Registration Form"
+    >
+      {error && <p>{error}</p>}
+      <details>
+        <summary>Password must contain at least...</summary>
+        <ul>
+          <li>8 characters</li>
+          <li>1 lowercase letter</li>
+          <li>1 uppercase letter</li>
+          <li>1 number</li>
+          <li>1 special character</li>
+        </ul>
+      </details>
+      <label>
+        Username
+        <input
+          type="text"
+          name="username"
+          required
+          placeholder="@john_doe123"
+        />
+      </label>
+      <label htmlFor={passwordId}>Password</label>
+      <PasswordInput id={passwordId} strong />
+      <label htmlFor={confirmPasswordId}>Confirm Password</label>
+      <PasswordInput id={confirmPasswordId} name="confirmPassword" />
+      <button type="submit" disabled={loading}>
+        {loading ? 'Submitting...' : 'Submit'}
+      </button>
+    </fetcher.Form>
+  )
+}
