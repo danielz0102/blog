@@ -17,13 +17,15 @@ vi.mock('~/components/molecules/UsernameField', () => ({
   UsernameField: () => <div data-testid="username-field"></div>
 }))
 
+vi.mock('~/components/molecules/PasswordField', () => ({
+  PasswordField: () => <div data-testid="password-field"></div>
+}))
+
 test('renders correct inputs', () => {
-  const { getByLabelText, queryByTestId } = render(<LoginForm />)
-  const passwordInput = getByLabelText('Password')
+  const { queryByTestId } = render(<LoginForm />)
 
   expect(queryByTestId('username-field')).toBeInTheDocument()
-  expect(passwordInput).toBeRequired()
-  expect(passwordInput).toHaveAttribute('name', 'password')
+  expect(queryByTestId('password-field')).toBeInTheDocument()
 })
 
 test('renders CustomForm with correct props', () => {
