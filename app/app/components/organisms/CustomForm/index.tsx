@@ -1,7 +1,7 @@
 import { useFetcher, type FetcherFormProps } from 'react-router'
 import { useEffect, useRef } from 'react'
 
-export interface AuthFormProps extends FetcherFormProps {
+export interface CustomFormProps extends FetcherFormProps {
   onSuccess?: () => void
   children: React.ReactNode
 }
@@ -10,7 +10,7 @@ export function CustomForm({
   onSuccess = () => {},
   children,
   ...attributes
-}: AuthFormProps) {
+}: CustomFormProps) {
   const formRef = useRef<HTMLFormElement>(null)
   const fetcher = useFetcher<{ error: string; success: boolean }>()
   const loading = fetcher.state === 'submitting'
