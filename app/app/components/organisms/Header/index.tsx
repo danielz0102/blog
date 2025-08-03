@@ -3,8 +3,8 @@ import { useRef } from 'react'
 
 import { Link } from 'react-router'
 import { Dialog } from '~/components/molecules/Dialog'
-import { AuthForm } from '../AuthForm'
 import { LoginForm } from '../LoginForm'
+import { RegisterForm } from '../RegisterForm'
 
 export function Header({ isLoggedIn = false }: { isLoggedIn?: boolean }) {
   const fetcher = useFetcher()
@@ -46,7 +46,7 @@ export function Header({ isLoggedIn = false }: { isLoggedIn?: boolean }) {
       </Dialog>
       <Dialog ref={registerDialogRef}>
         <h2>Register</h2>
-        <AuthForm onSuccess={() => registerDialogRef.current?.close()} />
+        <RegisterForm onSuccess={() => registerDialogRef.current?.close()} />
       </Dialog>
     </>
   )

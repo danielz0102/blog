@@ -6,14 +6,12 @@ import { createRoutesStub } from 'react-router'
 
 import { Header } from '.'
 
-vi.mock('../AuthForm', () => ({
-  AuthForm: ({ forLogin = false }: { forLogin?: boolean }) => (
-    <div data-testid={forLogin ? 'login-form' : 'register-form'}></div>
-  )
-}))
-
 vi.mock('../LoginForm', () => ({
   LoginForm: () => <div data-testid="login-form"></div>
+}))
+
+vi.mock('../RegisterForm', () => ({
+  RegisterForm: () => <div data-testid="register-form"></div>
 }))
 
 const logoutAction = vi.fn()
