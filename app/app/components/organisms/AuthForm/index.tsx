@@ -13,11 +13,11 @@ export function AuthForm({
 }: AuthFormProps) {
   const formRef = useRef<HTMLFormElement>(null)
   const fetcher = useFetcher<{ error: string; success: boolean }>()
+  const passwordId = useId()
+  const confirmPasswordId = useId()
   const loading = fetcher.state === 'submitting'
   const error = fetcher.data?.error
   const success = fetcher.data?.success
-  const passwordId = useId()
-  const confirmPasswordId = useId()
 
   useEffect(() => {
     if (success) {
@@ -34,6 +34,18 @@ export function AuthForm({
       aria-label={forLogin ? 'Login Form' : 'Registration Form'}
     >
       {error && <p>{error}</p>}
+      {!forLogin && (
+        <details>
+          <summary>Password must contain at least...</summary>
+          <ul>
+            <li>8 characters</li>
+            <li>1 lowercase letter</li>
+            <li>1 uppercase letter</li>
+            <li>1 number</li>
+            <li>1 special character</li>
+          </ul>
+        </details>
+      )}
       <label>
         Username
         <input
@@ -48,7 +60,7 @@ export function AuthForm({
       {!forLogin && (
         <>
           <label htmlFor={confirmPasswordId}>Confirm Password</label>
-          <PasswordInput id={confirmPasswordId} name="confirmPassword" strong />
+          <PasswordInput id={confirmPasswordId} name="confirmPassword" />
         </>
       )}
       <button type="submit" disabled={loading}>

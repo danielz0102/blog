@@ -12,7 +12,7 @@ type FieldProps = {
   strong?: boolean
 }
 
-const Field = ({ name = 'Password', strong = false }: FieldProps) => (
+const Field = ({ name, strong }: FieldProps) => (
   <label htmlFor={id}>
     Password
     <PasswordInput id={id} name={name} strong={strong} />

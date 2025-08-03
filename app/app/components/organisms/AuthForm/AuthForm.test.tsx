@@ -70,7 +70,6 @@ test('renders registration form correctly', () => {
 
   expect(confirmPasswordInput).toBeRequired()
   expect(confirmPasswordInput).toHaveAttribute('name', 'confirmPassword')
-  expect(confirmPasswordInput).toHaveAttribute('pattern', PASSWORD_PATTERN)
 
   expect(queryByRole('button', { name: 'Submit' })).toBeInTheDocument()
 })
@@ -162,4 +161,17 @@ test('calls onSuccess callback on successful submission', async () => {
   await waitFor(() => {
     expect(onSuccess).toHaveBeenCalled()
   })
+})
+
+test('shows information about password strength when is for register', () => {
+  const { queryByText, debug } = render(<Stub />)
+
+  debug()
+
+  expect(queryByText(/password must contain at least/i)).toBeInTheDocument()
+  expect(queryByText(/8 characters/i)).toBeInTheDocument()
+  expect(queryByText(/1 lowercase letter/i)).toBeInTheDocument()
+  expect(queryByText(/1 uppercase letter/i)).toBeInTheDocument()
+  expect(queryByText(/1 number/i)).toBeInTheDocument()
+  expect(queryByText(/1 special character/i)).toBeInTheDocument()
 })
