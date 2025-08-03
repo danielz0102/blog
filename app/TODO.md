@@ -1,19 +1,26 @@
 # TODO
 
-## User authentication
+## Features
 
-- [ ] Sign up
-- [ ] Sign in
-- [ ] Sign out
+### User authentication
 
-# Landing page
+- [x] Sign up
+- [x] Sign in
+- [x] Sign out
 
-- [ ] Show most recent posts
+### Landing page
 
-# Post detail page
+- [x] Show most recent posts
+
+### Post detail page
 
 - [ ] Show post content
 - [ ] Show comments
 - [ ] Add comment form
 - [ ] Edit own comments
 - [ ] Delete own comments
+
+## Tasks
+
+- [ ] Validate confirm password
+- [ ] Refactor username input
