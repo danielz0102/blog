@@ -3,6 +3,9 @@ import type { Route } from './+types/post'
 
 import { getPost } from '~/services/posts'
 
+import { BlogPost } from '~/components/molecules/BlogPost'
+import { Comment } from '~/components/molecules/Comment'
+
 export async function loader({ params }: Route.LoaderArgs) {
   if (!params.id) {
     throw new Response('Post not found', { status: 404 })
@@ -20,11 +23,7 @@ export async function loader({ params }: Route.LoaderArgs) {
 export default function Post({ loaderData: post }: Route.ComponentProps) {
   return (
     <main>
-      <article>
-        <h1>{post.title}</h1>
-        <time dateTime={post.createdAt}>{post.createdAt}</time>
-        <p>{post.content}</p>
-      </article>
+      <BlogPost post={post} />
 
       <section className="my-5">
         <h2>Comments</h2>
@@ -32,11 +31,7 @@ export default function Post({ loaderData: post }: Route.ComponentProps) {
           <p>No comments yet. Be the first to comment!</p>
         )}
         {post.comments.map((comment) => (
-          <article key={comment.id}>
-            <h3>{comment.user.username}</h3>
-            <time dateTime={comment.createdAt}>{comment.createdAt}</time>
-            <p>{comment.content}</p>
-          </article>
+          <Comment key={comment.id} comment={comment} />
         ))}
       </section>
     </main>
