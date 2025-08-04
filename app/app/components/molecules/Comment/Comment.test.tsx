@@ -1,7 +1,7 @@
 import { test, expect } from 'vitest'
 import { render } from '@testing-library/react'
 
-import { Comment } from '.'
+import Comment from '.'
 import type { Comment as CommentType } from '~/types'
 
 test('renders comment with correct info', () => {

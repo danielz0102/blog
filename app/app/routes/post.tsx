@@ -4,7 +4,7 @@ import type { Route } from './+types/post'
 import { getPost } from '~/services/posts'
 
 import { BlogPost } from '~/components/molecules/BlogPost'
-import { Comment } from '~/components/molecules/Comment'
+import CommentList from '~/components/organisms/CommentList'
 
 export async function loader({ params }: Route.LoaderArgs) {
   if (!params.id) {
@@ -22,18 +22,9 @@ export async function loader({ params }: Route.LoaderArgs) {
 
 export default function Post({ loaderData: post }: Route.ComponentProps) {
   return (
-    <main>
+    <main className="flex flex-col gap-4">
       <BlogPost post={post} />
-
-      <section className="my-5">
-        <h2>Comments</h2>
-        {post.comments.length === 0 && (
-          <p>No comments yet. Be the first to comment!</p>
-        )}
-        {post.comments.map((comment) => (
-          <Comment key={comment.id} comment={comment} />
-        ))}
-      </section>
+      <CommentList comments={post.comments} />
     </main>
   )
 }
