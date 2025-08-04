@@ -14,8 +14,8 @@
 
 ### Post detail page
 
-- [ ] Show post content
-- [ ] Show comments
+- [x] Show post content
+- [x] Show comments
 - [ ] Add comment form
 - [ ] Edit own comments
 - [ ] Delete own comments
