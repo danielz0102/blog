@@ -14,19 +14,55 @@ vi.mock('../CustomForm', () => ({
   )
 }))
 
+vi.mock('~/components/molecules/CommentField', () => ({
+  default: ({ defaultValue = '' }) => (
+    <div data-testid="comment-field">{defaultValue}</div>
+  )
+}))
+
 const postId = crypto.randomUUID()
 
-test('renders Custom Form with correctly', () => {
-  const { getByTestId, getByLabelText } = render(
-    <CommentForm postId={postId} />
-  )
+test('renders Custom Form with correct props', () => {
+  const { getByTestId } = render(<CommentForm postId={postId} />)
   const form = getByTestId('custom-form-props')
-  const props = JSON.parse(form.textContent || '{}')
-  const textarea = getByLabelText('Comment')
+  const props: CustomFormProps = JSON.parse(form.textContent || '{}')
 
   expect(props.method).toBe('post')
   expect(props.action).toBe(`/posts/${postId}`)
+})
 
-  expect(textarea).toBeRequired()
-  expect(textarea).toHaveAttribute('name', 'comment')
+test('renders a CommentField', () => {
+  const { queryByTestId } = render(<CommentForm postId={postId} />)
+
+  expect(queryByTestId('comment-field')).toBeInTheDocument()
+})
+
+test('passes defaultValue to CommentField', () => {
+  const update = 'This is an update comment'
+  const { getByTestId } = render(
+    <CommentForm postId={postId} update={update} />
+  )
+
+  const commentField = getByTestId('comment-field')
+
+  expect(commentField).toHaveTextContent(update)
+})
+
+test('has a hidden unchecked checkbox if update is not provided', () => {
+  const { getByRole } = render(<CommentForm postId={postId} />)
+
+  const checkbox = getByRole('checkbox', { hidden: true })
+
+  expect(checkbox).toHaveAttribute('name', 'update')
+  expect(checkbox).not.toBeChecked()
+})
+
+test('has a hidden checked checkbox if update is provided', () => {
+  const update = 'This is an update comment'
+  const { getByRole } = render(<CommentForm postId={postId} update={update} />)
+
+  const checkbox = getByRole('checkbox', { hidden: true })
+
+  expect(checkbox).toHaveAttribute('name', 'update')
+  expect(checkbox).toBeChecked()
 })

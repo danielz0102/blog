@@ -7,18 +7,19 @@ import { render } from '@testing-library/react'
 import CommentList from '.'
 
 vi.mock('~/components/molecules/Comment', () => ({
-  default: ({ comment, userId }: CommentProps) => (
-    <div data-testid="comment" data-user-id={userId}>
+  default: ({ comment, userId, postId }: CommentProps) => (
+    <div data-testid="comment" data-user-id={userId} data-post-id={postId}>
       {JSON.stringify(comment)}
     </div>
   )
 }))
 
 const userId = crypto.randomUUID()
+const postId = crypto.randomUUID()
 
 test('shows a message when there are no comments', () => {
   const { queryByText, queryAllByTestId } = render(
-    <CommentList comments={[]} />
+    <CommentList postId={postId} comments={[]} />
   )
 
   expect(
@@ -44,7 +45,7 @@ test('renders a list of comments', () => {
     }
   ]
   const { queryAllByTestId } = render(
-    <CommentList comments={comments} userId={userId} />
+    <CommentList postId={postId} comments={comments} userId={userId} />
   )
 
   const commentsFound = queryAllByTestId('comment')
@@ -53,5 +54,6 @@ test('renders a list of comments', () => {
   commentsFound.forEach((comment, index) => {
     expect(comment).toHaveTextContent(JSON.stringify(comments[index]))
     expect(comment).toHaveAttribute('data-user-id', userId)
+    expect(comment).toHaveAttribute('data-post-id', postId)
   })
 })
