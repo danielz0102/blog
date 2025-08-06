@@ -13,7 +13,7 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
   const post = await getPost(params.id as UUID)
   const user = getUser()
 
-  return { post, isLoggedIn: Boolean(user) }
+  return { post, user }
 }
 
 export async function clientAction({ request, params }: Route.ActionArgs) {
@@ -29,13 +29,13 @@ export async function clientAction({ request, params }: Route.ActionArgs) {
 }
 
 export default function Post({
-  loaderData: { post, isLoggedIn }
+  loaderData: { post, user }
 }: Route.ComponentProps) {
   return (
     <main className="flex flex-col gap-4">
       <BlogPost post={post} />
-      {isLoggedIn ? <CommentForm postId={post.id} /> : <p>Login to comment</p>}
-      <CommentList comments={post.comments} />
+      {user ? <CommentForm postId={post.id} /> : <p>Login to comment</p>}
+      <CommentList comments={post.comments} userId={user?.id} />
     </main>
   )
 }
