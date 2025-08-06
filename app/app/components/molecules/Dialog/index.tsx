@@ -1,4 +1,4 @@
-type DialogProps = {
+export interface DialogProps {
   children: React.ReactNode
   ref: React.RefObject<HTMLDialogElement | null>
 }

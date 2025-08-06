@@ -10,6 +10,7 @@ export default [
     index('routes/home.tsx'),
     route('auth/:action', 'routes/auth.ts'),
     route('logout', 'routes/logout.ts'),
-    route('posts/:id', 'routes/post.tsx')
+    route('posts/:id', 'routes/post.tsx'),
+    route('comments/:id/delete', 'routes/deleteComment.ts')
   ])
 ] satisfies RouteConfig
