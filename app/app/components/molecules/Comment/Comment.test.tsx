@@ -1,11 +1,12 @@
 import type { Comment as CommentData } from '~/types'
+import type { DeleteCommentDialogProps } from '../DeleteCommentDialog'
+import type { UpdateCommentDialogProps } from '~/components/organisms/UpdateCommentDialog'
 
 import { test, expect, vi } from 'vitest'
 import { render } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import Comment from '.'
-import type { DeleteCommentDialogProps } from '../DeleteCommentDialog'
 
 vi.mock('../DeleteCommentDialog', () => ({
   default: ({ ref, commentId }: DeleteCommentDialogProps) => (
@@ -17,7 +18,19 @@ vi.mock('../DeleteCommentDialog', () => ({
   )
 }))
 
+vi.mock('~/components/organisms/UpdateCommentDialog', () => ({
+  default: ({ postId, update, ref }: UpdateCommentDialogProps) => (
+    <dialog
+      ref={ref}
+      data-testid="update-dialog"
+      data-post-id={postId}
+      data-update={update}
+    />
+  )
+}))
+
 const userId = crypto.randomUUID()
+const postId = crypto.randomUUID()
 
 const getComment = (isAuthor = false): CommentData => ({
   id: crypto.randomUUID(),
@@ -32,16 +45,18 @@ const getComment = (isAuthor = false): CommentData => ({
 test('renders comment with correct info', () => {
   const comment = getComment()
 
-  const { queryByText } = render(<Comment comment={comment} />)
+  const { queryByText } = render(<Comment comment={comment} postId={postId} />)
 
   expect(queryByText(comment.user.username)).toBeInTheDocument()
   expect(queryByText(comment.createdAt)).toBeInTheDocument()
   expect(queryByText(comment.content)).toBeInTheDocument()
 })
 
-test('has a dialog to delete', () => {
-  const comment = getComment(true)
-  const { getByTestId } = render(<Comment comment={comment} userId={userId} />)
+test('has a DeleteCommentDialog', () => {
+  const comment = getComment()
+  const { getByTestId } = render(
+    <Comment comment={comment} postId={postId} userId={userId} />
+  )
 
   const dialog = getByTestId('delete-comment-dialog')
 
@@ -49,23 +64,63 @@ test('has a dialog to delete', () => {
   expect(dialog).toHaveAttribute('data-comment-id', comment.id)
 })
 
-test('does not render a delete button if the user is not the author', () => {
+test('has an UpdateCommentDialog', () => {
   const comment = getComment()
+  const { getByTestId } = render(
+    <Comment comment={comment} postId={postId} userId={userId} />
+  )
 
-  const { queryByRole } = render(<Comment comment={comment} userId={userId} />)
+  const dialog = getByTestId('update-dialog')
 
-  expect(queryByRole('button', { name: /delete/i })).not.toBeInTheDocument()
+  expect(dialog).not.toBeVisible()
+  expect(dialog).toHaveAttribute('data-post-id', postId)
+  expect(dialog).toHaveAttribute('data-update', comment.content)
 })
 
-test('shows delete modal when delete button is clicked', async () => {
+test('does not render a delete and update buttons if the user is not the author', () => {
+  const comment = getComment()
+
+  const { queryByRole } = render(
+    <Comment comment={comment} postId={postId} userId={userId} />
+  )
+
+  expect(queryByRole('button', { name: /delete/i })).not.toBeInTheDocument()
+  expect(queryByRole('button', { name: /update/i })).not.toBeInTheDocument()
+})
+
+test('shows delete and update buttons if the user is the author', () => {
+  const comment = getComment(true)
+
+  const { queryByRole } = render(
+    <Comment comment={comment} postId={postId} userId={userId} />
+  )
+
+  expect(queryByRole('button', { name: /delete/i })).toBeInTheDocument()
+  expect(queryByRole('button', { name: /update/i })).toBeInTheDocument()
+})
+
+test('opens delete modal when delete button is clicked', async () => {
   const user = userEvent.setup()
   const comment = getComment(true)
   const { getByRole, getByTestId } = render(
-    <Comment comment={comment} userId={userId} />
+    <Comment comment={comment} postId={postId} userId={userId} />
   )
   const deleteButton = getByRole('button', { name: /delete/i })
 
   await user.click(deleteButton)
 
   expect(getByTestId('delete-comment-dialog')).toBeVisible()
+})
+
+test('opens update modal when update button is clicked', async () => {
+  const user = userEvent.setup()
+  const comment = getComment(true)
+  const { getByRole, getByTestId } = render(
+    <Comment comment={comment} postId={postId} userId={userId} />
+  )
+  const updateButton = getByRole('button', { name: /update/i })
+
+  await user.click(updateButton)
+
+  expect(getByTestId('update-dialog')).toBeVisible()
 })
