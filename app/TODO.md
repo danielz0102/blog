@@ -16,7 +16,7 @@
 
 - [x] Show post content
 - [x] Show comments
-- [ ] Add comment form
+- [x] Add comment form
 - [ ] Edit own comments
 - [ ] Delete own comments
 
