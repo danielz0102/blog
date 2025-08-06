@@ -1,6 +1,8 @@
 import type { UUID } from 'crypto'
 import type { Route } from './+types/post'
 
+import { data } from 'react-router'
+
 import { getPost } from '~/services/posts'
 import { getUser } from '~/services/getUser'
 import { comment } from '~/services/comment'
@@ -26,6 +28,8 @@ export async function clientAction({ request, params }: Route.ActionArgs) {
   }
 
   await comment(postId, commentText)
+
+  return data({ success: true }, { status: 201 })
 }
 
 export default function Post({
