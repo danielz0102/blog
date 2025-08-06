@@ -2,7 +2,7 @@ import { describe, it, expect, vi, afterEach } from 'vitest'
 
 import { API_URL } from '~/config'
 
-import { comment, deleteComment } from './comment'
+import { comment, deleteComment, update } from './comment'
 
 const MOCK_TOKEN = 'mock-token'
 
@@ -26,7 +26,7 @@ describe('comment', () => {
     content: 'This is a test comment'
   }
 
-  it('calls fetch correctly when creating a comment', async () => {
+  it('calls fetch correctly', async () => {
     const { postId, content } = mockComment
     localStorage.setItem('token', MOCK_TOKEN)
 
@@ -39,22 +39,6 @@ describe('comment', () => {
         Authorization: `Bearer ${MOCK_TOKEN}`
       },
       body: JSON.stringify(mockComment)
-    })
-  })
-
-  it('calls fetch correctly when updating a comment', async () => {
-    const { postId, content } = mockComment
-    localStorage.setItem('token', MOCK_TOKEN)
-
-    await comment(postId, content, true)
-
-    expect(mockFetch).toHaveBeenCalledWith(`${API_URL}/comments/${postId}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${MOCK_TOKEN}`
-      },
-      body: JSON.stringify({ content })
     })
   })
 
@@ -78,6 +62,48 @@ describe('comment', () => {
     )
 
     const result = comment(postId, content)
+
+    await expect(result).rejects.toThrow('Internal Server Error')
+  })
+})
+
+describe('update', () => {
+  const postId = crypto.randomUUID()
+  const commentId = crypto.randomUUID()
+  const content = 'This is an updated comment'
+
+  it('calls fetch correctly', async () => {
+    localStorage.setItem('token', MOCK_TOKEN)
+
+    await update({ postId, commentId, content })
+
+    expect(mockFetch).toHaveBeenCalledWith(`${API_URL}/comments/${commentId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${MOCK_TOKEN}`
+      },
+      body: JSON.stringify({ postId, content })
+    })
+  })
+
+  it('throws an error if there is no token', async () => {
+    const result = update({ postId, commentId, content })
+
+    await expect(result).rejects.toThrow()
+  })
+
+  it('throws an error if response is not ok', async () => {
+    localStorage.setItem('token', MOCK_TOKEN)
+    mockFetch.mockImplementationOnce(() =>
+      Promise.resolve({
+        ok: false,
+        status: 500,
+        json: () => Promise.resolve({ error: 'Internal Server Error' })
+      })
+    )
+
+    const result = update({ postId, commentId, content })
 
     await expect(result).rejects.toThrow('Internal Server Error')
   })
