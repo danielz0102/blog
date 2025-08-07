@@ -25,6 +25,5 @@
 - [x] Validate confirm password
 - [x] Refactor username input
 - [x] Refactor password input
-- [ ] Move dialogs to organisms folder
 - [ ] Render only one set of dialogs for all comments
 - [ ] Add styles

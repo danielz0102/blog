@@ -7,7 +7,7 @@ import { getPost } from '~/services/posts'
 import { getUser } from '~/services/getUser'
 import { comment } from '~/services/comment'
 
-import { BlogPost } from '~/components/molecules/BlogPost'
+import { BlogPost } from '~/components/organisms/BlogPost'
 import CommentList from '~/components/organisms/CommentList'
 import CommentForm from '~/components/organisms/CommentForm'
 
