@@ -8,7 +8,12 @@ export type CommentProps = {
   onUpdateClick: (comment: Comment) => void
 }
 
-export default function Comment({ comment, userId, onDeleteClick, onUpdateClick }: CommentProps) {
+export default function Comment({
+  comment,
+  userId,
+  onDeleteClick,
+  onUpdateClick
+}: CommentProps) {
   const handleDeleteClick = () => {
     onDeleteClick(comment)
   }

@@ -24,8 +24,8 @@ test('renders comment with correct info', () => {
   const mockUpdateClick = vi.fn()
 
   const { queryByText } = render(
-    <Comment 
-      comment={comment} 
+    <Comment
+      comment={comment}
       onDeleteClick={mockDeleteClick}
       onUpdateClick={mockUpdateClick}
     />
@@ -42,8 +42,8 @@ test('does not render a delete and update buttons if the user is not the author'
   const mockUpdateClick = vi.fn()
 
   const { queryByRole } = render(
-    <Comment 
-      comment={comment} 
+    <Comment
+      comment={comment}
       userId={userId}
       onDeleteClick={mockDeleteClick}
       onUpdateClick={mockUpdateClick}
@@ -60,8 +60,8 @@ test('shows delete and update buttons if the user is the author', () => {
   const mockUpdateClick = vi.fn()
 
   const { queryByRole } = render(
-    <Comment 
-      comment={comment} 
+    <Comment
+      comment={comment}
       userId={userId}
       onDeleteClick={mockDeleteClick}
       onUpdateClick={mockUpdateClick}
@@ -77,11 +77,11 @@ test('calls onDeleteClick callback when delete button is clicked', async () => {
   const comment = getComment(true)
   const onDeleteClick = vi.fn()
   const mockUpdateClick = vi.fn()
-  
+
   const { getByRole } = render(
-    <Comment 
-      comment={comment} 
-      userId={userId} 
+    <Comment
+      comment={comment}
+      userId={userId}
       onDeleteClick={onDeleteClick}
       onUpdateClick={mockUpdateClick}
     />
@@ -98,11 +98,11 @@ test('calls onUpdateClick callback when update button is clicked', async () => {
   const comment = getComment(true)
   const onUpdateClick = vi.fn()
   const mockDeleteClick = vi.fn()
-  
+
   const { getByRole } = render(
-    <Comment 
-      comment={comment} 
-      userId={userId} 
+    <Comment
+      comment={comment}
+      userId={userId}
       onDeleteClick={mockDeleteClick}
       onUpdateClick={onUpdateClick}
     />

@@ -10,17 +10,22 @@ import userEvent from '@testing-library/user-event'
 import CommentList from '.'
 
 vi.mock('~/components/molecules/Comment', () => ({
-  default: ({ comment, userId, onDeleteClick, onUpdateClick }: CommentProps) => (
+  default: ({
+    comment,
+    userId,
+    onDeleteClick,
+    onUpdateClick
+  }: CommentProps) => (
     <div data-testid="comment" data-user-id={userId}>
       {JSON.stringify(comment)}
-      <button 
-        onClick={() => onDeleteClick?.(comment)}
+      <button
+        onClick={() => onDeleteClick(comment)}
         data-testid={`delete-button-${comment.id}`}
       >
         Delete
       </button>
-      <button 
-        onClick={() => onUpdateClick?.(comment)}
+      <button
+        onClick={() => onUpdateClick(comment)}
         data-testid={`update-button-${comment.id}`}
       >
         Update
@@ -97,7 +102,6 @@ test('renders single delete and update dialogs when comments are present', () =>
     <CommentList comments={comments} userId={userLoggedId} />
   )
 
-  // Should render dialogs from the beginning (but not visible yet)
   expect(queryByTestId('delete-comment-dialog')).toBeInTheDocument()
   expect(queryByTestId('update-dialog')).toBeInTheDocument()
 })
@@ -108,11 +112,9 @@ test('renders delete dialog when delete button is clicked', async () => {
     <CommentList comments={comments} userId={userLoggedId} />
   )
 
-  // Click delete button for first comment
   const deleteButton = getByTestId(`delete-button-${comments[0].id}`)
   await user.click(deleteButton)
 
-  // Should render single delete dialog with correct comment ID
   const deleteDialog = queryByTestId('delete-comment-dialog')
   expect(deleteDialog).toBeInTheDocument()
   expect(deleteDialog).toHaveAttribute('data-comment-id', comments[0].id)
@@ -124,13 +126,14 @@ test('renders update dialog when update button is clicked', async () => {
     <CommentList comments={comments} userId={userLoggedId} />
   )
 
-  // Click update button for second comment
   const updateButton = getByTestId(`update-button-${comments[1].id}`)
   await user.click(updateButton)
 
-  // Should render single update dialog with correct comment data
   const updateDialog = queryByTestId('update-dialog')
   expect(updateDialog).toBeInTheDocument()
   expect(updateDialog).toHaveAttribute('data-comment-id', comments[1].id)
-  expect(updateDialog).toHaveAttribute('data-comment-content', comments[1].content)
+  expect(updateDialog).toHaveAttribute(
+    'data-comment-content',
+    comments[1].content
+  )
 })
