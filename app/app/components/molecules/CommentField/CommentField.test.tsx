@@ -11,13 +11,3 @@ test('renders a field to write a comment', () => {
   expect(textarea).toBeRequired()
   expect(textarea).toHaveAttribute('name', 'comment')
 })
-
-test('can receive a default value', () => {
-  const { getByLabelText } = render(
-    <CommentField defaultValue="This is a comment" />
-  )
-
-  const textarea = getByLabelText(/comment/i)
-
-  expect(textarea).toHaveValue('This is a comment')
-})

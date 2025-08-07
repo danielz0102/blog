@@ -1,4 +1,8 @@
-export default function CommentField({ defaultValue = '' }) {
+import type { HtmlHTMLAttributes } from 'react'
+
+export default function CommentField(
+  props: HtmlHTMLAttributes<HTMLTextAreaElement>
+) {
   return (
     <>
       <label htmlFor="comment">Comment</label>
@@ -7,7 +11,7 @@ export default function CommentField({ defaultValue = '' }) {
         name="comment"
         placeholder="Write a comment..."
         required
-        defaultValue={defaultValue}
+        {...props}
       />
     </>
   )
