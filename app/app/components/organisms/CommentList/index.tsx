@@ -10,18 +10,10 @@ export interface CommentListProps {
   userId?: UUID
 }
 
-const createEmptyComment = (): Comment => ({
-  id: crypto.randomUUID(),
-  content: '',
-  user: { id: crypto.randomUUID(), username: '' },
-  createdAt: ''
-})
-
 export default function CommentList({ comments, userId }: CommentListProps) {
+  const [currentComment, setCurrentComment] = useState<Comment | null>(null)
   const deleteDialogRef = useRef<HTMLDialogElement>(null)
   const updateDialogRef = useRef<HTMLDialogElement>(null)
-
-  const [currentComment, setCurrentComment] = useState<Comment | null>(null)
 
   const handleDeleteClick = (comment: Comment) => {
     setCurrentComment(comment)
@@ -56,7 +48,12 @@ export default function CommentList({ comments, userId }: CommentListProps) {
       />
       <UpdateCommentDialog
         ref={updateDialogRef}
-        comment={currentComment || createEmptyComment()}
+        comment={
+          currentComment || {
+            id: crypto.randomUUID(),
+            content: ''
+          }
+        }
       />
     </>
   )
