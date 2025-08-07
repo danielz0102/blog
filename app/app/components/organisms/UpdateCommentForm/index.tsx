@@ -1,5 +1,7 @@
 import type { Comment } from '~/types'
 
+import { useId } from 'react'
+
 import { CustomForm } from '../CustomForm'
 import CommentField from '~/components/molecules/CommentField'
 
@@ -12,13 +14,15 @@ export default function UpdateCommentForm({
   comment,
   onSuccess
 }: UpdateCommentFormProps) {
+  const inputId = useId()
+
   return (
     <CustomForm
       onSuccess={onSuccess}
       method="post"
       action={`/comments/${comment.id}/update`}
     >
-      <CommentField defaultValue={comment.content} />
+      <CommentField id={inputId} defaultValue={comment.content} />
     </CustomForm>
   )
 }
