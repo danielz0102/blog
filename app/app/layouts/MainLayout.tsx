@@ -9,9 +9,9 @@ export function clientLoader() {
 
 export default function MainLayout({ loaderData }: Route.ComponentProps) {
   return (
-    <>
+    <div className="flex min-h-screen flex-col">
       <Header isLoggedIn={!!loaderData} />
       <Outlet />
-    </>
+    </div>
   )
 }
