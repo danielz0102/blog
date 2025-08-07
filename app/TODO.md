@@ -18,10 +18,11 @@
 - [x] Show comments
 - [x] Add comment form
 - [ ] Edit own comments
-- [ ] Delete own comments
+- [x] Delete own comments
 
 ## Tasks
 
 - [x] Validate confirm password
 - [x] Refactor username input
 - [x] Refactor password input
+- [ ] Move dialogs to organisms folder

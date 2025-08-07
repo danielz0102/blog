@@ -1,4 +1,5 @@
 import type { CommentFormProps } from '../CommentForm'
+import type { DialogProps } from '~/components/molecules/Dialog'
 
 import { test, expect, vi } from 'vitest'
 import { render } from '@testing-library/react'
@@ -6,7 +7,6 @@ import { render } from '@testing-library/react'
 import { useRef } from 'react'
 
 import UpdateCommentDialog from '.'
-import type { DialogProps } from '~/components/molecules/Dialog'
 
 vi.mock('~/components/molecules/Dialog', () => ({
   Dialog: ({ children, ref }: DialogProps) => (
@@ -14,19 +14,21 @@ vi.mock('~/components/molecules/Dialog', () => ({
   )
 }))
 
-vi.mock('~/components/organisms/CommentForm', () => ({
+vi.mock('../UpdateCommentForm', () => ({
   default: (props: CommentFormProps) => (
     <form aria-label="Comment Form">{JSON.stringify(props)}</form>
   )
 }))
 
-const postId = crypto.randomUUID()
-const update = 'This is an update comment'
+const mockComment = {
+  id: crypto.randomUUID(),
+  content: 'This is a comment'
+}
 
 const DialogWrapper = () => {
   const dialogRef = useRef<HTMLDialogElement>(null)
 
-  return <UpdateCommentDialog ref={dialogRef} postId={postId} update={update} />
+  return <UpdateCommentDialog ref={dialogRef} comment={mockComment} />
 }
 
 test('renders a dialog', () => {
@@ -35,15 +37,11 @@ test('renders a dialog', () => {
   expect(queryByRole('dialog', { hidden: true })).toBeInTheDocument()
 })
 
-test('renders CommentForm with correct props', () => {
+test('renders UpdateCommentForm with correct props', () => {
   const { getByRole } = render(<DialogWrapper />)
-  const propsExpected: CommentFormProps = {
-    postId,
-    update
-  }
 
   const form = getByRole('form', { hidden: true })
   const props = JSON.parse(form.textContent || '{}')
 
-  expect(props).toEqual(propsExpected)
+  expect(props).toEqual({ comment: mockComment })
 })

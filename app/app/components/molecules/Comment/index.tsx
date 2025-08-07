@@ -7,12 +7,11 @@ import DeleteCommentDialog from '../DeleteCommentDialog'
 import UpdateCommentDialog from '~/components/organisms/UpdateCommentDialog'
 
 export type CommentProps = {
-  postId: UUID
   comment: Comment
   userId?: UUID
 }
 
-export default function Comment({ postId, comment, userId }: CommentProps) {
+export default function Comment({ comment, userId }: CommentProps) {
   const deleteDialogRef = useRef<HTMLDialogElement>(null)
   const updateDialogRef = useRef<HTMLDialogElement>(null)
 
@@ -38,11 +37,7 @@ export default function Comment({ postId, comment, userId }: CommentProps) {
         )}
       </article>
       <DeleteCommentDialog ref={deleteDialogRef} commentId={comment.id} />
-      <UpdateCommentDialog
-        ref={updateDialogRef}
-        postId={postId}
-        update={comment.content}
-      />
+      <UpdateCommentDialog ref={updateDialogRef} comment={comment} />
     </>
   )
 }

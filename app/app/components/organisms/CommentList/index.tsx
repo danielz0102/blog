@@ -3,16 +3,11 @@ import PostComment from '~/components/molecules/Comment'
 import type { UUID } from 'crypto'
 
 export interface CommentListProps {
-  postId: UUID
   comments: Comment[]
   userId?: UUID
 }
 
-export default function CommentList({
-  comments,
-  userId,
-  postId
-}: CommentListProps) {
+export default function CommentList({ comments, userId }: CommentListProps) {
   return (
     <section>
       <h2>Comments</h2>
@@ -20,12 +15,7 @@ export default function CommentList({
         <p>No comments yet. Be the first to comment!</p>
       )}
       {comments.map((comment) => (
-        <PostComment
-          key={comment.id}
-          comment={comment}
-          userId={userId}
-          postId={postId}
-        />
+        <PostComment key={comment.id} comment={comment} userId={userId} />
       ))}
     </section>
   )
