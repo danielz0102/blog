@@ -1,7 +1,7 @@
-import { useFetcher } from 'react-router'
+import { useFetcher, Link } from 'react-router'
 import { useRef } from 'react'
 
-import { Link } from 'react-router'
+import HeaderItem from '~/components/atoms/HeaderItem'
 import { Dialog } from '~/components/molecules/Dialog'
 import { LoginForm } from '../LoginForm'
 import { RegisterForm } from '../RegisterForm'
@@ -17,27 +17,21 @@ export function Header({ isLoggedIn = false }: { isLoggedIn?: boolean }) {
 
   return (
     <>
-      <nav>
-        <Link to="/">My Blog</Link>
+      <nav className="flex justify-between p-4">
+        <h1 className="text-3xl font-bold">
+          <Link to="/">My Blog</Link>
+        </h1>
         {isLoggedIn ? (
-          <button type="button" onClick={handleLogout}>
-            Log out
-          </button>
+          <HeaderItem onClick={handleLogout}>Log out</HeaderItem>
         ) : (
-          <>
-            <button
-              type="button"
-              onClick={() => loginDialogRef.current?.showModal()}
-            >
+          <div className="flex gap-4">
+            <HeaderItem onClick={() => loginDialogRef.current?.showModal()}>
               Log in
-            </button>
-            <button
-              type="button"
-              onClick={() => registerDialogRef.current?.showModal()}
-            >
+            </HeaderItem>
+            <HeaderItem onClick={() => registerDialogRef.current?.showModal()}>
               Register
-            </button>
-          </>
+            </HeaderItem>
+          </div>
         )}
       </nav>
       <Dialog ref={loginDialogRef}>
