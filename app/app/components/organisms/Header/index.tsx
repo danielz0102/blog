@@ -18,7 +18,7 @@ export function Header({ isLoggedIn = false }: { isLoggedIn?: boolean }) {
   return (
     <>
       <nav className="flex justify-between p-4">
-        <h1 className="text-3xl font-bold">
+        <h1 className="text-2xl font-bold">
           <Link to="/">My Blog</Link>
         </h1>
         {isLoggedIn ? (
