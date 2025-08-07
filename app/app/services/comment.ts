@@ -24,28 +24,20 @@ export async function comment(postId: UUID, content: string) {
   }
 }
 
-export async function update({
-  postId,
-  commentId,
-  content
-}: {
-  postId: UUID
-  commentId: UUID
-  content: string
-}) {
+export async function update(id: UUID, content: string) {
   const token = localStorage.getItem('token')
 
   if (!token) {
     throw new Error('No authentication token found')
   }
 
-  const response = await fetch(`${API_URL}/comments/${commentId}`, {
+  const response = await fetch(`${API_URL}/comments/${id}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`
     },
-    body: JSON.stringify({ postId, content })
+    body: JSON.stringify({ content })
   })
 
   if (!response.ok) {

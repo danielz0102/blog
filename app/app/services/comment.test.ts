@@ -68,14 +68,13 @@ describe('comment', () => {
 })
 
 describe('update', () => {
-  const postId = crypto.randomUUID()
   const commentId = crypto.randomUUID()
   const content = 'This is an updated comment'
 
   it('calls fetch correctly', async () => {
     localStorage.setItem('token', MOCK_TOKEN)
 
-    await update({ postId, commentId, content })
+    await update(commentId, content)
 
     expect(mockFetch).toHaveBeenCalledWith(`${API_URL}/comments/${commentId}`, {
       method: 'PUT',
@@ -83,12 +82,12 @@ describe('update', () => {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${MOCK_TOKEN}`
       },
-      body: JSON.stringify({ postId, content })
+      body: JSON.stringify({ content })
     })
   })
 
   it('throws an error if there is no token', async () => {
-    const result = update({ postId, commentId, content })
+    const result = update(commentId, content)
 
     await expect(result).rejects.toThrow()
   })
@@ -103,7 +102,7 @@ describe('update', () => {
       })
     )
 
-    const result = update({ postId, commentId, content })
+    const result = update(commentId, content)
 
     await expect(result).rejects.toThrow('Internal Server Error')
   })

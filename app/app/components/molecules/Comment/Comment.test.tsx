@@ -19,18 +19,17 @@ vi.mock('../DeleteCommentDialog', () => ({
 }))
 
 vi.mock('~/components/organisms/UpdateCommentDialog', () => ({
-  default: ({ postId, update, ref }: UpdateCommentDialogProps) => (
+  default: ({ ref, comment }: UpdateCommentDialogProps) => (
     <dialog
       ref={ref}
       data-testid="update-dialog"
-      data-post-id={postId}
-      data-update={update}
+      data-comment-id={comment.id}
+      data-comment-content={comment.content}
     />
   )
 }))
 
 const userId = crypto.randomUUID()
-const postId = crypto.randomUUID()
 
 const getComment = (isAuthor = false): CommentData => ({
   id: crypto.randomUUID(),
@@ -45,44 +44,36 @@ const getComment = (isAuthor = false): CommentData => ({
 test('renders comment with correct info', () => {
   const comment = getComment()
 
-  const { queryByText } = render(<Comment comment={comment} postId={postId} />)
+  const { queryByText } = render(<Comment comment={comment} />)
 
   expect(queryByText(comment.user.username)).toBeInTheDocument()
   expect(queryByText(comment.createdAt)).toBeInTheDocument()
   expect(queryByText(comment.content)).toBeInTheDocument()
 })
 
-test('has a DeleteCommentDialog', () => {
+test('renders DeleteCommentDialog with correct props', () => {
   const comment = getComment()
-  const { getByTestId } = render(
-    <Comment comment={comment} postId={postId} userId={userId} />
-  )
+  const { getByTestId } = render(<Comment comment={comment} userId={userId} />)
 
   const dialog = getByTestId('delete-comment-dialog')
 
-  expect(dialog).not.toBeVisible()
   expect(dialog).toHaveAttribute('data-comment-id', comment.id)
 })
 
-test('has an UpdateCommentDialog', () => {
+test('renders UpdateCommentDialog with correct props', () => {
   const comment = getComment()
-  const { getByTestId } = render(
-    <Comment comment={comment} postId={postId} userId={userId} />
-  )
+  const { getByTestId } = render(<Comment comment={comment} userId={userId} />)
 
   const dialog = getByTestId('update-dialog')
 
-  expect(dialog).not.toBeVisible()
-  expect(dialog).toHaveAttribute('data-post-id', postId)
-  expect(dialog).toHaveAttribute('data-update', comment.content)
+  expect(dialog).toHaveAttribute('data-comment-id', comment.id)
+  expect(dialog).toHaveAttribute('data-comment-content', comment.content)
 })
 
 test('does not render a delete and update buttons if the user is not the author', () => {
   const comment = getComment()
 
-  const { queryByRole } = render(
-    <Comment comment={comment} postId={postId} userId={userId} />
-  )
+  const { queryByRole } = render(<Comment comment={comment} userId={userId} />)
 
   expect(queryByRole('button', { name: /delete/i })).not.toBeInTheDocument()
   expect(queryByRole('button', { name: /update/i })).not.toBeInTheDocument()
@@ -91,9 +82,7 @@ test('does not render a delete and update buttons if the user is not the author'
 test('shows delete and update buttons if the user is the author', () => {
   const comment = getComment(true)
 
-  const { queryByRole } = render(
-    <Comment comment={comment} postId={postId} userId={userId} />
-  )
+  const { queryByRole } = render(<Comment comment={comment} userId={userId} />)
 
   expect(queryByRole('button', { name: /delete/i })).toBeInTheDocument()
   expect(queryByRole('button', { name: /update/i })).toBeInTheDocument()
@@ -103,24 +92,30 @@ test('opens delete modal when delete button is clicked', async () => {
   const user = userEvent.setup()
   const comment = getComment(true)
   const { getByRole, getByTestId } = render(
-    <Comment comment={comment} postId={postId} userId={userId} />
+    <Comment comment={comment} userId={userId} />
   )
   const deleteButton = getByRole('button', { name: /delete/i })
+  const deleteDialog = getByTestId('delete-comment-dialog')
+
+  expect(deleteDialog).not.toBeVisible()
 
   await user.click(deleteButton)
 
-  expect(getByTestId('delete-comment-dialog')).toBeVisible()
+  expect(deleteDialog).toBeVisible()
 })
 
 test('opens update modal when update button is clicked', async () => {
   const user = userEvent.setup()
   const comment = getComment(true)
   const { getByRole, getByTestId } = render(
-    <Comment comment={comment} postId={postId} userId={userId} />
+    <Comment comment={comment} userId={userId} />
   )
   const updateButton = getByRole('button', { name: /update/i })
+  const updateDialog = getByTestId('update-dialog')
+
+  expect(updateDialog).not.toBeVisible()
 
   await user.click(updateButton)
 
-  expect(getByTestId('update-dialog')).toBeVisible()
+  expect(updateDialog).toBeVisible()
 })

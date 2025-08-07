@@ -1,18 +1,16 @@
-import type { UUID } from 'crypto'
+import type { Comment } from '~/types'
 
 import { Dialog } from '~/components/molecules/Dialog'
-import CommentForm from '../CommentForm'
+import UpdateCommentForm from '../UpdateCommentForm'
 
 export interface UpdateCommentDialogProps {
   ref: React.RefObject<HTMLDialogElement | null>
-  postId: UUID
-  update: string
+  comment: Pick<Comment, 'id' | 'content'>
 }
 
 export default function UpdateCommentDialog({
   ref,
-  postId,
-  update
+  comment
 }: UpdateCommentDialogProps) {
   const close = () => {
     ref.current?.close()
@@ -20,7 +18,7 @@ export default function UpdateCommentDialog({
 
   return (
     <Dialog ref={ref}>
-      <CommentForm postId={postId} update={update} onSuccess={close} />
+      <UpdateCommentForm onSuccess={close} comment={comment} />
     </Dialog>
   )
 }

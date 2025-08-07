@@ -36,33 +36,3 @@ test('renders a CommentField', () => {
 
   expect(queryByTestId('comment-field')).toBeInTheDocument()
 })
-
-test('passes defaultValue to CommentField', () => {
-  const update = 'This is an update comment'
-  const { getByTestId } = render(
-    <CommentForm postId={postId} update={update} />
-  )
-
-  const commentField = getByTestId('comment-field')
-
-  expect(commentField).toHaveTextContent(update)
-})
-
-test('has a hidden unchecked checkbox if update is not provided', () => {
-  const { getByRole } = render(<CommentForm postId={postId} />)
-
-  const checkbox = getByRole('checkbox', { hidden: true })
-
-  expect(checkbox).toHaveAttribute('name', 'update')
-  expect(checkbox).not.toBeChecked()
-})
-
-test('has a hidden checked checkbox if update is provided', () => {
-  const update = 'This is an update comment'
-  const { getByRole } = render(<CommentForm postId={postId} update={update} />)
-
-  const checkbox = getByRole('checkbox', { hidden: true })
-
-  expect(checkbox).toHaveAttribute('name', 'update')
-  expect(checkbox).toBeChecked()
-})
