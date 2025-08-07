@@ -17,7 +17,7 @@
 - [x] Show post content
 - [x] Show comments
 - [x] Add comment form
-- [ ] Edit own comments
+- [x] Edit own comments
 - [x] Delete own comments
 
 ## Tasks
@@ -26,3 +26,5 @@
 - [x] Refactor username input
 - [x] Refactor password input
 - [ ] Move dialogs to organisms folder
+- [ ] Render only one set of dialogs for all comments
+- [ ] Add styles
