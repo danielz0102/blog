@@ -4,17 +4,17 @@ import type { Comment } from '~/types'
 export type CommentProps = {
   comment: Comment
   userId?: UUID
-  onDeleteClick?: (comment: Comment) => void
-  onUpdateClick?: (comment: Comment) => void
+  onDeleteClick: (comment: Comment) => void
+  onUpdateClick: (comment: Comment) => void
 }
 
 export default function Comment({ comment, userId, onDeleteClick, onUpdateClick }: CommentProps) {
   const handleDeleteClick = () => {
-    onDeleteClick?.(comment)
+    onDeleteClick(comment)
   }
 
   const handleUpdateClick = () => {
-    onUpdateClick?.(comment)
+    onUpdateClick(comment)
   }
 
   return (

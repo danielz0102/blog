@@ -10,6 +10,14 @@ export interface CommentListProps {
   userId?: UUID
 }
 
+// Create empty comment with proper UUID type
+const createEmptyComment = (): Comment => ({
+  id: crypto.randomUUID(),
+  content: '',
+  user: { id: crypto.randomUUID(), username: '' },
+  createdAt: ''
+})
+
 export default function CommentList({ comments, userId }: CommentListProps) {
   const deleteDialogRef = useRef<HTMLDialogElement>(null)
   const updateDialogRef = useRef<HTMLDialogElement>(null)
@@ -43,12 +51,8 @@ export default function CommentList({ comments, userId }: CommentListProps) {
           />
         ))}
       </section>
-      {currentComment && (
-        <>
-          <DeleteCommentDialog ref={deleteDialogRef} commentId={currentComment.id} />
-          <UpdateCommentDialog ref={updateDialogRef} comment={currentComment} />
-        </>
-      )}
+      <DeleteCommentDialog ref={deleteDialogRef} commentId={currentComment?.id || crypto.randomUUID()} />
+      <UpdateCommentDialog ref={updateDialogRef} comment={currentComment || createEmptyComment()} />
     </>
   )
 }

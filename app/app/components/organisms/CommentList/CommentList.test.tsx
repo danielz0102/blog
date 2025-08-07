@@ -97,9 +97,9 @@ test('renders single delete and update dialogs when comments are present', () =>
     <CommentList comments={comments} userId={userLoggedId} />
   )
 
-  // Should not render dialogs initially
-  expect(queryByTestId('delete-comment-dialog')).not.toBeInTheDocument()
-  expect(queryByTestId('update-dialog')).not.toBeInTheDocument()
+  // Should render dialogs from the beginning (but not visible yet)
+  expect(queryByTestId('delete-comment-dialog')).toBeInTheDocument()
+  expect(queryByTestId('update-dialog')).toBeInTheDocument()
 })
 
 test('renders delete dialog when delete button is clicked', async () => {
