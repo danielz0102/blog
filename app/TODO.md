@@ -22,8 +22,8 @@
 
 ## Tasks
 
-- [x] Validate confirm password
+- [x] Validate confirm passwords
 - [x] Refactor username input
 - [x] Refactor password input
-- [ ] Render only one set of dialogs for all comments
+- [x] Render only one set of dialogs for all comments
 - [ ] Add styles
