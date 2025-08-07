@@ -7,6 +7,8 @@ import userEvent from '@testing-library/user-event'
 import Comment from '.'
 
 const userId = crypto.randomUUID()
+const mockDeleteClick = vi.fn()
+const mockUpdateClick = vi.fn()
 
 const getComment = (isAuthor = false): CommentData => ({
   id: crypto.randomUUID(),
@@ -20,8 +22,6 @@ const getComment = (isAuthor = false): CommentData => ({
 
 test('renders comment with correct info', () => {
   const comment = getComment()
-  const mockDeleteClick = vi.fn()
-  const mockUpdateClick = vi.fn()
 
   const { queryByText } = render(
     <Comment
@@ -38,8 +38,6 @@ test('renders comment with correct info', () => {
 
 test('does not render a delete and update buttons if the user is not the author', () => {
   const comment = getComment()
-  const mockDeleteClick = vi.fn()
-  const mockUpdateClick = vi.fn()
 
   const { queryByRole } = render(
     <Comment
@@ -56,8 +54,6 @@ test('does not render a delete and update buttons if the user is not the author'
 
 test('shows delete and update buttons if the user is the author', () => {
   const comment = getComment(true)
-  const mockDeleteClick = vi.fn()
-  const mockUpdateClick = vi.fn()
 
   const { queryByRole } = render(
     <Comment
@@ -75,14 +71,11 @@ test('shows delete and update buttons if the user is the author', () => {
 test('calls onDeleteClick callback when delete button is clicked', async () => {
   const user = userEvent.setup()
   const comment = getComment(true)
-  const onDeleteClick = vi.fn()
-  const mockUpdateClick = vi.fn()
-
   const { getByRole } = render(
     <Comment
       comment={comment}
       userId={userId}
-      onDeleteClick={onDeleteClick}
+      onDeleteClick={mockDeleteClick}
       onUpdateClick={mockUpdateClick}
     />
   )
@@ -90,26 +83,23 @@ test('calls onDeleteClick callback when delete button is clicked', async () => {
 
   await user.click(deleteButton)
 
-  expect(onDeleteClick).toHaveBeenCalledWith(comment)
+  expect(mockDeleteClick).toHaveBeenCalledWith(comment)
 })
 
 test('calls onUpdateClick callback when update button is clicked', async () => {
   const user = userEvent.setup()
   const comment = getComment(true)
-  const onUpdateClick = vi.fn()
-  const mockDeleteClick = vi.fn()
-
   const { getByRole } = render(
     <Comment
       comment={comment}
       userId={userId}
       onDeleteClick={mockDeleteClick}
-      onUpdateClick={onUpdateClick}
+      onUpdateClick={mockUpdateClick}
     />
   )
   const updateButton = getByRole('button', { name: /update/i })
 
   await user.click(updateButton)
 
-  expect(onUpdateClick).toHaveBeenCalledWith(comment)
+  expect(mockUpdateClick).toHaveBeenCalledWith(comment)
 })
