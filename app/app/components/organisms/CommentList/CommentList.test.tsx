@@ -97,13 +97,16 @@ test('renders a list of comments', () => {
   })
 })
 
-test('renders single delete and update dialogs when comments are present', () => {
-  const { queryByTestId } = render(
+test('renders just a couple of delete and update dialogs for all comments', () => {
+  const { getAllByTestId } = render(
     <CommentList comments={comments} userId={userLoggedId} />
   )
 
-  expect(queryByTestId('delete-comment-dialog')).toBeInTheDocument()
-  expect(queryByTestId('update-dialog')).toBeInTheDocument()
+  const deleteDialogs = getAllByTestId('delete-comment-dialog')
+  const updateDialogs = getAllByTestId('update-dialog')
+
+  expect(deleteDialogs).toHaveLength(1)
+  expect(updateDialogs).toHaveLength(1)
 })
 
 test('renders delete dialog when delete button is clicked', async () => {
@@ -111,12 +114,12 @@ test('renders delete dialog when delete button is clicked', async () => {
   const { getByTestId, queryByTestId } = render(
     <CommentList comments={comments} userId={userLoggedId} />
   )
-
   const deleteButton = getByTestId(`delete-button-${comments[0].id}`)
-  await user.click(deleteButton)
 
+  await user.click(deleteButton)
   const deleteDialog = queryByTestId('delete-comment-dialog')
-  expect(deleteDialog).toBeInTheDocument()
+
+  expect(deleteDialog).toBeVisible()
   expect(deleteDialog).toHaveAttribute('data-comment-id', comments[0].id)
 })
 
@@ -128,9 +131,9 @@ test('renders update dialog when update button is clicked', async () => {
 
   const updateButton = getByTestId(`update-button-${comments[1].id}`)
   await user.click(updateButton)
-
   const updateDialog = queryByTestId('update-dialog')
-  expect(updateDialog).toBeInTheDocument()
+
+  expect(updateDialog).toBeVisible()
   expect(updateDialog).toHaveAttribute('data-comment-id', comments[1].id)
   expect(updateDialog).toHaveAttribute(
     'data-comment-content',
