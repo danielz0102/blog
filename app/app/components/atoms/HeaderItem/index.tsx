@@ -7,7 +7,7 @@ export default function HeaderItem({
   return (
     <button
       type="button"
-      className="cursor-pointer transition-opacity hover:opacity-50"
+      className="cursor-pointer outline-0 transition-opacity hover:opacity-50 focus-visible:opacity-50"
       {...props}
     >
       {children}

@@ -19,7 +19,12 @@ export function Header({ isLoggedIn = false }: { isLoggedIn?: boolean }) {
     <>
       <nav className="flex justify-between p-4">
         <h1 className="text-2xl font-bold">
-          <Link to="/">My Blog</Link>
+          <Link
+            to="/"
+            className="block transform outline-0 transition-transform focus-visible:scale-110"
+          >
+            My Blog
+          </Link>
         </h1>
         {isLoggedIn ? (
           <HeaderItem onClick={handleLogout}>Log out</HeaderItem>

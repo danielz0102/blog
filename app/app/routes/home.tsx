@@ -28,7 +28,12 @@ export default function Home({ loaderData: posts }: Route.ComponentProps) {
         {posts.map(({ id, title, createdAt }) => (
           <article key={id}>
             <h2 className="mb-1 text-2xl">
-              <Link to={`/posts/${id}`}>{title}</Link>
+              <Link
+                to={`/posts/${id}`}
+                className="block transform outline-0 transition-transform focus-visible:scale-105"
+              >
+                {title}
+              </Link>
             </h2>
             <Date date={createdAt} />
           </article>

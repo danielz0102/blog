@@ -38,14 +38,14 @@ export default function Comment({
           <button
             onClick={handleDeleteClick}
             aria-label="Delete"
-            className="cursor-pointer text-red-400"
+            className="cursor-pointer text-red-400 outline-0 transition-transform focus-visible:scale-125"
           >
             <TrashIcon />
           </button>
           <button
             onClick={handleUpdateClick}
             aria-label="Update"
-            className="cursor-pointer"
+            className="cursor-pointer outline-0 transition-transform focus-visible:scale-125"
           >
             <EditIcon />
           </button>
