@@ -6,8 +6,11 @@ import Date from '~/components/atoms/Date'
 
 export function meta(): Route.MetaDescriptors {
   return [
-    { title: 'New React Router App' },
-    { name: 'description', content: 'Welcome to React Router!' }
+    { title: 'My Blog' },
+    {
+      name: 'description',
+      content: 'This is a blog app made with React Router v7'
+    }
   ]
 }
 

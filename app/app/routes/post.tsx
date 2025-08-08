@@ -12,6 +12,10 @@ import CommentList from '~/components/organisms/CommentList'
 import CommentForm from '~/components/organisms/CommentForm'
 import Info from '~/components/molecules/Info'
 
+export function meta({ data }: Route.MetaArgs): Route.MetaDescriptors {
+  return [{ title: `${data?.post.title}` }]
+}
+
 export async function clientLoader({ params }: Route.ClientLoaderArgs) {
   const post = await getPost(params.id as UUID)
   const user = getUser()
