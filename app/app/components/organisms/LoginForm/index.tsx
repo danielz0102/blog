@@ -5,7 +5,7 @@ import { UsernameField } from '~/components/molecules/UsernameField'
 export function LoginForm({ onSuccess = () => {} }) {
   return (
     <CustomForm method="post" action="/auth/login" onSuccess={onSuccess}>
-      <h2>Login</h2>
+      <h2 className="text-3xl font-medium">Welcome back</h2>
       <UsernameField />
       <PasswordField />
     </CustomForm>

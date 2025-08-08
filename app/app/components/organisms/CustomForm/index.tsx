@@ -25,10 +25,14 @@ export function CustomForm({
   }, [success, onSuccess])
 
   return (
-    <fetcher.Form ref={formRef} {...attributes}>
+    <fetcher.Form ref={formRef} {...attributes} className="flex flex-col gap-4">
       {error && <p>{error}</p>}
       {children}
-      <button type="submit" disabled={loading}>
+      <button
+        type="submit"
+        disabled={loading}
+        className="w-fit cursor-pointer self-center rounded bg-white px-8 py-2 font-medium text-black transition-opacity hover:opacity-50"
+      >
         {loading ? 'Submitting...' : 'Submit'}
       </button>
     </fetcher.Form>

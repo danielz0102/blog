@@ -2,6 +2,9 @@ import { useId } from 'react'
 
 import { PASSWORD_PATTERN } from '~/lib/consts'
 
+import Input from '~/components/atoms/Input'
+import FormField from '../FormField'
+
 export interface PasswordFieldProps
   extends Omit<React.HTMLAttributes<HTMLInputElement>, 'id'> {
   label?: string
@@ -18,9 +21,9 @@ export function PasswordField({
   const id = useId()
 
   return (
-    <>
+    <FormField>
       <label htmlFor={id}>{label}</label>
-      <input
+      <Input
         id={id}
         type="password"
         name={name}
@@ -29,6 +32,6 @@ export function PasswordField({
         pattern={!strong ? undefined : PASSWORD_PATTERN}
         {...props}
       />
-    </>
+    </FormField>
   )
 }

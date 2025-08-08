@@ -9,7 +9,7 @@ export function Dialog({ children, ref }: DialogProps) {
   return (
     <dialog
       ref={ref}
-      className="absolute inset-1/2 -translate-1/2 rounded-lg p-4"
+      className="absolute inset-1/2 -translate-1/2 rounded-lg p-8 md:min-w-2xl"
     >
       <button
         aria-label="Close"

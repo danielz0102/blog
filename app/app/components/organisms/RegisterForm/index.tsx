@@ -30,10 +30,10 @@ export function RegisterForm({ onSuccess = () => {} }) {
 
   return (
     <CustomForm method="post" action="/auth/register" onSuccess={onSuccess}>
-      <h2>Register</h2>
-      <details>
+      <h2 className="text-3xl font-medium">Register</h2>
+      <details className="rounded p-2 text-zinc-400">
         <summary>Password must contain at least...</summary>
-        <ul>
+        <ul className="list-disc pl-5">
           <li>8 characters</li>
           <li>1 lowercase letter</li>
           <li>1 uppercase letter</li>
