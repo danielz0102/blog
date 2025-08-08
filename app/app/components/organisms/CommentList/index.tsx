@@ -27,10 +27,11 @@ export default function CommentList({ comments, userId }: CommentListProps) {
 
   return (
     <>
-      <section>
-        <h2>Comments</h2>
+      <section className="flex flex-col gap-4">
         {comments.length === 0 && (
-          <p>No comments yet. Be the first to comment!</p>
+          <p className="text-zinc-400">
+            No comments yet. Be the first to comment!
+          </p>
         )}
         {comments.map((comment) => (
           <PostComment

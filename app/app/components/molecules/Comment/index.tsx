@@ -1,6 +1,10 @@
 import type { UUID } from 'crypto'
 import type { Comment } from '~/types'
 
+import Date from '~/components/atoms/Date'
+import TrashIcon from '~/components/atoms/TrashIcon'
+import EditIcon from '~/components/atoms/EditIcon'
+
 export type CommentProps = {
   comment: Comment
   userId?: UUID
@@ -23,15 +27,29 @@ export default function Comment({
   }
 
   return (
-    <article>
-      <h3>{comment.user.username}</h3>
-      <time dateTime={comment.createdAt}>{comment.createdAt}</time>
-      <p>{comment.content}</p>
+    <article className="flex flex-col gap-2">
+      <div className="flex items-center gap-2">
+        <h3 className="font-medium">{comment.user.username}</h3>
+        <Date date={comment.createdAt} />
+      </div>
+      <p className="text-zinc-200">{comment.content}</p>
       {comment.user.id === userId && (
-        <>
-          <button onClick={handleDeleteClick}>Delete</button>
-          <button onClick={handleUpdateClick}>Update</button>
-        </>
+        <div className="flex gap-2">
+          <button
+            onClick={handleDeleteClick}
+            aria-label="Delete"
+            className="cursor-pointer text-red-400"
+          >
+            <TrashIcon />
+          </button>
+          <button
+            onClick={handleUpdateClick}
+            aria-label="Update"
+            className="cursor-pointer"
+          >
+            <EditIcon />
+          </button>
+        </div>
       )}
     </article>
   )
