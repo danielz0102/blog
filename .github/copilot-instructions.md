@@ -73,7 +73,31 @@ Atomic design structure:
 
 ### Critical Frontend Patterns
 
-#### 1. ActionButton for Mutations
+#### 1. Route Data Loading
+
+Use `clientLoader` for data fetching in route files:
+
+```tsx
+export async function clientLoader() {
+  return getRecentPosts(); // Service layer handles API calls
+}
+
+export default function Home({ loaderData: posts }: Route.ComponentProps) {
+  // Use loaderData prop for type-safe data access
+}
+```
+
+#### 2. Route Actions for Mutations
+
+```tsx
+export async function clientAction({ request, params }: Route.ActionArgs) {
+  const formData = await request.formData();
+  // Always return data() with proper status codes
+  return data({ success: true }, { status: 200 });
+}
+```
+
+#### 3. ActionButton for Non-Form Mutations
 
 ```tsx
 <ActionButton actionUrl="/comments/123/delete">Delete</ActionButton>
@@ -81,13 +105,26 @@ Atomic design structure:
 
 Uses `useFetcher()` internally for non-navigating POST requests.
 
-#### 2. API Communication
+#### 4. Service Layer Pattern
 
-```typescript
+All API calls go through service files in `~/services/`:
+
+```tsx
 import { API_URL } from "~/config"; // From VITE_API_URL env var
+
+export async function getPost(id: UUID): Promise<Post> {
+  const response = await fetch(`${API_URL}/posts/${id}`);
+  const data = await response.json();
+
+  if (!response.ok || "error" in data) {
+    throw new Error(data.error || "Failed to fetch");
+  }
+
+  return formatPost(data); // Transform data before returning
+}
 ```
 
-#### 3. Testing with React Router
+#### 5. Testing with React Router
 
 Always wrap components in `createRoutesStub()` for testing:
 
@@ -110,6 +147,8 @@ const Component = createRoutesStub([
 - Posts with `isDraft: true` only visible to admins
 - Regular users can only comment on published posts
 - All mutations require authentication, most require admin role
+- Models include related data: Posts include comments with user info
+- Default ordering: Posts/comments by `createdAt: 'desc'`
 
 ## Development Commands
 
@@ -164,6 +203,18 @@ Component tests always need router context - never render components directly wi
 3. Mutations via ActionButton → route actions → API calls
 4. Optimistic updates with `useFetcher()` when needed
 
+### Error Handling Pattern
+
+```tsx
+// Service layer error handling
+if (!response.ok || "error" in data) {
+  throw new Error(data.error || "Failed to fetch");
+}
+
+// Route action error responses
+return data({ success: false, error: "Message" }, { status: 400 });
+```
+
 ## Project-Specific Gotchas
 
 - API middleware order is critical - auth before validation, validation before controller
@@ -171,3 +222,14 @@ Component tests always need router context - never render components directly wi
 - Prisma returns `null` for not found - always check explicitly in controllers
 - Use `z.coerce.number()` for query params (come as strings from HTTP)
 - Frontend route actions must return Response objects for proper handling
+
+## Common File Patterns
+
+When adding new features:
+
+1. **Schema**: Create Zod validation in `api/src/lib/schemas/`
+2. **Model**: Add database operations in `api/src/models/`
+3. **Controller**: Add business logic in `api/src/controllers/`
+4. **Routes**: Wire up endpoints in `api/src/routes/` with proper middleware order
+5. **Frontend Service**: Add API calls in `app/app/services/`
+6. **Components**: Follow atomic design in `app/app/components/`
