@@ -18,14 +18,19 @@ export default function DeleteCommentDialog({
 
   return (
     <Dialog ref={ref}>
-      <h3>You are about to delete a comment</h3>
-      <p>The comment cannot be restored</p>
-      <ActionButton
-        actionUrl={`/comments/${commentId}/delete`}
-        onClick={handleDelete}
-      >
-        Delete
-      </ActionButton>
+      <div className="flex flex-col">
+        <h3 className="mb-2 text-2xl font-bold">
+          You are about to delete a comment
+        </h3>
+        <p>The comment cannot be restored</p>
+        <ActionButton
+          className="mt-4 cursor-pointer self-center rounded bg-red-700 px-8 py-2 transition-opacity hover:opacity-50"
+          actionUrl={`/comments/${commentId}/delete`}
+          onClick={handleDelete}
+        >
+          Delete
+        </ActionButton>
+      </div>
     </Dialog>
   )
 }
