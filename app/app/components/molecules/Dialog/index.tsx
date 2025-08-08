@@ -3,13 +3,14 @@ import CloseIcon from '~/components/atoms/CloseIcon'
 export interface DialogProps {
   children: React.ReactNode
   ref: React.RefObject<HTMLDialogElement | null>
+  className?: string
 }
 
-export function Dialog({ children, ref }: DialogProps) {
+export function Dialog({ children, ref, className }: DialogProps) {
   return (
     <dialog
       ref={ref}
-      className="absolute inset-1/2 -translate-1/2 rounded-lg p-8 transition-[opacity,display] transition-discrete backdrop:backdrop-blur-xs md:min-w-2xl starting:opacity-0 [&:not([open])]:opacity-0"
+      className={`absolute inset-1/2 -translate-1/2 rounded-lg p-8 transition-[opacity,display] transition-discrete backdrop:backdrop-blur-xs md:min-w-2xl starting:opacity-0 [&:not([open])]:opacity-0 ${className}`}
     >
       <button
         aria-label="Close"

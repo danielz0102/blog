@@ -17,7 +17,7 @@ export default function DeleteCommentDialog({
   }
 
   return (
-    <Dialog ref={ref}>
+    <Dialog ref={ref} className="min-w-2xs">
       <div className="flex flex-col">
         <h3 className="mb-2 text-2xl font-bold">
           You are about to delete a comment

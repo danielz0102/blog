@@ -17,7 +17,7 @@ export default function UpdateCommentDialog({
   }
 
   return (
-    <Dialog ref={ref}>
+    <Dialog ref={ref} className="min-w-2xs">
       <h3 className="mb-4 text-2xl font-bold">Update Comment</h3>
       <UpdateCommentForm onSuccess={close} comment={comment} />
     </Dialog>
