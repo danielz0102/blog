@@ -26,4 +26,4 @@
 - [x] Refactor username input
 - [x] Refactor password input
 - [x] Render only one set of dialogs for all comments
-- [ ] Add styles
+- [x] Add styles

@@ -10,7 +10,7 @@ import { comment } from '~/services/comment'
 import { BlogPost } from '~/components/organisms/BlogPost'
 import CommentList from '~/components/organisms/CommentList'
 import CommentForm from '~/components/organisms/CommentForm'
-import InfoIcon from '~/components/atoms/InfoIcon'
+import Info from '~/components/molecules/Info'
 
 export async function clientLoader({ params }: Route.ClientLoaderArgs) {
   const post = await getPost(params.id as UUID)
@@ -42,10 +42,7 @@ export default function Post({
       {user ? (
         <CommentForm postId={post.id} />
       ) : (
-        <p className="flex gap-2 rounded border border-zinc-600 bg-zinc-900 p-4 text-zinc-400">
-          <InfoIcon />
-          You are not logged in. Please login to be able to comment.
-        </p>
+        <Info>You are not logged in. Please login to be able to comment.</Info>
       )}
       <CommentList comments={post.comments} userId={user?.id} />
     </main>
