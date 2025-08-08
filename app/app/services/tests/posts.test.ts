@@ -6,7 +6,7 @@ import { mockPosts } from 'tests/mocks/postsMock'
 import { API_URL } from '~/config'
 import { formatPost } from '~/lib/formatPost'
 
-import { getRecentPosts, getPost } from './posts'
+import { getRecentPosts, getPost } from '../posts'
 
 const formattedPosts = mockPosts.map(formatPost)
 const mockFetch = vi.fn()

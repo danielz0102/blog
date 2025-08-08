@@ -2,7 +2,7 @@ import { describe, it, expect, vi, afterEach } from 'vitest'
 
 import { API_URL } from '~/config'
 
-import { comment, deleteComment, update } from './comment'
+import { comment, deleteComment, update } from '../comment'
 
 const MOCK_TOKEN = 'mock-token'
 

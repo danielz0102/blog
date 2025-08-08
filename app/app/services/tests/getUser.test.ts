@@ -2,7 +2,7 @@ import { test, expect, afterEach } from 'vitest'
 
 import jwt from 'jsonwebtoken'
 import { jwtDecode } from 'jwt-decode'
-import { getUser } from './getUser'
+import { getUser } from '../getUser'
 
 afterEach(() => {
   localStorage.clear()

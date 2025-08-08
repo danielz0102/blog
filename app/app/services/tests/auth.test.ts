@@ -1,5 +1,5 @@
 import { test, expect, vi, afterEach } from 'vitest'
-import { auth } from './auth'
+import { auth } from '../auth'
 import { API_URL } from '~/config'
 
 const user = {
