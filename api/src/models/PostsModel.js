@@ -19,11 +19,14 @@ async function get(id) {
   })
 }
 
-async function getAll(limit = 30) {
+async function getAll(limit = 30, title) {
   return await db.post.findMany({
     take: limit,
     orderBy: { createdAt: 'desc' },
-    where: { isDraft: false },
+    where: {
+      isDraft: false,
+      title: title ? { contains: title, mode: 'insensitive' } : undefined
+    },
     include: {
       comments: {
         select: {

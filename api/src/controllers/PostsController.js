@@ -2,7 +2,8 @@ import { PostsModel } from '#models/PostsModel.js'
 
 async function getAll(req, res) {
   const { limit = 10 } = req.query
-  const posts = await PostsModel.getAll(Number(limit))
+  const { title } = req.query
+  const posts = await PostsModel.getAll(Number(limit), title)
   res.json(posts)
 }
 

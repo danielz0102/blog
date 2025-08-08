@@ -10,5 +10,6 @@ export const querySchema = z.object({
   limit: z.coerce
     .number('Must be a positive number')
     .positive('Must be a positive number')
-    .optional()
+    .optional(),
+  title: z.string().nonempty().optional()
 })
