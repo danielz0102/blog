@@ -1,6 +1,7 @@
 packages:
   - api
   - app
+  - admin
 
 onlyBuiltDependencies:
   - '@prisma/client'
@@ -8,3 +9,4 @@ onlyBuiltDependencies:
   - '@tailwindcss/oxide'
   - esbuild
   - prisma
+  - sharp
