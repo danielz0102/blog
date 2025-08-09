@@ -9,7 +9,7 @@ import PostSearchBar from '.'
 
 const Stub = () => {
   const Component = createRoutesStub([
-    { path: '/', Component: PostSearchBar },
+    { path: '/', Component: () => <PostSearchBar /> },
     {
       path: '/posts/search',
       loader: () => mockPosts

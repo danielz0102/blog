@@ -18,7 +18,7 @@ export function Header({ isLoggedIn = false }: { isLoggedIn?: boolean }) {
 
   return (
     <>
-      <nav className="flex justify-between p-4">
+      <nav className="flex flex-wrap justify-between gap-4 p-4">
         <h1 className="text-2xl font-bold">
           <Link
             to="/"
@@ -27,19 +27,23 @@ export function Header({ isLoggedIn = false }: { isLoggedIn?: boolean }) {
             My Blog
           </Link>
         </h1>
-        <PostSearchBar />
-        {isLoggedIn ? (
-          <HeaderItem onClick={handleLogout}>Log out</HeaderItem>
-        ) : (
-          <div className="flex gap-4">
-            <HeaderItem onClick={() => loginDialogRef.current?.showModal()}>
-              Log in
-            </HeaderItem>
-            <HeaderItem onClick={() => registerDialogRef.current?.showModal()}>
-              Register
-            </HeaderItem>
-          </div>
-        )}
+        <PostSearchBar className="order-last md:order-none" />
+        <div className="flex gap-4">
+          {isLoggedIn ? (
+            <HeaderItem onClick={handleLogout}>Log out</HeaderItem>
+          ) : (
+            <>
+              <HeaderItem onClick={() => loginDialogRef.current?.showModal()}>
+                Log in
+              </HeaderItem>
+              <HeaderItem
+                onClick={() => registerDialogRef.current?.showModal()}
+              >
+                Register
+              </HeaderItem>
+            </>
+          )}
+        </div>
       </nav>
       <Dialog ref={loginDialogRef}>
         <LoginForm onSuccess={() => loginDialogRef.current?.close()} />

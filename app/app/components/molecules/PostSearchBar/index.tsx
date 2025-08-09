@@ -1,11 +1,15 @@
 import type { Post } from '~/types'
 
 import { Link, useFetcher } from 'react-router'
-import { useRef } from 'react'
+import { useRef, type HtmlHTMLAttributes } from 'react'
 
 import Input from '~/components/atoms/Input'
 
-export default function PostSearchBar() {
+export interface PostSearchBarProps {
+  className?: HtmlHTMLAttributes<HTMLDivElement>['className']
+}
+
+export default function PostSearchBar({ className = '' }: PostSearchBarProps) {
   const fetcher = useFetcher<Post[]>()
   const inputRef = useRef<HTMLInputElement>(null)
 
@@ -21,7 +25,9 @@ export default function PostSearchBar() {
   }
 
   return (
-    <div className="relative flex flex-col items-center md:min-w-2xl">
+    <div
+      className={`relative flex w-full flex-col items-center md:max-w-2xl ${className}`}
+    >
       <Input
         ref={inputRef}
         type="search"
