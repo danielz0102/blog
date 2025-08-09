@@ -11,6 +11,7 @@ export default [
     route('auth/:action', 'routes/auth.ts'),
     route('logout', 'routes/logout.ts'),
     route('posts/:id', 'routes/post.tsx'),
+    route('posts/search', 'routes/searchPosts.ts'),
     route('comments/:id/delete', 'routes/deleteComment.ts'),
     route('comments/:id/update', 'routes/updateComment.ts')
   ])

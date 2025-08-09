@@ -5,6 +5,7 @@ import HeaderItem from '~/components/atoms/HeaderItem'
 import { Dialog } from '~/components/molecules/Dialog'
 import { LoginForm } from '../LoginForm'
 import { RegisterForm } from '../RegisterForm'
+import PostSearchBar from '~/components/molecules/PostSearchBar'
 
 export function Header({ isLoggedIn = false }: { isLoggedIn?: boolean }) {
   const fetcher = useFetcher()
@@ -26,6 +27,7 @@ export function Header({ isLoggedIn = false }: { isLoggedIn?: boolean }) {
             My Blog
           </Link>
         </h1>
+        <PostSearchBar />
         {isLoggedIn ? (
           <HeaderItem onClick={handleLogout}>Log out</HeaderItem>
         ) : (

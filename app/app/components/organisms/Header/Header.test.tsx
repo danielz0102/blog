@@ -14,6 +14,10 @@ vi.mock('../RegisterForm', () => ({
   RegisterForm: () => <div data-testid="register-form"></div>
 }))
 
+vi.mock('~/components/molecules/PostSearchBar', () => ({
+  default: () => <div data-testid="post-search-bar"></div>
+}))
+
 const logoutAction = vi.fn()
 
 const Stub = ({ isLoggedIn = false }: { isLoggedIn?: boolean }) => {
@@ -61,4 +65,10 @@ test('only has a button to log out when logged in', async () => {
   await user.click(getByRole('button', { name: 'Log out' }))
 
   expect(logoutAction).toHaveBeenCalled()
+})
+
+test('renders PostSearchBar', () => {
+  const { queryByTestId } = render(<Stub />)
+
+  expect(queryByTestId('post-search-bar')).toBeInTheDocument()
 })
