@@ -24,10 +24,17 @@ describe('getRecentPosts', () => {
     )
   })
 
-  it('calls fetch correctly', async () => {
+  it('calls fetch correctly without title', async () => {
     await getRecentPosts()
 
     expect(mockFetch).toHaveBeenCalledWith(`${API_URL}/posts`)
+  })
+
+  it('calls fetch correctly with title', async () => {
+    const title = 'Test Title'
+    await getRecentPosts(title)
+
+    expect(mockFetch).toHaveBeenCalledWith(`${API_URL}/posts?title=${encodeURIComponent(title)}`)
   })
 
   it('throws an error if response is not ok', async () => {
