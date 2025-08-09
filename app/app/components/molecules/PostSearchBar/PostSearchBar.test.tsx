@@ -37,3 +37,16 @@ test('shows links with posts found', async () => {
 
   expect(queryByRole('link', { name: mockPosts[0].title })).toBeInTheDocument()
 })
+
+test('clears the input when a link is clicked', async () => {
+  const user = userEvent.setup()
+  const { getByRole } = render(<Stub />)
+  const input = getByRole('searchbox')
+  await user.type(input, 'Post 1')
+  const link = getByRole('link', { name: mockPosts[0].title })
+
+  await user.click(link)
+
+  expect(input).toHaveValue('')
+  expect(link).not.toBeInTheDocument()
+})
