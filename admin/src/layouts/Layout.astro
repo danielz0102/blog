@@ -17,7 +17,7 @@ const { title } = Astro.props
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>{title}</title>
   </head>
-  <body class="flex min-h-dvh flex-col bg-gray-200">
-    <slot class="grid-span-full" />
+  <body class="flex min-h-dvh flex-col bg-gray-200 [&>main]:flex-1">
+    <slot />
   </body>
 </html>
