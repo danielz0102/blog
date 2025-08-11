@@ -1,8 +1,13 @@
 ---
 import { actions } from 'astro:actions'
+
 import Layout from '../layouts/Layout.astro'
+import Input from '../components/Input.astro'
+import FormField from '../components/FormField.astro'
+import Button from '../components/Button.astro'
 
 export const prerender = false
+
 const result = Astro.getActionResult(actions.login)
 
 if (result && !result.error) {
@@ -11,25 +16,51 @@ if (result && !result.error) {
 ---
 
 <Layout title="Admin Blog Management">
-  <h1>Login</h1>
-  <form method="post" action={actions.login}>
-    {result?.error && <p>{result.error.message}</p>}
-    <label for="username">Username</label>
-    <input
-      type="text"
-      id="username"
-      name="username"
-      placeholder="john_doe_123"
-      required
-    />
-    <label for="password">Password</label>
-    <input
-      type="password"
-      id="password"
-      name="password"
-      placeholder="********"
-      required
-    />
-    <button type="submit">Login</button>
-  </form>
+  <main
+    class="mx-auto flex flex-1 flex-col items-center justify-center gap-8 p-8 md:max-w-2xl"
+  >
+    <div class="prose">
+      <h1>Log in</h1>
+      <p>
+        This app allows the <strong>administrator</strong> to manage the blog's content.
+        You're probably looking for the blog's homepage.
+      </p>
+    </div>
+    <form
+      method="post"
+      action={actions.login}
+      class="flex flex-col gap-4 self-stretch"
+    >
+      {
+        result?.error && (
+          <div class="rounded border border-red-400 bg-red-200 px-4 py-2">
+            <p>{result.error.message}</p>
+          </div>
+        )
+      }
+      <FormField>
+        <label for="username">Username</label>
+        <Input
+          type="text"
+          id="username"
+          name="username"
+          placeholder="john_doe_123"
+          required
+          class="flex-1"
+        />
+      </FormField>
+      <FormField>
+        <label for="password">Password</label>
+        <Input
+          type="password"
+          id="password"
+          name="password"
+          placeholder="********"
+          required
+          class="flex-1"
+        />
+      </FormField>
+      <Button type="submit">Login</Button>
+    </form>
+  </main>
 </Layout>
