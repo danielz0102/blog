@@ -1,4 +1,5 @@
 import type { UserPayload } from '../env'
+import { ADMIN_TOKEN_COOKIE } from '../consts'
 
 import { API_URL } from 'astro:env/server'
 import { defineAction } from 'astro:actions'
@@ -46,7 +47,7 @@ export const server = {
 
       const SEVEN_DAYS = 60 * 60 * 1000 * 24 * 7
 
-      ctx.cookies.set('admin-token', data.token, {
+      ctx.cookies.set(ADMIN_TOKEN_COOKIE, data.token, {
         httpOnly: true,
         secure: true,
         sameSite: 'strict',
