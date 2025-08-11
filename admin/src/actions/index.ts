@@ -44,10 +44,13 @@ export const server = {
         })
       }
 
+      const SEVEN_DAYS = 60 * 60 * 1000 * 24 * 7
+
       ctx.cookies.set('admin-token', data.token, {
         httpOnly: true,
         secure: true,
         sameSite: 'strict',
+        expires: new Date(Date.now() + SEVEN_DAYS),
       })
     },
   }),
