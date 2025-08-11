@@ -1,14 +1,17 @@
+import type { UserPayload } from '../env'
+
 import { API_URL } from 'astro:env/server'
 import { defineAction } from 'astro:actions'
 import { ActionError } from 'astro:actions'
 import { z } from 'astro:schema'
+
+import { jwtDecode } from 'jwt-decode'
 
 export const server = {
   login: defineAction({
     input: z.object({ username: z.string(), password: z.string() }),
     accept: 'form',
     handler: async (input, ctx) => {
-      // TODO: Ensure that the user is admin
       const response = await fetch(`${API_URL}/users/login`, {
         method: 'POST',
         headers: {
@@ -32,6 +35,14 @@ export const server = {
       }
 
       const data: { token: string } = await response.json()
+      const decoded = jwtDecode<UserPayload>(data.token)
+
+      if (!decoded.admin) {
+        throw new ActionError({
+          code: 'FORBIDDEN',
+          message: 'You do not have permission to access this resource',
+        })
+      }
 
       ctx.cookies.set('admin-token', data.token, {
         httpOnly: true,
