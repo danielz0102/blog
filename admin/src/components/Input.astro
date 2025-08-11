@@ -7,6 +7,9 @@ const { class: className, ...props } = Astro.props
 ---
 
 <input
-  class:list={['border-b border-zinc-400 p-2 outline-0', className]}
+  class:list={[
+    'border-b border-zinc-400 p-2 outline-0 user-invalid:border-red-600 user-invalid:placeholder:text-red-600',
+    className,
+  ]}
   {...props}
 />
