@@ -55,4 +55,10 @@ export const server = {
       })
     },
   }),
+  logout: defineAction({
+    accept: 'form',
+    handler: async (_, ctx) => {
+      ctx.cookies.delete(ADMIN_TOKEN_COOKIE)
+    },
+  }),
 }
