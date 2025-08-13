@@ -9,7 +9,7 @@ import Button from '../components/Button.astro'
 import LoginIcon from '@lucide/astro/icons/log-in'
 import BanIcon from '@lucide/astro/icons/ban'
 
-const result = Astro.getActionResult(actions.login)
+const result = Astro.getActionResult(actions.user.login)
 
 if (result && !result.error) {
   return Astro.redirect('/')
@@ -29,7 +29,7 @@ if (result && !result.error) {
     </div>
     <form
       method="post"
-      action={actions.login}
+      action={actions.user.login}
       class="flex flex-col gap-4 self-stretch"
     >
       {

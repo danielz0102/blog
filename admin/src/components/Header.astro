@@ -4,7 +4,7 @@ import LogoutIcon from '@lucide/astro/icons/log-out'
 ---
 
 <header class="flex justify-end p-4">
-  <form method="post" action={actions.logout}>
+  <form method="post" action={actions.user.logout}>
     <button class="flex cursor-pointer gap-2 hover:opacity-50" type="submit">
       Log out <LogoutIcon stroke-width={1} />
     </button>

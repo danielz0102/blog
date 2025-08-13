@@ -2,7 +2,7 @@
 import Layout from '../layouts/Layout.astro'
 import { actions } from 'astro:actions'
 
-const result = Astro.getActionResult(actions.logout)
+const result = Astro.getActionResult(actions.user.logout)
 
 if (result && !result.error) {
   return Astro.redirect('/login')
