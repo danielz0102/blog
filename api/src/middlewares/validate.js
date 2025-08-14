@@ -1,5 +1,3 @@
-import { flattenError } from 'zod/v4'
-
 export const validate =
   ({ bodySchema = null, paramsSchema = null, querySchema = null }) =>
   (req, res, next) => {
@@ -17,24 +15,20 @@ export const validate =
       schemas.push({ type: 'query', schema: querySchema })
     }
 
-    const { errors, data } = schemas.reduce(
-      (result, { type, schema }) => {
-        const validation = schema.safeParse(req[type])
+    const isInvalid = schemas.some(({ schema, type }) => {
+      const validation = schema.safeParse(req[type])
+      return !validation.success
+    })
 
-        if (!validation.success) {
-          result.errors[type] = flattenError(validation.error).fieldErrors
-          return result
-        }
-
-        result.data[type] = validation.data
-        return result
-      },
-      { errors: {}, data: {} }
-    )
-
-    if (Object.keys(errors).length > 0) {
-      return res.status(400).json({ errors })
+    if (isInvalid) {
+      return res.status(400).json({ error: 'The request validation failed' })
     }
+
+    const data = schemas.reduce((result, { type, schema }) => {
+      const validation = schema.parse(req[type])
+      result[type] = validation.data
+      return result
+    }, {})
 
     Object.keys(data).forEach((key) => {
       // req.query is read-only
