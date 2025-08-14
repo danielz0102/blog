@@ -30,12 +30,12 @@ export const validate =
       return result
     }, {})
 
-    Object.keys(data).forEach((key) => {
+    for (const key in data) {
       // req.query is read-only
       if (key !== 'query') {
         req[key] = data[key]
       }
-    })
+    }
 
     next()
   }
