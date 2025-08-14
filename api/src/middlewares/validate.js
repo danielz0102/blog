@@ -25,7 +25,7 @@ export const validate =
     }
 
     const data = schemas.reduce((result, { type, schema }) => {
-      const validation = schema.parse(req[type])
+      const validation = schema.safeParse(req[type])
       result[type] = validation.data
       return result
     }, {})
