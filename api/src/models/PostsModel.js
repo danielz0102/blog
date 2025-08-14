@@ -19,7 +19,7 @@ async function get(id) {
   })
 }
 
-async function getAll(limit = 30, title) {
+async function getAllPosts(limit = 30, title) {
   return await db.post.findMany({
     take: limit,
     orderBy: { createdAt: 'desc' },
@@ -43,7 +43,7 @@ async function getAll(limit = 30, title) {
   })
 }
 
-async function getDrafts(limit = 30) {
+async function getAllDrafts(limit = 30) {
   return await db.post.findMany({
     take: limit,
     orderBy: { createdAt: 'desc' },
@@ -88,8 +88,8 @@ async function deletePost(id) {
 
 export const PostsModel = {
   get,
-  getAll,
-  getDrafts,
+  getAllPosts,
+  getAllDrafts,
   create,
   update,
   delete: deletePost

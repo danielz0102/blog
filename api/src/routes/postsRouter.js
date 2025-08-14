@@ -11,12 +11,12 @@ import { paramsSchema } from '#lib/schemas/commonSchemas.js'
 
 export const postsRouter = Router()
 
-postsRouter.get('/', validate({ querySchema }), PostsController.getAll)
+postsRouter.get('/', validate({ querySchema }), PostsController.getAllPosts)
 postsRouter.get(
   '/drafts',
   onlyAdmin,
   validate({ querySchema }),
-  PostsController.getDrafts
+  PostsController.getAllDrafts
 )
 postsRouter.get('/:id', validate({ paramsSchema }), PostsController.get)
 postsRouter.post(
