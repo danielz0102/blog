@@ -2,13 +2,13 @@ import { PostsModel } from '#models/PostsModel.js'
 
 async function getAllPosts(req, res) {
   const { limit = 10, title } = req.query
-  const posts = await PostsModel.getAllPosts(Number(limit), title)
+  const posts = await PostsModel.getAll({ limit, title, isDraft: false })
   res.json(posts)
 }
 
 async function getAllDrafts(req, res) {
   const { limit = 10, title } = req.query
-  const drafts = await PostsModel.getAllDrafts(Number(limit), title)
+  const drafts = await PostsModel.getAll({ limit, title, isDraft: true })
   res.json(drafts)
 }
 

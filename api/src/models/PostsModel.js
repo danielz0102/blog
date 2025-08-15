@@ -19,36 +19,12 @@ async function get(id) {
   })
 }
 
-async function getAllPosts(limit = 30, title) {
+async function getAll({ limit = 30, isDraft, title }) {
   return await db.post.findMany({
     take: limit,
     orderBy: { createdAt: 'desc' },
     where: {
-      isDraft: false,
-      title: title ? { contains: title, mode: 'insensitive' } : undefined
-    },
-    include: {
-      comments: {
-        select: {
-          id: true,
-          content: true,
-          createdAt: true,
-          user: {
-            select: { id: true, username: true }
-          }
-        },
-        orderBy: { createdAt: 'desc' }
-      }
-    }
-  })
-}
-
-async function getAllDrafts(limit = 30, title) {
-  return await db.post.findMany({
-    take: limit,
-    orderBy: { createdAt: 'desc' },
-    where: {
-      isDraft: true,
+      isDraft,
       title: title ? { contains: title, mode: 'insensitive' } : undefined
     },
     include: {
@@ -104,8 +80,7 @@ async function deletePost(id) {
 
 export const PostsModel = {
   get,
-  getAllPosts,
-  getAllDrafts,
+  getAll,
   create,
   update,
   delete: deletePost
