@@ -1,5 +1,11 @@
 import { PostsModel } from '#models/PostsModel.js'
 
+async function getAll(req, res) {
+  const { limit = 10, title } = req.query
+  const posts = await PostsModel.getAll({ limit, title })
+  res.json(posts)
+}
+
 async function getAllPosts(req, res) {
   const { limit = 10, title } = req.query
   const posts = await PostsModel.getAll({ limit, title, isDraft: false })
@@ -56,6 +62,7 @@ async function deletePost(req, res) {
 
 export const PostsController = {
   get,
+  getAll,
   getAllPosts,
   getAllDrafts,
   create,

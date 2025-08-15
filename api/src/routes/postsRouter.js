@@ -18,6 +18,12 @@ postsRouter.get(
   validate({ querySchema }),
   PostsController.getAllDrafts
 )
+postsRouter.get(
+  '/all',
+  onlyAdmin,
+  validate({ querySchema }),
+  PostsController.getAll
+)
 postsRouter.get('/:id', validate({ paramsSchema }), PostsController.get)
 postsRouter.post(
   '/',
