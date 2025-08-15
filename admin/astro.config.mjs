@@ -9,6 +9,7 @@ export default defineConfig({
   env: {
     schema: {
       API_URL: envField.string({ context: 'server', access: 'public' }),
+      TOKEN_SECRET: envField.string({ context: 'server', access: 'secret' }),
     },
   },
 })
