@@ -1,12 +1,40 @@
 ---
-import Layout from '../layouts/Layout.astro'
 import { actions } from 'astro:actions'
+import Layout from '../layouts/Layout.astro'
+import DraftIcon from '@lucide/astro/icons/pencil-off'
 
-const result = Astro.getActionResult(actions.user.logout)
+const logoutResult = Astro.getActionResult(actions.user.logout)
 
-if (result && !result.error) {
+if (logoutResult && !logoutResult.error) {
   return Astro.redirect('/login')
 }
+
+const data = await Astro.callAction(actions.posts.getAll.orThrow, {})
 ---
 
-<Layout title="Admin Blog Management">Hello World</Layout>
+<Layout title="Admin Blog Management">
+  <main class="flex flex-col items-center gap-8 p-4">
+    <h1 class="text-3xl font-bold">Recent Posts And Drafts</h1>
+    <section class="flex flex-col gap-2">
+      {
+        data.map((post) => (
+          <article>
+            <div class="flex items-center gap-4">
+              <h2 class="text-2xl">
+                <a href={`/posts/${post.id}`}>{post.title}</a>
+              </h2>
+              {post.isDraft && (
+                <small>
+                  Draft <DraftIcon stroke-width={1} size={16} />
+                </small>
+              )}
+            </div>
+            <time class="text-sm text-zinc-500" datetime={post.createdAt}>
+              {post.createdAt}
+            </time>
+          </article>
+        ))
+      }
+    </section>
+  </main>
+</Layout>

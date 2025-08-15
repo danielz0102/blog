@@ -4,7 +4,8 @@
 
 - [x] Log in & log out
 - [x] Allow only admin access
-- [ ] See posts and drafts
+- [x] See recent posts and drafts
+- [ ] Filter by title and date
 - [ ] Edit posts and drafts
 - [ ] Delete posts and drafts
 - [ ] Publish posts and create drafts
