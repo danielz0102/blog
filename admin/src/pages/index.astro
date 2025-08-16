@@ -19,6 +19,13 @@ const data = await Astro.callAction(
     <FiltersForm />
     <section class="flex flex-col gap-2">
       {
+        data.length === 0 && (
+          <h2 class="text-2xl font-light text-gray-500">
+            No posts found. Try adjusting your filters.
+          </h2>
+        )
+      }
+      {
         data.map((post) => (
           <article>
             <div class="flex items-center gap-4">
