@@ -1,0 +1,51 @@
+---
+import Button from './Button.astro'
+import FormField from './FormField.astro'
+import Input from './Input.astro'
+
+const searchParams = Object.fromEntries(Astro.url.searchParams.entries())
+---
+
+<section>
+  <h2 class="text-2xl">Filters</h2>
+  <form class="flex gap-4" id="filtersForm">
+    <FormField>
+      <label for="createdAt">Created At</label>
+      <Input
+        type="date"
+        id="createdAt"
+        name="createdAt"
+        value={searchParams.createdAt}
+      />
+    </FormField>
+    <FormField>
+      <label for="startDate">Start Date</label>
+      <Input
+        type="date"
+        id="startDate"
+        name="startDate"
+        value={searchParams.startDate}
+      />
+    </FormField>
+    <FormField>
+      <label for="endDate">End Date</label>
+      <Input
+        type="date"
+        id="endDate"
+        name="endDate"
+        value={searchParams.endDate}
+      />
+    </FormField>
+    <FormField>
+      <label for="title">Title</label>
+      <Input
+        type="search"
+        id="title"
+        name="title"
+        placeholder="Search by title"
+        value={searchParams.title}
+      />
+    </FormField>
+    <Button>Filter</Button>
+  </form>
+</section>

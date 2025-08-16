@@ -1,14 +1,22 @@
 ---
 import { actions } from 'astro:actions'
 import Layout from '@layouts/Layout.astro'
-import DraftIcon from '@lucide/astro/icons/pencil-off'
+import Pencil from '@lucide/astro/icons/pencil'
+import FiltersForm from '@components/FiltersForm.astro'
 
-const data = await Astro.callAction(actions.posts.getAll.orThrow, {})
+const searchParams = Astro.url.searchParams.entries()
+const nonEmptyParams = searchParams.filter(([_, value]) => value !== '')
+
+const data = await Astro.callAction(
+  actions.posts.getAll.orThrow,
+  Object.fromEntries(nonEmptyParams),
+)
 ---
 
 <Layout title="Admin Blog Management">
   <main class="flex flex-col items-center gap-8 p-4">
     <h1 class="text-3xl font-bold">Recent Posts And Drafts</h1>
+    <FiltersForm />
     <section class="flex flex-col gap-2">
       {
         data.map((post) => (
@@ -18,8 +26,8 @@ const data = await Astro.callAction(actions.posts.getAll.orThrow, {})
                 <a href={`/posts/${post.id}`}>{post.title}</a>
               </h2>
               {post.isDraft && (
-                <small>
-                  Draft <DraftIcon stroke-width={1} size={16} />
+                <small class="flex gap-2 rounded-full bg-gray-600 px-4 py-2 text-xs text-gray-200">
+                  Draft <Pencil stroke-width={1} size={16} />
                 </small>
               )}
             </div>
