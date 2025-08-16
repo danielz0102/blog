@@ -1,16 +1,26 @@
 ---
 import type { HTMLAttributes } from 'astro/types'
 
-interface Props extends HTMLAttributes<'button'> {}
+type Variant = 'primary' | 'secondary'
 
-const { class: className, ...props } = Astro.props
+interface Props extends HTMLAttributes<'button'> {
+  variant?: Variant
+}
+
+const { class: className, variant = 'primary', ...props } = Astro.props
+
+const VARIANTS: Record<Variant, string> = {
+  primary: 'rounded bg-gray-900 px-4 py-2 text-gray-100 hover:opacity-75',
+  secondary: 'hover:opacity-50',
+}
 ---
 
 <button
   {...props}
   class:list={[
     className,
-    'flex cursor-pointer items-center justify-center gap-2 rounded bg-gray-900 px-4 py-2 text-gray-100 hover:opacity-75',
+    VARIANTS[variant],
+    'flex cursor-pointer items-center justify-center gap-2',
   ]}
 >
   <slot />

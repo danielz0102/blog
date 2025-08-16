@@ -1,16 +1,13 @@
 ---
 import LogoutIcon from '@lucide/astro/icons/log-out'
+import Button from './Button.astro'
 ---
 
 <header class="flex items-center justify-between p-4">
   <h2 class="text-2xl font-semibold"><a href="/">Blog Management</a></h2>
-  <button
-    class="flex cursor-pointer gap-2 hover:opacity-50"
-    type="submit"
-    id="logoutBtn"
-  >
+  <Button variant="secondary" type="submit" id="logoutBtn">
     Log out <LogoutIcon stroke-width={1} />
-  </button>
+  </Button>
 </header>
 
 <script>

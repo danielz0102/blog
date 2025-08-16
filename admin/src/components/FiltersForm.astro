@@ -1,5 +1,6 @@
 ---
 import Funnel from '@lucide/astro/icons/funnel'
+import Rotate from '@lucide/astro/icons/rotate-ccw'
 import Button from './Button.astro'
 import FormField from './FormField.astro'
 import Input from './Input.astro'
@@ -57,7 +58,13 @@ const searchParams = Object.fromEntries(Astro.url.searchParams.entries())
       />
     </FormField>
   </form>
-  <Button form="filtersForm">
-    Apply <Funnel stroke-width={1} />
-  </Button>
+  <div class="flex gap-4">
+    <Button variant="secondary" type="reset" form="filtersForm">
+      Reset
+      <Rotate stroke-width={1} />
+    </Button>
+    <Button form="filtersForm">
+      Apply <Funnel stroke-width={1} />
+    </Button>
+  </div>
 </section>
