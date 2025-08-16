@@ -1,4 +1,5 @@
 import { PostsModel } from '#models/PostsModel.js'
+import { DateFilter } from '#lib/DateFilter.js'
 
 async function getAll(req, res) {
   const {
@@ -9,12 +10,21 @@ async function getAll(req, res) {
     endDate,
     onlyDraft
   } = req.query
+
+  const dateFilter = new DateFilter(createdAt)
+
+  if (startDate && !createdAt) {
+    dateFilter.setStartDate(startDate)
+  }
+
+  if (endDate && !createdAt) {
+    dateFilter.setEndDate(endDate)
+  }
+
   const posts = await PostsModel.getAll({
     limit,
     title,
-    createdAt,
-    startDate,
-    endDate,
+    dateFilter,
     isDraft: onlyDraft ? true : undefined
   })
   res.json(posts)
