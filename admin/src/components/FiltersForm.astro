@@ -1,4 +1,5 @@
 ---
+import Funnel from '@lucide/astro/icons/funnel'
 import Button from './Button.astro'
 import FormField from './FormField.astro'
 import Input from './Input.astro'
@@ -6,9 +7,9 @@ import Input from './Input.astro'
 const searchParams = Object.fromEntries(Astro.url.searchParams.entries())
 ---
 
-<section>
-  <h2 class="text-2xl">Filters</h2>
-  <form class="flex gap-4" id="filtersForm">
+<section class="flex flex-col items-center gap-4 rounded bg-zinc-300 p-4">
+  <h2 class="text-2xl font-semibold">Filters</h2>
+  <form class="flex flex-wrap justify-center gap-4" id="filtersForm">
     <FormField>
       <label for="createdAt">Created At</label>
       <Input
@@ -46,6 +47,8 @@ const searchParams = Object.fromEntries(Astro.url.searchParams.entries())
         value={searchParams.title}
       />
     </FormField>
-    <Button>Filter</Button>
   </form>
+  <Button form="filtersForm">
+    Apply <Funnel stroke-width={1} />
+  </Button>
 </section>

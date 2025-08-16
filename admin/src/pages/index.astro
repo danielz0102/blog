@@ -14,8 +14,8 @@ const data = await Astro.callAction(
 ---
 
 <Layout title="Admin Blog Management">
-  <main class="flex flex-col items-center gap-8 p-4">
-    <h1 class="text-3xl font-bold">Recent Posts And Drafts</h1>
+  <main class="flex max-w-3xl flex-col items-center gap-8 self-center p-4">
+    <h1 class="text-3xl font-bold">Last Posts And Drafts</h1>
     <FiltersForm />
     <section class="flex flex-col gap-2">
       {
