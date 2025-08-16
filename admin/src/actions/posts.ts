@@ -1,11 +1,18 @@
 import { ActionError, defineAction } from 'astro:actions'
+import { z } from 'astro:schema'
 
 import { API_URL } from 'astro:env/server'
 import { ADMIN_TOKEN_COOKIE } from '@/consts'
 import type { Post } from '@/env'
 
 const getAll = defineAction({
-  handler: async (_, ctx): Promise<Post[]> => {
+  input: z.object({
+    title: z.string().trim().optional(),
+    createdAt: z.string().trim().date().optional(),
+    startDate: z.string().trim().date().optional(),
+    endDate: z.string().trim().date().optional(),
+  }),
+  handler: async (input, ctx): Promise<Post[]> => {
     const tokenCookie = ctx.cookies.get(ADMIN_TOKEN_COOKIE)
 
     if (!tokenCookie) {
@@ -15,7 +22,8 @@ const getAll = defineAction({
       })
     }
 
-    const response = await fetch(`${API_URL}/posts/all`, {
+    const queryParams = new URLSearchParams(input)
+    const response = await fetch(`${API_URL}/posts/all?${queryParams}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -42,6 +50,4 @@ const getAll = defineAction({
   },
 })
 
-export const posts = {
-  getAll,
-}
+export const posts = { getAll }

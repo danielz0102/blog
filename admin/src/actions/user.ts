@@ -60,7 +60,4 @@ const logout = defineAction({
   },
 })
 
-export const user = {
-  login,
-  logout,
-}
+export const user = { login, logout }
