@@ -47,6 +47,15 @@ const searchParams = Object.fromEntries(Astro.url.searchParams.entries())
         value={searchParams.title}
       />
     </FormField>
+    <FormField>
+      <label for="onlyDraft">Only drafts</label>
+      <Input
+        type="checkbox"
+        id="onlyDraft"
+        name="onlyDraft"
+        checked={searchParams.onlyDraft === 'on'}
+      />
+    </FormField>
   </form>
   <Button form="filtersForm">
     Apply <Funnel stroke-width={1} />

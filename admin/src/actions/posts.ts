@@ -11,6 +11,7 @@ const getAll = defineAction({
     createdAt: z.string().trim().date().optional(),
     startDate: z.string().trim().date().optional(),
     endDate: z.string().trim().date().optional(),
+    onlyDraft: z.string().optional(),
   }),
   handler: async (input, ctx): Promise<Post[]> => {
     const tokenCookie = ctx.cookies.get(ADMIN_TOKEN_COOKIE)

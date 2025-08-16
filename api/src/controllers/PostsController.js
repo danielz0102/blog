@@ -1,13 +1,21 @@
 import { PostsModel } from '#models/PostsModel.js'
 
 async function getAll(req, res) {
-  const { limit = 10, title, createdAt, startDate, endDate } = req.query
+  const {
+    limit = 10,
+    title,
+    createdAt,
+    startDate,
+    endDate,
+    onlyDraft
+  } = req.query
   const posts = await PostsModel.getAll({
     limit,
     title,
     createdAt,
     startDate,
-    endDate
+    endDate,
+    isDraft: onlyDraft ? true : undefined
   })
   res.json(posts)
 }
