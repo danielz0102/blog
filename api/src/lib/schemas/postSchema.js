@@ -13,3 +13,9 @@ export const querySchema = z.object({
     .optional(),
   title: z.string().nonempty().optional()
 })
+
+export const searchSchema = querySchema.extend({
+  createdAt: z.iso.date().optional(),
+  startDate: z.iso.date().optional(),
+  endDate: z.iso.date().optional()
+})

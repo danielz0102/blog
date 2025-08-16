@@ -7,6 +7,7 @@ import { onlyAdmin } from '#middlewares/onlyAdmin.js'
 
 import { postSchema } from '#lib/schemas/postSchema.js'
 import { querySchema } from '#lib/schemas/postSchema.js'
+import { searchSchema } from '#lib/schemas/postSchema.js'
 import { paramsSchema } from '#lib/schemas/commonSchemas.js'
 
 export const postsRouter = Router()
@@ -21,7 +22,7 @@ postsRouter.get(
 postsRouter.get(
   '/all',
   onlyAdmin,
-  validate({ querySchema }),
+  validate({ querySchema: searchSchema }),
   PostsController.getAll
 )
 postsRouter.get('/:id', validate({ paramsSchema }), PostsController.get)
