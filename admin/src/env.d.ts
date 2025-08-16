@@ -8,11 +8,11 @@ interface User {
 
 interface UserPayload extends JwtPayload, User {}
 
-export interface GetAllPostsResponse {
+export interface Post {
   id: string
   title: string
   content: string
-  createdAt: Date
+  createdAt: string
   isDraft: boolean
   comments: Comment[]
 }

@@ -2,11 +2,11 @@ import { ActionError, defineAction } from 'astro:actions'
 
 import { API_URL } from 'astro:env/server'
 import { ADMIN_TOKEN_COOKIE } from '@/consts'
-import type { GetAllPostsResponse } from '@/env'
+import type { Post } from '@/env'
 
 export const posts = {
   getAll: defineAction({
-    handler: async (_, ctx) => {
+    handler: async (_, ctx): Promise<Post[]> => {
       const tokenCookie = ctx.cookies.get(ADMIN_TOKEN_COOKIE)
 
       if (!tokenCookie) {
@@ -31,7 +31,7 @@ export const posts = {
         })
       }
 
-      const data: GetAllPostsResponse[] = await response.json()
+      const data: Post[] = await response.json()
       return data.map((post) => ({
         ...post,
         createdAt: new Date(post.createdAt).toLocaleDateString('en-US', {
