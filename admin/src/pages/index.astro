@@ -3,12 +3,6 @@ import { actions } from 'astro:actions'
 import Layout from '../layouts/Layout.astro'
 import DraftIcon from '@lucide/astro/icons/pencil-off'
 
-const logoutResult = Astro.getActionResult(actions.user.logout)
-
-if (logoutResult && !logoutResult.error) {
-  return Astro.redirect('/login')
-}
-
 const data = await Astro.callAction(actions.posts.getAll.orThrow, {})
 ---
 

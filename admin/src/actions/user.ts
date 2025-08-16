@@ -55,9 +55,8 @@ export const user = {
     },
   }),
   logout: defineAction({
-    accept: 'form',
     handler: async (_, ctx) => {
-      ctx.cookies.delete(ADMIN_TOKEN_COOKIE)
+      ctx.cookies.delete(ADMIN_TOKEN_COOKIE, { path: '/' })
     },
   }),
 }
