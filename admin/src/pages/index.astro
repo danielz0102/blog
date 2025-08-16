@@ -1,8 +1,8 @@
 ---
 import { actions } from 'astro:actions'
 import Layout from '@layouts/Layout.astro'
-import Pencil from '@lucide/astro/icons/pencil'
 import FiltersForm from '@components/FiltersForm.astro'
+import PostLink from '@components/PostLink.astro'
 
 const searchParams = Astro.url.searchParams.entries()
 const nonEmptyParams = searchParams.filter(([_, value]) => value !== '')
@@ -25,25 +25,7 @@ const data = await Astro.callAction(
           </h2>
         )
       }
-      {
-        data.map((post) => (
-          <article>
-            <div class="flex items-center gap-4">
-              <h2 class="text-2xl">
-                <a href={`/posts/${post.id}`}>{post.title}</a>
-              </h2>
-              {post.isDraft && (
-                <small class="flex gap-2 rounded-full bg-gray-600 px-4 py-2 text-xs text-gray-200">
-                  Draft <Pencil stroke-width={1} size={16} />
-                </small>
-              )}
-            </div>
-            <time class="text-sm text-zinc-500" datetime={post.createdAt}>
-              {post.createdAt}
-            </time>
-          </article>
-        ))
-      }
+      {data.map((post) => <PostLink post={post} />)}
     </section>
   </main>
 </Layout>
