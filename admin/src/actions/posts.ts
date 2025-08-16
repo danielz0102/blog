@@ -1,8 +1,8 @@
 import { ActionError, defineAction } from 'astro:actions'
 
 import { API_URL } from 'astro:env/server'
-import { ADMIN_TOKEN_COOKIE } from '../consts'
-import type { GetAllPostsResponse } from '../env'
+import { ADMIN_TOKEN_COOKIE } from '@/consts'
+import type { GetAllPostsResponse } from '@/env'
 
 export const posts = {
   getAll: defineAction({

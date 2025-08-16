@@ -1,11 +1,11 @@
-import type { UserPayload } from '../env'
+import type { UserPayload } from '@/env'
 
 import { API_URL } from 'astro:env/server'
 import { ActionError, defineAction } from 'astro:actions'
 import { z } from 'astro:schema'
 
 import { jwtDecode } from 'jwt-decode'
-import { ADMIN_TOKEN_COOKIE } from '../consts'
+import { ADMIN_TOKEN_COOKIE } from '@/consts'
 
 export const user = {
   login: defineAction({
