@@ -1,0 +1,15 @@
+---
+import ErrorLayout from '../layouts/ErrorLayout.astro'
+
+interface Props {
+  error: unknown
+}
+
+const { error } = Astro.props
+const errorMessage =
+  error instanceof Error
+    ? error.message
+    : 'An unexpected error occurred. Please try again later.'
+---
+
+<ErrorLayout error="500 - Internal Server Error" message={errorMessage} />

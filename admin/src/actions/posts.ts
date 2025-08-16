@@ -20,7 +20,7 @@ export const posts = {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${tokenCookie?.value}`,
+          Authorization: `Bearer ${tokenCookie.value}`,
         },
       })
 
