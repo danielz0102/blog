@@ -1,27 +1,29 @@
 ---
 import type { HTMLAttributes } from 'astro/types'
+import { cva, type VariantProps } from 'class-variance-authority'
 
-type Variant = 'primary' | 'secondary'
+const buttonVariants = cva(
+  'flex cursor-pointer items-center justify-center gap-2',
+  {
+    variants: {
+      variant: {
+        primary: 'rounded bg-gray-900 px-4 py-2 text-gray-100 hover:opacity-75',
+        secondary: 'hover:opacity-50 text-zinc-700',
+      },
+    },
+    defaultVariants: {
+      variant: 'primary',
+    },
+  },
+)
 
-interface Props extends HTMLAttributes<'button'> {
-  variant?: Variant
-}
+interface Props
+  extends HTMLAttributes<'button'>,
+    VariantProps<typeof buttonVariants> {}
 
-const { class: className, variant = 'primary', ...props } = Astro.props
-
-const VARIANTS: Record<Variant, string> = {
-  primary: 'rounded bg-gray-900 px-4 py-2 text-gray-100 hover:opacity-75',
-  secondary: 'hover:opacity-50',
-}
+const { class: className, variant, ...props } = Astro.props
 ---
 
-<button
-  {...props}
-  class:list={[
-    className,
-    VARIANTS[variant],
-    'flex cursor-pointer items-center justify-center gap-2',
-  ]}
->
+<button {...props} class:list={[className, buttonVariants({ variant })]}>
   <slot />
 </button>
