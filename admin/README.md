@@ -5,10 +5,12 @@
 - [x] Log in & log out
 - [x] Allow only admin access
 - [x] See recent posts and drafts
-- [ ] Filter by title and date
-- [ ] Edit posts and drafts
-- [ ] Delete posts and drafts
-- [ ] Publish posts and create drafts
+- [x] Filter by title and date
+- [ ] Create new posts
+- [ ] Edit posts
+- [ ] Delete posts
+- [ ] Publish posts
+- [ ] Unpublish posts
 
 # Tasks
 
