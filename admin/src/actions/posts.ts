@@ -1,9 +1,11 @@
+import type { Post } from '@/env'
+
+import { API_URL } from 'astro:env/server'
 import { ActionError, defineAction } from 'astro:actions'
 import { z } from 'astro:schema'
 
-import { API_URL } from 'astro:env/server'
 import { ADMIN_TOKEN_COOKIE } from '@/consts'
-import type { Post } from '@/env'
+import { validateTokenCookie } from '@utils/validateTokenCookie'
 
 const getAll = defineAction({
   input: z.object({
@@ -16,12 +18,7 @@ const getAll = defineAction({
   handler: async (input, ctx): Promise<Post[]> => {
     const tokenCookie = ctx.cookies.get(ADMIN_TOKEN_COOKIE)
 
-    if (!tokenCookie) {
-      throw new ActionError({
-        code: 'UNAUTHORIZED',
-        message: 'Authentication failed',
-      })
-    }
+    validateTokenCookie(tokenCookie)
 
     const queryParams = new URLSearchParams(input)
     const response = await fetch(`${API_URL}/posts/all?${queryParams}`, {
@@ -61,12 +58,7 @@ const create = defineAction({
   handler: async (input, ctx): Promise<Post> => {
     const tokenCookie = ctx.cookies.get(ADMIN_TOKEN_COOKIE)
 
-    if (!tokenCookie) {
-      throw new ActionError({
-        code: 'UNAUTHORIZED',
-        message: 'Authentication failed',
-      })
-    }
+    validateTokenCookie(tokenCookie)
 
     const response = await fetch(`${API_URL}/posts`, {
       method: 'POST',
