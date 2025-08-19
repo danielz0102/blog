@@ -1,0 +1,72 @@
+---
+import { TINYMCE_API_KEY } from 'astro:env/client'
+import { actions } from 'astro:actions'
+
+import SendIcon from '@lucide/astro/icons/send'
+
+import Layout from '@layouts/Layout.astro'
+import FormField from '@components/FormField.astro'
+import Input from '@components/Input.astro'
+import Button from '@components/Button.astro'
+
+const result = Astro.getActionResult(actions.posts.create)
+
+if (result && !result.error) {
+  Astro.redirect(`/posts/${result.data.id}`)
+}
+---
+
+<Layout title="Create New Post">
+  <script
+    slot="head"
+    src=`https://cdn.tiny.cloud/1/${TINYMCE_API_KEY}/tinymce/6/tinymce.min.js`
+    referrerpolicy="origin"></script>
+  <main class="flex flex-col items-center gap-4 p-4">
+    <h1 class="text-3xl font-bold">New Post</h1>
+    <form
+      action={actions.posts.create}
+      method="post"
+      class="flex flex-col gap-4"
+    >
+      <FormField>
+        <label for="title">Title:</label>
+        <Input
+          type="text"
+          name="title"
+          id="title"
+          placeholder="My Post"
+          required
+          class="flex-1"
+        />
+      </FormField>
+      <div class="flex max-w-3xl flex-col gap-2">
+        <textarea name="content" id="content" required></textarea>
+        <span id="content-error" class="text-red-700"></span>
+      </div>
+      <FormField>
+        <label for="draft" class="text-sm">Save as draft</label>
+        <Input type="checkbox" name="draft" id="draft" />
+      </FormField>
+      <Button type="submit">Submit <SendIcon stroke-width={1} /></Button>
+    </form>
+  </main>
+</Layout>
+
+<script>
+  window.tinymce.init({ selector: '#content' })
+
+  const contentError = document.querySelector('#content-error')
+  const content = document.querySelector('#content')
+
+  content?.addEventListener('input', () => {
+    if (contentError) {
+      contentError.textContent = ''
+    }
+  })
+
+  content?.addEventListener('invalid', () => {
+    if (contentError) {
+      contentError.textContent = 'Content is required ✖️'
+    }
+  })
+</script>
