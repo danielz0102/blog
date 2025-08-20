@@ -1,0 +1,18 @@
+---
+import Pencil from '@lucide/astro/icons/pencil'
+import type { HTMLAttributes } from 'astro/types'
+
+interface Props extends HTMLAttributes<'small'> {}
+
+const { class: className, ...props } = Astro.props
+---
+
+<small
+  class:list={[
+    'flex gap-1 rounded bg-zinc-500 px-2 py-1 text-xs text-zinc-200',
+    className,
+  ]}
+  {...props}
+>
+  Draft <Pencil stroke-width={1} size={16} />
+</small>

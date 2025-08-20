@@ -6,7 +6,7 @@
 - [x] Allow only admin access
 - [x] See recent posts and drafts
 - [x] Filter by title and date
-- [ ] Create new posts
+- [x] Create new posts
 - [ ] Edit posts
 - [ ] Delete posts
 - [ ] Publish posts
@@ -17,3 +17,7 @@
 - [ ] Add link to blog's production homepage in log in page when it's deployed
 - [x] Error pages
 - [x] Refactor redirection on log out
+
+# Bugs
+
+- [ ] New post form does not redirect after submission

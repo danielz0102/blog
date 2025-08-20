@@ -6,6 +6,7 @@ import { z } from 'astro:schema'
 
 import { ADMIN_TOKEN_COOKIE } from '@/consts'
 import { validateTokenCookie } from '@utils/validateTokenCookie'
+import { formatDate } from '@utils/formatDate'
 
 const getAll = defineAction({
   input: z.object({
@@ -39,11 +40,7 @@ const getAll = defineAction({
     const data: Post[] = await response.json()
     return data.map((post) => ({
       ...post,
-      createdAt: new Date(post.createdAt).toLocaleDateString('en-US', {
-        day: 'numeric',
-        month: 'long',
-        year: 'numeric',
-      }),
+      createdAt: formatDate(post.createdAt),
     }))
   },
 })
@@ -57,7 +54,6 @@ const create = defineAction({
   accept: 'form',
   handler: async (input, ctx): Promise<Post> => {
     const tokenCookie = ctx.cookies.get(ADMIN_TOKEN_COOKIE)
-    console.log(input.isDraft)
 
     validateTokenCookie(tokenCookie)
 
@@ -82,4 +78,35 @@ const create = defineAction({
   },
 })
 
-export const posts = { getAll, create }
+const get = defineAction({
+  input: z.object({
+    id: z.string().uuid(),
+  }),
+  handler: async (input, ctx) => {
+    const tokenCookie = ctx.cookies.get(ADMIN_TOKEN_COOKIE)
+    validateTokenCookie(tokenCookie)
+
+    const response = await fetch(`${API_URL}/posts/${input.id}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${tokenCookie.value}`,
+      },
+    })
+
+    if (!response.ok) {
+      throw new ActionError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message: 'Post could not be retrieved',
+      })
+    }
+
+    const post: Post = await response.json()
+    return {
+      ...post,
+      createdAt: formatDate(post.createdAt),
+    }
+  },
+})
+
+export const posts = { getAll, create, get }
