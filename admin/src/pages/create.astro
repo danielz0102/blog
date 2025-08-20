@@ -60,19 +60,4 @@ if (result && !result.error) {
 
 <script>
   window.tinymce.init({ selector: '#content' })
-
-  const contentError = document.querySelector('#content-error')
-  const content = document.querySelector('#content')
-
-  content?.addEventListener('input', () => {
-    if (contentError) {
-      contentError.textContent = ''
-    }
-  })
-
-  content?.addEventListener('invalid', () => {
-    if (contentError) {
-      contentError.textContent = 'Content is required ✖️'
-    }
-  })
 </script>
