@@ -1,13 +1,13 @@
 ---
 import { actions } from 'astro:actions'
 
+import LoginIcon from '@lucide/astro/icons/log-in'
+
 import Layout from '@layouts/Layout.astro'
 import Input from '@components/Input.astro'
 import FormField from '@components/FormField.astro'
 import Button from '@components/Button.astro'
-
-import LoginIcon from '@lucide/astro/icons/log-in'
-import BanIcon from '@lucide/astro/icons/ban'
+import Alert from '@components/Alert.astro'
 
 const result = Astro.getActionResult(actions.user.login)
 
@@ -32,17 +32,7 @@ if (result && !result.error) {
       action={actions.user.login}
       class="flex flex-col gap-4 self-stretch"
     >
-      {
-        result?.error && (
-          <div
-            role="alert"
-            class="flex items-center gap-4 rounded border border-red-700 bg-red-200 px-4 py-2"
-          >
-            <BanIcon stroke-width={1} color="oklch(50.5% 0.213 27.518)" />
-            <p class="text-red-700">{result.error.message}</p>
-          </div>
-        )
-      }
+      {result?.error && <Alert message={result.error.message} />}
       <FormField>
         <label for="username">Username:</label>
         <Input
