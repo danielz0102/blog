@@ -1,0 +1,16 @@
+---
+import type { Post } from '@/env'
+import DraftTag from './DraftTag.astro'
+import Date from './Date.astro'
+
+interface Props {
+  post: Post
+}
+
+const { post } = Astro.props
+---
+
+<div class="flex items-center gap-2">
+  <Date date={post.createdAt} />
+  {post.isDraft && <DraftTag />}
+</div>

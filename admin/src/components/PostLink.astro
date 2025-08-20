@@ -1,7 +1,6 @@
 ---
 import type { Post } from '@/env'
-import DraftTag from './DraftTag.astro'
-import Date from './Date.astro'
+import PostInfo from './PostInfo.astro'
 
 interface Props {
   post: Post
@@ -15,9 +14,6 @@ const { post } = Astro.props
     <h2 class="text-2xl">
       <a href={`/posts/${post.id}`}>{post.title}</a>
     </h2>
-    <div class="flex items-center gap-2">
-      <Date date={post.createdAt} />
-      {post.isDraft && <DraftTag />}
-    </div>
+    <PostInfo post={post} />
   </div>
 </article>
