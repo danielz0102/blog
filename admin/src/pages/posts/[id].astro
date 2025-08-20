@@ -1,0 +1,8 @@
+---
+import Layout from '@layouts/Layout.astro'
+const { id } = Astro.params
+---
+
+<Layout title={`Post ${id}`}>
+  <h1>{`Post ${id}`}</h1>
+</Layout>

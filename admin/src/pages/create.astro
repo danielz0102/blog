@@ -1,6 +1,6 @@
 ---
 import { TINYMCE_API_KEY } from 'astro:env/client'
-import { actions } from 'astro:actions'
+import { actions, isInputError } from 'astro:actions'
 
 import SendIcon from '@lucide/astro/icons/send'
 
@@ -8,6 +8,7 @@ import Layout from '@layouts/Layout.astro'
 import FormField from '@components/FormField.astro'
 import Input from '@components/Input.astro'
 import Button from '@components/Button.astro'
+import Alert from '@components/Alert.astro'
 
 const result = Astro.getActionResult(actions.posts.create)
 
@@ -23,6 +24,11 @@ if (result && !result.error) {
     referrerpolicy="origin"></script>
   <main class="flex flex-col items-center gap-4 p-4">
     <h1 class="text-3xl font-bold">New Post</h1>
+    {
+      isInputError(result?.error) && (
+        <Alert message="The content cannot be empty!" />
+      )
+    }
     <form
       action={actions.posts.create}
       method="post"

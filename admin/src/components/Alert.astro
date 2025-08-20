@@ -1,0 +1,17 @@
+---
+import BanIcon from '@lucide/astro/icons/ban'
+
+interface Props {
+  message: string
+}
+
+const { message } = Astro.props
+---
+
+<div
+  role="alert"
+  class="flex items-center gap-4 rounded border border-red-700 bg-red-200 px-4 py-2"
+>
+  <BanIcon stroke-width={1} color="oklch(50.5% 0.213 27.518)" />
+  <p class="text-red-700">{message}</p>
+</div>
