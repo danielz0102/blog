@@ -40,12 +40,12 @@ if (result && !result.error) {
         />
       </FormField>
       <div class="flex max-w-3xl flex-col gap-2">
-        <textarea name="content" id="content" required></textarea>
+        <textarea name="content" id="content"></textarea>
         <span id="content-error" class="text-red-700"></span>
       </div>
       <FormField>
         <label for="draft" class="text-sm">Save as draft</label>
-        <Input type="checkbox" name="draft" id="draft" />
+        <Input type="checkbox" name="isDraft" id="draft" />
       </FormField>
       <Button type="submit">Submit <SendIcon stroke-width={1} /></Button>
     </form>
