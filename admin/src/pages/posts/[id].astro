@@ -25,7 +25,7 @@ const post = result.data
       <h1 class="mb-2 text-4xl font-bold">{post.title}</h1>
       <div class="flex items-center gap-2">
         <Date date={post.createdAt} />
-        {post.isDraft && <DraftTag class="" />}
+        {post.isDraft && <DraftTag />}
       </div>
     </header>
     <div class="prose">
