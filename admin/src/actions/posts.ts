@@ -109,4 +109,38 @@ const get = defineAction({
   },
 })
 
-export const posts = { getAll, create, get }
+const update = defineAction({
+  input: z.object({
+    id: z.string().uuid(),
+    title: z.string().trim().nonempty(),
+    content: z.string().trim().nonempty(),
+    isDraft: z.boolean().default(false),
+  }),
+  accept: 'form',
+  handler: async (input, ctx): Promise<Post> => {
+    const tokenCookie = ctx.cookies.get(ADMIN_TOKEN_COOKIE)
+
+    validateTokenCookie(tokenCookie)
+
+    const response = await fetch(`${API_URL}/posts/${input.id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${tokenCookie.value}`,
+      },
+      body: JSON.stringify(input),
+    })
+
+    if (!response.ok) {
+      throw new ActionError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message: 'Post could not be updated',
+      })
+    }
+
+    const post: Post = await response.json()
+    return post
+  },
+})
+
+export const posts = { getAll, create, get, update }
