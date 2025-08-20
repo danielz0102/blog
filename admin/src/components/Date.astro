@@ -1,0 +1,9 @@
+---
+interface Props {
+  date: string
+}
+---
+
+<time class="text-sm text-zinc-500" datetime={Astro.props.date}>
+  {Astro.props.date}
+</time>

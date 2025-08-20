@@ -1,6 +1,7 @@
 ---
 import type { Post } from '@/env'
 import DraftTag from './DraftTag.astro'
+import Date from './Date.astro'
 
 interface Props {
   post: Post
@@ -16,7 +17,5 @@ const { post } = Astro.props
     </h2>
     {post.isDraft && <DraftTag />}
   </div>
-  <time class="text-sm text-zinc-500" datetime={post.createdAt}>
-    {post.createdAt}
-  </time>
+  <Date date={post.createdAt} />
 </article>

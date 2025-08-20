@@ -2,6 +2,7 @@
 import { actions } from 'astro:actions'
 import Layout from '@layouts/Layout.astro'
 import DraftTag from '@components/DraftTag.astro'
+import Date from '@components/Date.astro'
 
 const { id } = Astro.params
 
@@ -23,9 +24,7 @@ const post = result.data
     <header>
       <h1 class="mb-2 text-4xl font-bold">{post.title}</h1>
       <div class="flex items-center gap-2">
-        <time class="text-sm text-zinc-500" datetime={post.createdAt}>
-          {post.createdAt}
-        </time>
+        <Date date={post.createdAt} />
         {post.isDraft && <DraftTag class="" />}
       </div>
     </header>
