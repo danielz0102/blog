@@ -1,6 +1,6 @@
 ---
 import { TINYMCE_API_KEY } from 'astro:env/client'
-import { actions, isInputError } from 'astro:actions'
+import { actions } from 'astro:actions'
 
 import SendIcon from '@lucide/astro/icons/send'
 
@@ -35,11 +35,7 @@ const isUpdate = post !== null
     referrerpolicy="origin"></script>
   <main class="flex flex-col items-center gap-4 p-4">
     <h1 class="text-3xl font-bold">{isUpdate ? 'Edit Post' : 'New Post'}</h1>
-    {
-      isInputError(createResult?.error || updateResult?.error) && (
-        <Alert>The content cannot be empty!</Alert>
-      )
-    }
+    <Alert hidden data-alert>The content cannot be empty!</Alert>
     <form
       action={isUpdate ? actions.posts.update : actions.posts.create}
       method="post"
@@ -81,4 +77,20 @@ const isUpdate = post !== null
 
 <script>
   window.tinymce.init({ selector: '#content' })
+
+  const form = document.querySelector('form')
+  const alert = document.querySelector('[data-alert]')
+  const content = document.querySelector<HTMLTextAreaElement>('#content')
+
+  if (form && alert && content) {
+    form.addEventListener('submit', (event) => {
+      event.preventDefault()
+
+      if (content.value === '') {
+        return alert.removeAttribute('hidden')
+      }
+
+      form.submit()
+    })
+  }
 </script>
