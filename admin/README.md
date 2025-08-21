@@ -19,7 +19,7 @@
 - [x] Refactor redirection on log out
 - [ ] Add view transition on PostLink
 - [x] Remove CVA dependency
-- [ ] Extract text editor component
+- [x] Extract text editor component
 - [x] Refactor alert component to receive text as slot instead of a prop
 
 # Bugs & Fixes

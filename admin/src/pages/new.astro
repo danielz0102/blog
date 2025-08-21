@@ -1,5 +1,4 @@
 ---
-import { TINYMCE_API_KEY } from 'astro:env/client'
 import { actions } from 'astro:actions'
 
 import SendIcon from '@lucide/astro/icons/send'
@@ -9,6 +8,7 @@ import FormField from '@components/FormField.astro'
 import Input from '@components/Input.astro'
 import Button from '@components/Button.astro'
 import Alert from '@components/Alert.astro'
+import TextEditor from '@components/TextEditor.tsx'
 
 const createResult = Astro.getActionResult(actions.posts.create)
 if (createResult && !createResult.error) {
@@ -29,17 +29,13 @@ const isUpdate = post !== null
 ---
 
 <Layout title="Create New Post">
-  <script
-    slot="head"
-    src=`https://cdn.tiny.cloud/1/${TINYMCE_API_KEY}/tinymce/6/tinymce.min.js`
-    referrerpolicy="origin"></script>
-  <main class="flex flex-col items-center gap-4 p-4">
+  <main class="flex flex-col items-center gap-4 p-4 md:mx-auto md:w-3xl">
     <h1 class="text-3xl font-bold">{isUpdate ? 'Edit Post' : 'New Post'}</h1>
     <Alert hidden data-alert>The content cannot be empty!</Alert>
     <form
       action={isUpdate ? actions.posts.update : actions.posts.create}
       method="post"
-      class="flex flex-col gap-4"
+      class="flex w-full flex-col gap-4"
     >
       <FormField>
         <label for="title">Title:</label>
@@ -50,14 +46,15 @@ const isUpdate = post !== null
           placeholder="My Post"
           required
           class="flex-1"
-          value={post?.data?.title || ''}
+          value={post?.data?.title}
         />
       </FormField>
-      <div class="flex max-w-3xl flex-col gap-2">
-        <textarea
+      <div class="relative min-h-[400px]">
+        <TextEditor
+          initialValue={post?.data?.content}
           name="content"
           id="content"
-          set:html={post?.data?.content || ''}
+          client:load
         />
       </div>
       <FormField>
@@ -69,15 +66,13 @@ const isUpdate = post !== null
           checked={post?.data?.isDraft}
         />
       </FormField>
-      <input type="text" name="id" value={post?.data?.id || ''} hidden />
+      <input type="text" name="id" value={post?.data?.id} hidden />
       <Button type="submit">Submit <SendIcon stroke-width={1} /></Button>
     </form>
   </main>
 </Layout>
 
 <script>
-  window.tinymce.init({ selector: '#content' })
-
   const form = document.querySelector('form')
   const alert = document.querySelector('[data-alert]')
   const content = document.querySelector<HTMLTextAreaElement>('#content')

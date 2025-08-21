@@ -1,8 +1,10 @@
 import { defineConfig, envField } from 'astro/config'
 import tailwindcss from '@tailwindcss/vite'
+import react from '@astrojs/react'
 
 export default defineConfig({
   output: 'server',
+  integrations: [react()],
   vite: {
     plugins: [tailwindcss()],
   },
