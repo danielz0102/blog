@@ -17,7 +17,7 @@ const data = await Astro.callAction(
   <main class="flex max-w-3xl flex-col items-center gap-8 self-center p-4">
     <h1 class="text-3xl font-bold">Last Posts And Drafts</h1>
     <FiltersForm />
-    <section class="flex flex-col gap-4">
+    <section class="flex flex-col gap-4 self-start">
       {
         data.length === 0 && (
           <h2 class="text-2xl font-light text-gray-500">

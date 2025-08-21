@@ -25,6 +25,6 @@
 # Bugs & Fixes
 
 - [x] New post form does not redirect after submission
-- [ ] Post links in home page are centered instead of aligned to left
-- [ ] Add more margin bottom to post title on post page
+- [x] Post links in home page are centered instead of aligned to left
+- [x] Add more margin bottom to post title on post page
 - [x] Show content alert without reload page on new post page
