@@ -10,11 +10,22 @@ import Input from '@components/Input.astro'
 import Button from '@components/Button.astro'
 import Alert from '@components/Alert.astro'
 
-const result = Astro.getActionResult(actions.posts.create)
-
-if (result && !result.error) {
-  return Astro.redirect(`/posts/${result.data.id}`)
+const createResult = Astro.getActionResult(actions.posts.create)
+if (createResult && !createResult.error) {
+  return Astro.redirect(`/posts/${createResult.data.id}`)
 }
+
+const updateResult = Astro.getActionResult(actions.posts.update)
+if (updateResult && !updateResult.error) {
+  return Astro.redirect(`/posts/${updateResult.data.id}`)
+}
+
+const postId = Astro.url.searchParams.get('id')
+const post = postId
+  ? await Astro.callAction(actions.posts.get, { id: postId })
+  : null
+
+const isUpdate = post !== null
 ---
 
 <Layout title="Create New Post">
@@ -23,14 +34,14 @@ if (result && !result.error) {
     src=`https://cdn.tiny.cloud/1/${TINYMCE_API_KEY}/tinymce/6/tinymce.min.js`
     referrerpolicy="origin"></script>
   <main class="flex flex-col items-center gap-4 p-4">
-    <h1 class="text-3xl font-bold">New Post</h1>
+    <h1 class="text-3xl font-bold">{isUpdate ? 'Edit Post' : 'New Post'}</h1>
     {
-      isInputError(result?.error) && (
+      isInputError(createResult?.error || updateResult?.error) && (
         <Alert message="The content cannot be empty!" />
       )
     }
     <form
-      action={actions.posts.create}
+      action={isUpdate ? actions.posts.update : actions.posts.create}
       method="post"
       class="flex flex-col gap-4"
     >
@@ -43,15 +54,26 @@ if (result && !result.error) {
           placeholder="My Post"
           required
           class="flex-1"
+          value={post?.data?.title || ''}
         />
       </FormField>
       <div class="flex max-w-3xl flex-col gap-2">
-        <textarea name="content" id="content"></textarea>
+        <textarea
+          name="content"
+          id="content"
+          set:html={post?.data?.content || ''}
+        />
       </div>
       <FormField>
         <label for="draft" class="text-sm">Save as draft</label>
-        <Input type="checkbox" name="isDraft" id="draft" />
+        <Input
+          type="checkbox"
+          name="isDraft"
+          id="draft"
+          checked={post?.data?.isDraft}
+        />
       </FormField>
+      <input type="text" name="id" value={post?.data?.id || ''} hidden />
       <Button type="submit">Submit <SendIcon stroke-width={1} /></Button>
     </form>
   </main>

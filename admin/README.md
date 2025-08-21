@@ -7,7 +7,7 @@
 - [x] See recent posts and drafts
 - [x] Filter by title and date
 - [x] Create new posts
-- [ ] Edit posts
+- [x] Edit posts
 - [ ] Delete posts
 - [ ] Publish posts
 - [ ] Unpublish posts
@@ -19,6 +19,7 @@
 - [x] Refactor redirection on log out
 - [ ] Add view transition on PostLink
 - [ ] Remove CVA dependency
+- [ ] Extract text editor component
 
 # Bugs
 
