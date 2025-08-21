@@ -20,7 +20,11 @@
 - [ ] Add view transition on PostLink
 - [ ] Remove CVA dependency
 - [ ] Extract text editor component
+- [ ] Refactor alert component to receive text as slot instead of a prop
 
-# Bugs
+# Bugs & Fixes
 
 - [x] New post form does not redirect after submission
+- [ ] Post links in home page are centered instead of aligned to left
+- [ ] Add more margin bottom to post title on post page
+- [ ] Show content alert without reload page on new post page
