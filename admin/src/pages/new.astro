@@ -13,7 +13,7 @@ import Alert from '@components/Alert.astro'
 const result = Astro.getActionResult(actions.posts.create)
 
 if (result && !result.error) {
-  Astro.redirect(`/posts/${result.data.id}`)
+  return Astro.redirect(`/posts/${result.data.id}`)
 }
 ---
 

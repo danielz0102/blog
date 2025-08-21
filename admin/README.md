@@ -21,4 +21,4 @@
 
 # Bugs
 
-- [ ] New post form does not redirect after submission
+- [x] New post form does not redirect after submission
