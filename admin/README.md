@@ -18,6 +18,7 @@
 - [x] Error pages
 - [x] Refactor redirection on log out
 - [ ] Add view transition on PostLink
+- [ ] Remove CVA dependency
 
 # Bugs
 
