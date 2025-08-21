@@ -1,20 +1,23 @@
 ---
 import LogoutIcon from '@lucide/astro/icons/log-out'
 import Newspaper from '@lucide/astro/icons/newspaper'
+import Home from '@lucide/astro/icons/house'
+
 import Button from './Button.astro'
+import NavLink from './NavLink.astro'
 ---
 
-<header
-  class="flex flex-wrap items-center justify-center gap-2 p-4 md:justify-between"
->
-  <h2 class="text-2xl font-semibold"><a href="/">Blog Management</a></h2>
-  <a href="/new" class="flex gap-2 text-zinc-800 hover:underline">
+<nav class="flex flex-wrap items-center justify-center gap-4 p-4">
+  <NavLink href="/">
+    Recent Posts <Home stroke-width={1} />
+  </NavLink>
+  <NavLink href="/new">
     Create a new post <Newspaper stroke-width={1} />
-  </a>
+  </NavLink>
   <Button variant="secondary" type="submit" id="logoutBtn">
     Log out <LogoutIcon stroke-width={1} />
   </Button>
-</header>
+</nav>
 
 <script>
   import { actions } from 'astro:actions'

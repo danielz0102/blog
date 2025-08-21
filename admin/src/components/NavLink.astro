@@ -1,0 +1,9 @@
+---
+interface Props {
+  href: string
+}
+---
+
+<a href={Astro.props.href} class="flex gap-2 text-zinc-700 hover:underline">
+  <slot />
+</a>
