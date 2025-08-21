@@ -5,17 +5,21 @@ import Home from '@lucide/astro/icons/house'
 
 import Button from './Button.astro'
 import NavLink from './NavLink.astro'
+import HideOnMobile from './HideOnMobile.astro'
 ---
 
 <nav class="flex flex-wrap items-center justify-center gap-4 p-4">
   <NavLink href="/">
-    Recent Posts <Home stroke-width={1} />
+    <HideOnMobile>Recent Posts</HideOnMobile>
+    <Home stroke-width={1} />
   </NavLink>
   <NavLink href="/new">
-    Create a new post <Newspaper stroke-width={1} />
+    <HideOnMobile>Create a new post</HideOnMobile>
+    <Newspaper stroke-width={1} />
   </NavLink>
   <Button variant="secondary" type="submit" id="logoutBtn">
-    Log out <LogoutIcon stroke-width={1} />
+    <HideOnMobile>Log out</HideOnMobile>
+    <LogoutIcon stroke-width={1} />
   </Button>
 </nav>
 
