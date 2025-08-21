@@ -20,7 +20,7 @@
 - [ ] Add view transition on PostLink
 - [ ] Remove CVA dependency
 - [ ] Extract text editor component
-- [ ] Refactor alert component to receive text as slot instead of a prop
+- [x] Refactor alert component to receive text as slot instead of a prop
 
 # Bugs & Fixes
 

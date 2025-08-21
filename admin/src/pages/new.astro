@@ -37,7 +37,7 @@ const isUpdate = post !== null
     <h1 class="text-3xl font-bold">{isUpdate ? 'Edit Post' : 'New Post'}</h1>
     {
       isInputError(createResult?.error || updateResult?.error) && (
-        <Alert message="The content cannot be empty!" />
+        <Alert>The content cannot be empty!</Alert>
       )
     }
     <form
