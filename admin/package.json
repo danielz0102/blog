@@ -15,7 +15,6 @@
     "@lucide/astro": "^0.539.0",
     "@tailwindcss/vite": "^4.1.11",
     "astro": "^5.12.9",
-    "class-variance-authority": "^0.7.1",
     "jsonwebtoken": "^9.0.2",
     "jwt-decode": "^4.0.0",
     "tailwindcss": "^4.1.11"
