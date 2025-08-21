@@ -27,8 +27,8 @@ async function getAll({ limit = 30, isDraft, title, dateFilter }) {
       isDraft,
       title: title ? { contains: title, mode: 'insensitive' } : undefined,
       createdAt: {
-        gte: dateFilter.startDate,
-        lte: dateFilter.endDate
+        gte: dateFilter?.startDate,
+        lte: dateFilter?.endDate
       }
     },
     include: {
