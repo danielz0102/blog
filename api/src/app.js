@@ -27,7 +27,7 @@ if (NODE_ENV === 'development') {
         if (allowedOrigins.includes(origin)) {
           cb(null, true)
         } else {
-          cb(new Error('Not allowed by CORS'))
+          cb(new Error(`${origin} not allowed by CORS`))
         }
       }
     })
