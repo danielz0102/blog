@@ -1,6 +1,6 @@
 # TODO
 
-# Features
+## Features
 
 - [x] Log in & log out
 - [x] Allow only admin access
@@ -12,7 +12,7 @@
 - [x] Publish posts
 - [x] Unpublish posts
 
-# Tasks
+## Tasks
 
 - [x] Add link to blog's production homepage in log in page when it's deployed
 - [x] Error pages
@@ -21,7 +21,7 @@
 - [x] Extract text editor component
 - [x] Refactor alert component to receive text as slot instead of a prop
 
-# Bugs & Fixes
+## Bugs & Fixes
 
 - [x] New post form does not redirect after submission
 - [x] Post links in home page are centered instead of aligned to left
