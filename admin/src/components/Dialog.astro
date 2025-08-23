@@ -1,0 +1,12 @@
+---
+import type { HTMLAttributes } from 'astro/types'
+
+interface Props extends HTMLAttributes<'dialog'> {}
+---
+
+<dialog
+  {...Astro.props}
+  class="absolute top-1/2 left-1/2 -translate-1/2 rounded p-4 shadow-lg transition-[opacity,display] transition-discrete starting:opacity-0 [&:not([open])]:opacity-0"
+>
+  <slot />
+</dialog>

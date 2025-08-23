@@ -8,6 +8,7 @@ import Layout from '@layouts/Layout.astro'
 import PostInfo from '@components/PostInfo.astro'
 import NavLink from '@components/NavLink.astro'
 import Button from '@components/Button.astro'
+import Dialog from '@components/Dialog.astro'
 
 const { id } = Astro.params
 
@@ -43,10 +44,7 @@ const post = result.data
       </Button>
     </footer>
   </main>
-  <dialog
-    id="delete-post-modal"
-    class="absolute top-1/2 left-1/2 -translate-1/2 rounded p-4 shadow-lg transition-[opacity,display] transition-discrete starting:opacity-0 [&:not([open])]:opacity-0"
-  >
+  <Dialog id="delete-post-modal">
     <div class="prose flex flex-col items-center">
       <h3>Are you sure you want to delete this post?</h3>
       <p>This action cannot be undone.</p>
@@ -58,7 +56,7 @@ const post = result.data
         </Button>
       </div>
     </div>
-  </dialog>
+  </Dialog>
 </Layout>
 
 <script>
