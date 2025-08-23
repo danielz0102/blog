@@ -13,7 +13,10 @@ export function BlogPost({
     <article className={className}>
       <h1 className="mb-1 text-3xl font-bold">{post.title}</h1>
       <Date date={post.createdAt} />
-      <p className="mt-4">{post.content}</p>
+      <div
+        className="prose-invert mt-4"
+        dangerouslySetInnerHTML={{ __html: post.content }}
+      />
     </article>
   )
 }
