@@ -36,6 +36,17 @@ export default function App() {
   return <Outlet />
 }
 
+export function HydrateFallback() {
+  return (
+    <main className="flex min-h-screen items-center justify-center">
+      <div className="flex flex-col items-center gap-4">
+        <div className="h-8 w-8 animate-spin rounded-full border-b-2 border-gray-400"></div>
+        <p className="text-gray-400">Loading...</p>
+      </div>
+    </main>
+  )
+}
+
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
   let message = 'Oops!'
   let details = 'An unexpected error occurred.'
