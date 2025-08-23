@@ -24,7 +24,7 @@ if (NODE_ENV === 'development') {
   app.use(
     cors({
       origin: (origin, cb) => {
-        if (allowedOrigins.includes(origin)) {
+        if (!origin || allowedOrigins.includes(origin)) {
           cb(null, true)
         } else {
           cb(new Error(`${origin} not allowed by CORS`))
