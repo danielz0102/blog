@@ -161,9 +161,6 @@ const deleteAction = defineAction({
       body: JSON.stringify(input)
     })
 
-    const data = await response.json()
-    console.log({ response: data })
-
     if (!response.ok) {
       throw new ActionError({
         code: 'INTERNAL_SERVER_ERROR',

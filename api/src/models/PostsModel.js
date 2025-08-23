@@ -77,6 +77,10 @@ async function deletePost(id) {
 
   if (!post) return false
 
+  await db.comment.deleteMany({
+    where: { postId: id }
+  })
+
   return await db.post.delete({
     where: { id }
   })

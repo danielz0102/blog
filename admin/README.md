@@ -8,7 +8,7 @@
 - [x] Filter by title and date
 - [x] Create new posts
 - [x] Edit posts
-- [ ] Delete posts
+- [x] Delete posts
 - [ ] Publish posts
 - [ ] Unpublish posts
 
