@@ -14,7 +14,7 @@ const getAll = defineAction({
     createdAt: z.string().trim().date().optional(),
     startDate: z.string().trim().date().optional(),
     endDate: z.string().trim().date().optional(),
-    onlyDraft: z.string().optional(),
+    onlyDraft: z.string().optional()
   }),
   handler: async (input, ctx): Promise<Post[]> => {
     const tokenCookie = ctx.cookies.get(ADMIN_TOKEN_COOKIE)
@@ -26,30 +26,30 @@ const getAll = defineAction({
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${tokenCookie.value}`,
-      },
+        Authorization: `Bearer ${tokenCookie.value}`
+      }
     })
 
     if (!response.ok) {
       throw new ActionError({
         code: 'INTERNAL_SERVER_ERROR',
-        message: 'Posts could not be retrieved',
+        message: 'Posts could not be retrieved'
       })
     }
 
     const data: Post[] = await response.json()
     return data.map((post) => ({
       ...post,
-      createdAt: formatDate(post.createdAt),
+      createdAt: formatDate(post.createdAt)
     }))
-  },
+  }
 })
 
 const create = defineAction({
   input: z.object({
     title: z.string().trim().nonempty(),
     content: z.string().trim().nonempty(),
-    isDraft: z.boolean().default(false),
+    isDraft: z.boolean().default(false)
   }),
   accept: 'form',
   handler: async (input, ctx): Promise<Post> => {
@@ -61,26 +61,26 @@ const create = defineAction({
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${tokenCookie.value}`,
+        Authorization: `Bearer ${tokenCookie.value}`
       },
-      body: JSON.stringify(input),
+      body: JSON.stringify(input)
     })
 
     if (!response.ok) {
       throw new ActionError({
         code: 'INTERNAL_SERVER_ERROR',
-        message: 'Post could not be created',
+        message: 'Post could not be created'
       })
     }
 
     const post: Post = await response.json()
     return post
-  },
+  }
 })
 
 const get = defineAction({
   input: z.object({
-    id: z.string().uuid(),
+    id: z.string().uuid()
   }),
   handler: async (input, ctx) => {
     const tokenCookie = ctx.cookies.get(ADMIN_TOKEN_COOKIE)
@@ -90,23 +90,23 @@ const get = defineAction({
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${tokenCookie.value}`,
-      },
+        Authorization: `Bearer ${tokenCookie.value}`
+      }
     })
 
     if (!response.ok) {
       throw new ActionError({
         code: 'INTERNAL_SERVER_ERROR',
-        message: 'Post could not be retrieved',
+        message: 'Post could not be retrieved'
       })
     }
 
     const post: Post = await response.json()
     return {
       ...post,
-      createdAt: formatDate(post.createdAt),
+      createdAt: formatDate(post.createdAt)
     }
-  },
+  }
 })
 
 const update = defineAction({
@@ -114,7 +114,7 @@ const update = defineAction({
     id: z.string().uuid(),
     title: z.string().trim().nonempty(),
     content: z.string().trim().nonempty(),
-    isDraft: z.boolean().default(false),
+    isDraft: z.boolean().default(false)
   }),
   accept: 'form',
   handler: async (input, ctx): Promise<Post> => {
@@ -126,21 +126,51 @@ const update = defineAction({
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${tokenCookie.value}`,
+        Authorization: `Bearer ${tokenCookie.value}`
       },
-      body: JSON.stringify(input),
+      body: JSON.stringify(input)
     })
 
     if (!response.ok) {
       throw new ActionError({
         code: 'INTERNAL_SERVER_ERROR',
-        message: 'Post could not be updated',
+        message: 'Post could not be updated'
       })
     }
 
     const post: Post = await response.json()
     return post
-  },
+  }
 })
 
-export const posts = { getAll, create, get, update }
+const deleteAction = defineAction({
+  input: z.object({
+    id: z.string().uuid()
+  }),
+  handler: async (input, ctx) => {
+    const tokenCookie = ctx.cookies.get(ADMIN_TOKEN_COOKIE)
+
+    validateTokenCookie(tokenCookie)
+
+    const response = await fetch(`${API_URL}/posts/${input.id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${tokenCookie.value}`
+      },
+      body: JSON.stringify(input)
+    })
+
+    const data = await response.json()
+    console.log({ response: data })
+
+    if (!response.ok) {
+      throw new ActionError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message: 'Post could not be deleted'
+      })
+    }
+  }
+})
+
+export const posts = { getAll, create, get, update, delete: deleteAction }

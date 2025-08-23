@@ -2,10 +2,12 @@
 import { actions } from 'astro:actions'
 
 import Pencil from '@lucide/astro/icons/pencil'
+import Trash from '@lucide/astro/icons/trash-2'
 
 import Layout from '@layouts/Layout.astro'
 import PostInfo from '@components/PostInfo.astro'
 import NavLink from '@components/NavLink.astro'
+import Button from '@components/Button.astro'
 
 const { id } = Astro.params
 
@@ -31,10 +33,60 @@ const post = result.data
     <main class="prose">
       <Fragment set:html={post.content} />
     </main>
-    <footer class="self-start rounded-full bg-gray-900 px-4 py-2">
+    <footer class="flex gap-4 self-start">
       <NavLink href={`/new?id=${post.id}`} dark>
         Edit <Pencil stroke-width={1} size={16} />
       </NavLink>
+      <Button variant="danger" type="button" id="delete-btn">
+        Delete
+        <Trash stroke-width={1} size={16} />
+      </Button>
     </footer>
   </main>
+  <dialog
+    id="delete-post-modal"
+    class="absolute top-1/2 left-1/2 -translate-1/2 rounded p-4 shadow-lg transition-[opacity,display] transition-discrete starting:opacity-0 [&:not([open])]:opacity-0"
+  >
+    <div class="prose flex flex-col items-center">
+      <h3>Are you sure you want to delete this post?</h3>
+      <p>This action cannot be undone.</p>
+      <div class="flex gap-2">
+        <Button id="cancel-delete-btn">Cancel</Button>
+        <Button variant="danger" id="confirm-delete-btn" data-post-id={post.id}>
+          Confirm
+          <Trash stroke-width={1} size={16} />
+        </Button>
+      </div>
+    </div>
+  </dialog>
 </Layout>
+
+<script>
+  import { actions } from 'astro:actions'
+  import { navigate } from 'astro:transitions/client'
+
+  const deleteBtn = document.querySelector('#delete-btn')
+  const cancelBtn = document.querySelector('#cancel-delete-btn')
+  const confirmBtn = document.querySelector<HTMLButtonElement>(
+    '#confirm-delete-btn'
+  )
+  const deletePostModal =
+    document.querySelector<HTMLDialogElement>('#delete-post-modal')
+
+  deleteBtn?.addEventListener('click', () => {
+    deletePostModal?.showModal()
+  })
+
+  cancelBtn?.addEventListener('click', () => {
+    deletePostModal?.close()
+  })
+
+  confirmBtn?.addEventListener('click', async () => {
+    const postId = confirmBtn.dataset.postId
+
+    if (postId === undefined) return
+
+    await actions.posts.delete({ id: postId })
+    navigate('/')
+  })
+</script>

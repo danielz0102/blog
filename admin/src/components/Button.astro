@@ -2,20 +2,21 @@
 import type { HTMLAttributes } from 'astro/types'
 
 interface Props extends HTMLAttributes<'button'> {
-  variant?: 'primary' | 'secondary'
+  variant?: 'primary' | 'secondary' | 'danger'
 }
 
-const { class: className, variant = 'primary', ...props } = Astro.props
+const { variant = 'primary', ...props } = Astro.props
 ---
 
 <button
   {...props}
   class:list={[
+    'flex cursor-pointer items-center justify-center gap-2',
     variant === 'primary'
       ? 'rounded bg-gray-900 px-4 py-2 text-gray-100 hover:opacity-75'
-      : 'text-zinc-700 hover:opacity-50',
-    'flex cursor-pointer items-center justify-center gap-2',
-    className,
+      : variant === 'danger'
+        ? 'rounded px-4 py-2 transition-colors hover:bg-red-400 hover:text-gray-100'
+        : 'text-zinc-700 hover:opacity-50',
   ]}
 >
   <slot />
