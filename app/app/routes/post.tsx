@@ -41,7 +41,7 @@ export default function Post({
   loaderData: { post, user }
 }: Route.ComponentProps) {
   return (
-    <main className="mx-auto flex max-w-2xl flex-col gap-4 p-4">
+    <main className="flex max-w-2xl flex-col gap-4 p-4 md:mx-auto md:w-2xl">
       <BlogPost post={post} className="mb-8" />
       {user ? (
         <CommentForm postId={post.id} />

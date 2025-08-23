@@ -20,7 +20,7 @@ export async function clientLoader() {
 
 export default function Home({ loaderData: posts }: Route.ComponentProps) {
   return (
-    <main className="mx-auto flex max-w-2xl flex-1 flex-col gap-4 p-4">
+    <main className="flex flex-1 flex-col gap-4 p-4 md:mx-auto md:w-2xl">
       <h1 className="border-b-w-full border-b border-b-zinc-400 pb-1 text-3xl font-bold">
         Recent Posts
       </h1>
