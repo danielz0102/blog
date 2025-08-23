@@ -9,15 +9,14 @@
 - [x] Create new posts
 - [x] Edit posts
 - [x] Delete posts
-- [ ] Publish posts
-- [ ] Unpublish posts
+- [x] Publish posts
+- [x] Unpublish posts
 
 # Tasks
 
 - [ ] Add link to blog's production homepage in log in page when it's deployed
 - [x] Error pages
 - [x] Refactor redirection on log out
-- [ ] Add view transition on PostLink
 - [x] Remove CVA dependency
 - [x] Extract text editor component
 - [x] Refactor alert component to receive text as slot instead of a prop
